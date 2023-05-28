@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Collection } from 'mongoose';
 
 const userSchema = mongoose.Schema({
     firstName: {
@@ -17,6 +17,18 @@ const userSchema = mongoose.Schema({
      password: {
         type: String,
         required: [true, "Please add a password"],
+    },
+     phoneNumber: {
+        type: Number,
+        required: [true, "Please add a Phone Number"],
+    },
+    role: { 
+        type: String, 
+        required: true
+    },
+    imgurl: { 
+        type: String,
+        default: ''
     },
 }, {
     timestamps: true
