@@ -1,1 +1,2 @@
-# course-management-system
+# course-management-tool
+ Project for Zidyia Company
