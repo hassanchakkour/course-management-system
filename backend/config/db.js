@@ -8,6 +8,9 @@ const connectDB = async () => {
         console.error(`Error: ${error.message}`);
         process.exit(1);
     }
+    // finally{ 
+    //     await mongoose.disconnect()
+    // }
 };
 
 export default connectDB;

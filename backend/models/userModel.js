@@ -1,5 +1,9 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+// <<<<<<< ali
+// // import mongoose from 'mongoose';
+// // import bcrypt from 'bcryptjs';
+// =======
+// import mongoose, { Collection } from 'mongoose';
+// >>>>>>> master
 
 const { Schema, SchemaTypes } = mongoose;
 
@@ -30,22 +34,37 @@ const userSchema = Schema({
         enum: ['teacher', 'student'],
         required: [true, 'Please specify your role as "teacher" or "student".'],
     },
-    birthDate: {
-        type: Date,
-        required: [true, 'Please provide your birth date.'],
-    },
-    phoneNumber: {
-        type: String,
-        required: [true, 'Please provide your phone number.'],
-    },
-    badges: [{
-        type: SchemaTypes.ObjectId,
-        ref: 'Badge'
-    }],
-    certificates: [{
-        type: SchemaTypes.ObjectId,
-        ref: 'Certificate'
-    }]
+// <<<<<<< ali
+//     birthDate: {
+//         type: Date,
+//         required: [true, 'Please provide your birth date.'],
+//     },
+//     phoneNumber: {
+//         type: String,
+//         required: [true, 'Please provide your phone number.'],
+//     },
+//     badges: [{
+//         type: SchemaTypes.ObjectId,
+//         ref: 'Badge'
+//     }],
+//     certificates: [{
+//         type: SchemaTypes.ObjectId,
+//         ref: 'Certificate'
+//     }]
+// =======
+//      phoneNumber: {
+//         type: Number,
+//         required: [true, "Please add a Phone Number"],
+//     },
+//     role: { 
+//         type: String, 
+//         required: true
+//     },
+//     imgurl: { 
+//         type: String,
+//         default: ''
+//     },
+// >>>>>>> master
 }, {
     timestamps: true
 });
