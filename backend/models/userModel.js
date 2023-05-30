@@ -1,38 +1,84 @@
-import mongoose, { Collection } from 'mongoose';
+// <<<<<<< ali
+// // import mongoose from 'mongoose';
+// // import bcrypt from 'bcryptjs';
+// =======
+// import mongoose, { Collection } from 'mongoose';
+// >>>>>>> master
 
-const userSchema = mongoose.Schema({
+const { Schema, SchemaTypes } = mongoose;
+
+const userSchema = Schema({
     firstName: {
         type: String,
-        required: [true, "Please add a First Name"],
+        required: [true, 'Please provide your first name.'],
     },
     lastName: {
         type: String,
-        required: [true, "Please add a Last Name"],
+        required: [true, 'Please provide your last name.'],
     },
     email: {
         type: String,
-        required: [true, "Please add an email"],
+        required: [true, 'Please provide your email address.'],
         unique: true,
     },
-     password: {
+    password: {
         type: String,
-        required: [true, "Please add a password"],
+        required: [true, 'Please provide a password.'],
     },
-     phoneNumber: {
-        type: Number,
-        required: [true, "Please add a Phone Number"],
-    },
-    role: { 
-        type: String, 
-        required: true
-    },
-    imgurl: { 
+    imageUrl: {
         type: String,
         default: ''
     },
+    role: {
+        type: String,
+        enum: ['teacher', 'student'],
+        required: [true, 'Please specify your role as "teacher" or "student".'],
+    },
+// <<<<<<< ali
+//     birthDate: {
+//         type: Date,
+//         required: [true, 'Please provide your birth date.'],
+//     },
+//     phoneNumber: {
+//         type: String,
+//         required: [true, 'Please provide your phone number.'],
+//     },
+//     badges: [{
+//         type: SchemaTypes.ObjectId,
+//         ref: 'Badge'
+//     }],
+//     certificates: [{
+//         type: SchemaTypes.ObjectId,
+//         ref: 'Certificate'
+//     }]
+// =======
+//      phoneNumber: {
+//         type: Number,
+//         required: [true, "Please add a Phone Number"],
+//     },
+//     role: { 
+//         type: String, 
+//         required: true
+//     },
+//     imgurl: { 
+//         type: String,
+//         default: ''
+//     },
+// >>>>>>> master
 }, {
     timestamps: true
 });
+
+// MiddleWare that run a function before we save
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next();
+    } 
+
+    // Hash the password before it's saved into the database
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+})
 
 const User = mongoose.model('User', userSchema);
 
