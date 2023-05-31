@@ -1,29 +1,30 @@
-import mongoose, { Collection } from 'mongoose';
+import mongoose from 'mongoose';
 
-const submissionModel = mongoose.Schema({
-    studentId:{
-        type: mongoose.Schema.Types.ObjectId,
-        required:true,
-    },
-    activityId:{ 
-        type: mongoose.Schema.Types.ObjectId,
-        required:true,
-    },
-    submissionFile: {
-        type: String,
-        required: true,
-        enum:['file','content'],
-    },
-    
-     submissionDate:{
-        type: Date,
-        required: true,
-    },
+const { Schema, SchemaTypes } = mongoose;
 
+const submissionSchema = Schema({
+  activityId: {
+    type: SchemaTypes.ObjectId,
+    ref: 'Activity',
+    required: [true, 'Please specify the associated activity for the submission.'],
+  },
+  userId: {
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
+    required: [true, 'Please specify the user submitting the activity.'],
+  },
+  submissionDate: {
+    type: Date,
+    required: [true, 'Please provide the submission date.'],
+  },
+  fileUrl: {
+    type: String,
+    required: [true, 'Please provide the URL of the submitted file.'],
+  },
 }, {
-    timestamps: true
+  timestamps: true
 });
 
-const Submission = mongoose.model('Submission', submissionModel);
+const Submission = mongoose.model('Submission', submissionSchema);
 
 export default Submission;
