@@ -1,7 +1,12 @@
+// <<<<<<< ali
+// import mongoose from 'mongoose';
+// import bcrypt from 'bcryptjs';
+// =======
 
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+// import mongoose from 'mongoose';
+// import bcrypt from 'bcryptjs';
 
+// >>>>>>> master
 
 const { Schema, SchemaTypes } = mongoose;
 
@@ -40,6 +45,21 @@ const userSchema = Schema({
         type: String,
         required: [true, 'Please provide your phone number.'],
     },
+// <<<<<<< ali
+//     gender: {
+//         type: String,
+//         enum: ['male', 'female'],
+//         required: [true, 'Please specify your gender as "male" or "female".']
+//     },
+//     specialization: {
+//         type: String,
+//         required: function() {
+//             return this.role === 'teacher';
+//         },
+//         default: '',
+//     },
+// =======
+// >>>>>>> master
     badges: [{
         type: SchemaTypes.ObjectId,
         ref: 'Badge'
@@ -48,7 +68,10 @@ const userSchema = Schema({
         type: SchemaTypes.ObjectId,
         ref: 'Certificate'
     }]
+// <<<<<<< ali
+// =======
 
+// >>>>>>> master
 }, {
     timestamps: true
 });
@@ -62,7 +85,11 @@ userSchema.pre('save', async function (next) {
     // Hash the password before it's saved into the database
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-})
+});
+
+userSchema.methods.matchPassword = async function(enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+}
 
 const User = mongoose.model('User', userSchema);
 

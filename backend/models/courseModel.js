@@ -20,7 +20,7 @@ const courseSchema = Schema({
         type: String,
         required: [true, 'Please provide the duration of the course.'],
     },
-    enrollment: [{
+    enrollmentIds: [{
         type: SchemaTypes.ObjectId,
         ref: 'User',
     }],

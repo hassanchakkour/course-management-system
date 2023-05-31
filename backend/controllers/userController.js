@@ -1,19 +1,48 @@
 import asyncHandler from 'express-async-handler';
+import generateToken from '../utils/generateToken.js';
 import User from '../models/userModel.js';
 import {validateRegister} from '../middleware/validatorMiddleware.js';
-
+ 
 // @desc    Authenticate user/set token
 // @route   POST/api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Login User'})
+    const {email, password} = req.body;
+
+    // Chek for user email
+    const user = await User.findOne({ email });
+
+    if(user && (await user.matchPassword(password))) {
+        generateToken(res, user._id);
+        const responseData = {
+            _id: user._id,
+            name: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            role: user.role,
+            token: req.cookies.jwt
+        };
+    
+        if (user.role === 'teacher') {
+            responseData.specialization = user.specialization;
+        }
+
+        res.status(201).json(responseData);
+        console.log(`Successfully signed up! ${user.firstName} ${user.lastName}`);
+        console.log(generateToken(res, user._id));
+    }
+        
+    else {
+        res.status(401); // Unauthorized
+        throw new Error('Invalid email or password');
+    }
+
 });
 
 // @desc    Register a new user
 // @route   POST/api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, role, birthDate, phoneNumber} = req.body;
+    const { firstName, lastName, email, password, role, birthDate, phoneNumber, gender, specialization} = req.body;
     // console.log(`Welcome ${firstName} ${lastName}`)
 
     // LETS VALIDATE THE DATA BEFORE WE MAKE A USER
@@ -40,18 +69,31 @@ const registerUser = asyncHandler(async (req, res) => {
         password,
         role,
         birthDate,
-        phoneNumber
+        phoneNumber,
+        gender,
+        // Add specialization only for teacher role
+        specialization: role === 'teacher' ? specialization : undefined,
     });
 
     if(user) {
-        res.status(201).json({
+        const responseData = {
             _id: user._id,
             name: `${user.firstName} ${user.lastName}`,
             email: user.email,
-            role: user.role
-        });
+            role: user.role,
+        };
+    
+        if (user.role === 'teacher') {
+            responseData.specialization = user.specialization;
+        }
+
+        generateToken(res, user._id);
+        res.status(201).json(responseData);
+
         console.log(`Successfully signed up! ${user.firstName} ${user.lastName}`);
-    } else {
+    }
+        
+    else {
         res.status(400);
         throw new Error('Invalid user data');
     }
@@ -61,7 +103,12 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST/api/users/logout
 // @access  Public
 const logoutUser = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Logout User'})
+    res.cookie('jwt', '', {
+        httpOnly: true,
+        expires: new Date(0),
+    });
+    
+    res.status(200).json({message: 'User logged out'})
 });
 
 // @desc    Get user profile

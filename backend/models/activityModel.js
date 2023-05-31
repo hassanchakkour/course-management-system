@@ -1,45 +1,25 @@
-import mongoose, { Collection } from 'mongoose';
+import mongoose from 'mongoose';
 
-const activity = mongoose.Schema({
-    type:{
-        type: String,
-        required: true,
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-        enum: ['file', 'video', 'assignment', 'Quiz']
-            },
-     completionCriteria: {
-        type: Schema.Types.ObjectId,
-        ref: 'CompletionCriteria'
-                },
-    badges: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Badge'
-                    },
-                
-     certificates: {
-         type:mongoose.Schema.Types.ObjectId ,
-        ref: 'Certificate'
-                    },
-    
-     deadline:{
-        type: Date,
-        required: true,
-    },
-    moduleID:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Module',
-    },
+const { Schema, SchemaTypes } = mongoose;
+
+const activitySchema = Schema({
+  title: {
+    type: String,
+    required: [true, 'Please provide the title of the activity.'],
+  },
+  description: {
+    type: String,
+    required: [true, 'Please provide a description for the activity.'],
+  },
+  moduleId: {
+    type: SchemaTypes.ObjectId,
+    ref: 'Module',
+    required: [true, 'Please specify the associated module for the activity.'],
+  },
 }, {
-    timestamps: true
+  timestamps: true
 });
 
-const Activity = mongoose.model('Activity', activityModel);
+const Activity = mongoose.model('Activity', activitySchema);
 
 export default Activity;
