@@ -1,12 +1,5 @@
-// <<<<<<< ali
-// import mongoose from 'mongoose';
-// import bcrypt from 'bcryptjs';
-// =======
-
-// import mongoose from 'mongoose';
-// import bcrypt from 'bcryptjs';
-
-// >>>>>>> master
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const { Schema, SchemaTypes } = mongoose;
 
@@ -45,21 +38,20 @@ const userSchema = Schema({
         type: String,
         required: [true, 'Please provide your phone number.'],
     },
-// <<<<<<< ali
-//     gender: {
-//         type: String,
-//         enum: ['male', 'female'],
-//         required: [true, 'Please specify your gender as "male" or "female".']
-//     },
-//     specialization: {
-//         type: String,
-//         required: function() {
-//             return this.role === 'teacher';
-//         },
-//         default: '',
-//     },
-// =======
-// >>>>>>> master
+
+    gender: {
+        type: String,
+        enum: ['male', 'female'],
+        required: [true, 'Please specify your gender as "male" or "female".']
+    },
+    specialization: {
+        type: String,
+        required: function() {
+            return this.role === 'teacher';
+        },
+        default: '',
+    },
+
     badges: [{
         type: SchemaTypes.ObjectId,
         ref: 'Badge'
@@ -68,10 +60,7 @@ const userSchema = Schema({
         type: SchemaTypes.ObjectId,
         ref: 'Certificate'
     }]
-// <<<<<<< ali
-// =======
 
-// >>>>>>> master
 }, {
     timestamps: true
 });
