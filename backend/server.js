@@ -1,13 +1,24 @@
-import express from 'express'; 
+// import express from 'express'; 
+import mongoose from 'mongoose';
 import colors from 'colors';
 import dotenv from 'dotenv';
 dotenv.config();
 import {notFound, errorHandler} from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
-const port = process.env.PORT || 5000;
 import userRoutes from './routes/userRoutes.js';
+import activityRoutes from'./routes/activityRoutes.js'
 
-connectDB();
+//connect to db
+mongoose.connect(process.env.MONGO_URI)
+   .then(() => {
+      //listen for request
+      app.listen(process.env.PORT, () => {
+      console.log('Connected to db && listening on port ', process.env.PORT);
+        })
+   })
+   .catch((error) => {
+      console.log(error)
+   })
 
 const app = express();
 
@@ -17,10 +28,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use('/api/users', userRoutes);
+//app.use('/api/activites', activityRoutes);
 
 app.get('/', (req, res) => res.send('Server is ready'));
 
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+
