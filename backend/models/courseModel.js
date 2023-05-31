@@ -1,0 +1,33 @@
+import mongoose from 'mongoose';
+
+const { Schema, SchemaTypes } = mongoose;
+
+const courseSchema = Schema({
+    title: {
+        type: String,
+        required: [true, 'Please provide the title of the course.'],
+    },
+    description: {
+        type: String,
+        required: [true, 'Please provide a description for the course.'],
+    },
+    teacherId: {
+        type: SchemaTypes.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    duration: {
+        type: String,
+        required: [true, 'Please provide the duration of the course.'],
+    },
+    enrollment: [{
+        type: SchemaTypes.ObjectId,
+        ref: 'User',
+    }],
+}, {
+    timestamps: true
+});
+
+const Course = mongoose.model('Course', courseSchema);
+
+export default Course;
