@@ -1,13 +1,28 @@
-const Activity = require('../models/activityModel');
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+
+import Activity from'../models/activityModel';
+
+import Activity from '../models/activityModel';
+
+// Create a new activity
+const postActivity = async (req, res) => {
+  const { title, description, moduleId } = req.body;
+
+  try {
+    const activity = await Activity.create({ title, description, moduleId });
+    res.status(201).json(activity);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 // Get all activities
-const getActivities = async (req, res) => {
+const getActivites = async (req, res) => {
   try {
     const activities = await Activity.find({});
     res.status(200).json(activities);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -21,32 +36,7 @@ const getActivity = async (req, res) => {
       res.status(404).json({ message: 'Activity not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-
-// Create a new activity
-const postActivity = async (req, res) => {
-  const { type, title, description, deadline, moduled } = req.body;
-  try {
-    const newActivity = await Activity.create({ type, title, description, deadline, moduled });
-    res.status(200).json(newActivity);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-// Update an activity by ID
-const updateActivity = async (req, res) => {
-  try {
-    const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (activity) {
-      res.status(200).json(activity);
-    } else {
-      res.status(404).json({ message: 'Activity not found' });
-    }
-  } catch (error) {
-    res.status(400).json({ message: 'Invalid Request' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -60,10 +50,28 @@ const deleteActivity = async (req, res) => {
       res.status(404).json({ message: 'Activity not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
-module.exports = {
-  postActivity, getActivities, getActivity, deleteActivity, updateActivity
+// Update an activity by ID
+const putActivity = async (req, res) => {
+  try {
+    const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (activity) {
+      res.status(200).json(activity);
+    } else {
+      res.status(404).json({ message: 'Activity not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: 'Bad Request' });
+  }
 };
+
+
+
+
+
+export {
+    postActivity,getActivity,getActivites,deleteActivity,putActivity 
+}

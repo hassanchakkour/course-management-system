@@ -1,13 +1,14 @@
-// import express from 'express'; 
+import express from 'express'; 
 import mongoose from 'mongoose';
 import colors from 'colors';
 import dotenv from 'dotenv';
 dotenv.config();
 import cookieParser from 'cookie-parser';
 import {notFound, errorHandler} from './middleware/errorMiddleware.js';
-import connectDB from './config/db.js';
+
+ import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
-import activityRoutes from'./routes/activityRoutes.js'
+
 
 //connect to db
 mongoose.connect(process.env.MONGO_URI)
