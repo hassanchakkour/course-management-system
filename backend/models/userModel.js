@@ -21,10 +21,6 @@ const userSchema = Schema({
         type: String,
         required: [true, 'Please provide a password.'],
     },
-    imageUrl: {
-        type: String,
-        default: ''
-    },
     role: {
         type: String,
         enum: ['teacher', 'student'],
@@ -43,6 +39,10 @@ const userSchema = Schema({
         type: String,
         enum: ['male', 'female'],
         required: [true, 'Please specify your gender as "male" or "female".']
+    },
+    imageUrl: {
+        type: String,
+        default: ''
     },
     specialization: {
         type: String,
