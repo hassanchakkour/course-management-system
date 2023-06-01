@@ -1,32 +1,25 @@
 
-
 import mongoose from 'mongoose';
 
-const activitySchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true,
-  },
+const { Schema, SchemaTypes } = mongoose;
+
+const activitySchema = Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'Please provide the title of the activity.'],
   },
   description: {
     type: String,
-    required: true,
-    enum: ['file', 'video', 'assignment', 'Quiz'],
+    required: [true, 'Please provide a description for the activity.'],
   },
-  
-  deadline: {
-    type: Date,
-    required: true,
-  },
-  moduleID: {
-    type: mongoose.Schema.Types.ObjectId,
+  moduleId: {
+    type: SchemaTypes.ObjectId,
     ref: 'Module',
+    required: [true, 'Please specify the associated module for the activity.'],
   },
 }, {
-  timestamps: true,
+  timestamps: true
+
 });
 
 const Activity = mongoose.model('Activity', activitySchema);

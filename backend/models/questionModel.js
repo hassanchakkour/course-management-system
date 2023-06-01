@@ -1,37 +1,32 @@
 import mongoose from 'mongoose';
 
-const questionSchema = new mongoose.Schema({
-type: {
+
+const { Schema, SchemaTypes } = mongoose;
+
+const questionSchema = Schema({
+  activityId: {
+    type: SchemaTypes.ObjectId,
+    ref: 'Activity',
+    required: [true, 'Please specify the associated activity for the question.'],
+  },
+  content: {
     type: String,
-    enum: ['multiple choice', 'short answer'],
-    required: true,
-    },
-content: {
-    type: String,
-    required: true,
-    },
-correctAnswer: {
-    type: String,
-    required: true,
-    },
-options: {
-    type: [String],
-    required: true,
-    validate: {
-    validator: function (value) {
-    return value.length >= 2; // Validate that there are at least 2 options
-    },
-    message: 'At least 2 options are required.',
-    },
-    },
-examId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    },
-    }, {
-timestamps: true,
-    });
-    
+    required: [true, 'Please provide the content of the question.'],
+  },
+  options: [
+    {
+      type: String,
+      required: [true, 'Please provide the options for the question.'],
+    }
+  ],
+  correctOption: {
+    type: Number,
+    required: [true, 'Please provide the index of the correct option.'],
+  },
+}, {
+  timestamps: true
+});
+
 const Question = mongoose.model('Question', questionSchema);
-    
+
 export default Question;

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import colors from 'colors';
 import dotenv from 'dotenv';
 dotenv.config();
+import cookieParser from 'cookie-parser';
 import {notFound, errorHandler} from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
@@ -26,6 +27,8 @@ const app = express();
 app.use(express.json());
 // To allow us to send form data
 app.use(express.urlencoded({extended: true}));
+
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 //app.use('/api/activites', activityRoutes);
