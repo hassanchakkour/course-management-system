@@ -19,7 +19,6 @@ const loginUser = asyncHandler(async (req, res) => {
             name: `${user.firstName} ${user.lastName}`,
             email: user.email,
             role: user.role,
-            token: req.cookies.jwt
         };
     
         if (user.role === 'teacher') {
@@ -115,14 +114,36 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @route   GET/api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'User Profile'})
+    const responseData = {
+        _id: req.user._id,
+        name: `${req.user.firstName} ${req.user.lastName}`,
+        email: req.user.email,
+        role: req.user.role,
+    };
+
+    if (req.user.role === 'teacher') {
+        responseData.specialization = req.user.specialization;
+    }
+    res.status(200).json(responseData);
 });
 
 // @desc    Update user profile
 // @route   PUT/api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Update User Profile'})
+    const user = await User.findById(req.user._id);
+
+    if(user) {
+        user.imageUrl = req.body.imageUrl || user.imageUrl;
+       
+        await user.save();
+        res.status(200).json({message: 'Update Profile Picture'});
+
+    } else {
+        res.status(404);
+        throw new Error('User not found')
+    }
+
 });
 
 export {
