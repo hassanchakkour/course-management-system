@@ -51,7 +51,7 @@ const updateActivity = async (req, res) => {
 };
 
 // Delete an activity by ID
-const delActivity = async (req, res) => {
+const deleteActivity = async (req, res) => {
   try {
     const activity = await Activity.findByIdAndDelete(req.params.id);
     if (activity) {
@@ -65,9 +65,5 @@ const delActivity = async (req, res) => {
 };
 
 module.exports = {
-  postActivity,
-  getActivities,
-  getActivity,
-  delActivity,
-  updateActivity
+  postActivity, getActivities, getActivity, deleteActivity, updateActivity
 };

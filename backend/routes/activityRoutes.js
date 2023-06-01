@@ -1,37 +1,20 @@
 import express from 'express';
-
 const router = express.Router();
+import { postActivity, getActivities, getActivity, deleteActivity, updateActivity } from '../controllers/activitesController';
 
-// const {
-//     createActivity,
-//     getActivities,
-//     getActivity,
-//     deleteActivity,
-//     updateActivity
+// Get all activities
+router.get('/activities', getActivities);
 
-//     }= require ('../controllers/activitesController.js')
-// activityRoutes.js
+// Get a specific activity by ID
+router.get('/activities/:id', getActivity);
 
-import { postActivity, getActivities, getActivity, delActivity, updateActivity } from '../controllers/activitesController.js';
+// Create a new activity
+router.post('/activities', postActivity);
 
+// Delete an activity by ID
+router.delete('/activities/:id', deleteActivity);
 
-
-//atach to a handler to this
-//Get all posts
-router.get('/activites', getActivities)
-
-//GET single post
-router.get('/activites/:id',getActivity)
-
-//POST a new post
-router.post('/activites', postActivity)
-
-//delete a post
-router.delete('/activites/:id',  delActivity )
-
-//UPDATE A post
-router.patch('/activites/:id', updateActivity)
-
+// Update an activity by ID
+router.patch('/activities/:id', updateActivity);
 
 export default router;
-
