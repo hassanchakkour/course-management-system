@@ -1,8 +1,6 @@
-import mongoose from "mongoose";
 
-import Activity from'../models/activityModel';
+import Activity from'../models/activityModel.js';
 
-import Activity from '../models/activityModel';
 
 // Create a new activity
 const postActivity = async (req, res) => {
@@ -73,5 +71,9 @@ const putActivity = async (req, res) => {
 
 
 export {
-    postActivity,getActivity,getActivites,deleteActivity,putActivity 
+    postActivity,
+    getActivity,
+    getActivites,
+    deleteActivity,
+    putActivity 
 }
