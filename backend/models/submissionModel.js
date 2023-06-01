@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+
 const { Schema, SchemaTypes } = mongoose;
 
 const submissionSchema = Schema({
@@ -23,6 +24,7 @@ const submissionSchema = Schema({
   },
 }, {
   timestamps: true
+
 });
 
 const Submission = mongoose.model('Submission', submissionSchema);

@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const { Schema, SchemaTypes } = mongoose;
@@ -18,6 +19,7 @@ const activitySchema = Schema({
   },
 }, {
   timestamps: true
+
 });
 
 const Activity = mongoose.model('Activity', activitySchema);
