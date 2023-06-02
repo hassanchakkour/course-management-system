@@ -12,11 +12,11 @@ const activitySchema = Schema({
     type: String,
     required: [true, 'Please provide a description for the activity.'],
   },
-  moduleId: {
-    type: SchemaTypes.ObjectId,
-    ref: 'Module',
-    required: [true, 'Please specify the associated module for the activity.'],
-  },
+  // moduleId: {
+  //   type: SchemaTypes.ObjectId,
+  //   ref: 'Module',
+  //   required: [true, 'Please specify the associated module for the activity.'],
+  // },
 }, {
   timestamps: true
 
