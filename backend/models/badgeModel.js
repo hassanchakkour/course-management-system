@@ -6,6 +6,7 @@ const badgeSchema = Schema({
   title: {
     type: String,
     required: [true, 'Please provide the title of the badge.'],
+    unique: true
   },
   description: {
     type: String,

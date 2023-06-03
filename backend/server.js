@@ -9,8 +9,13 @@ import activityRoutes from './routes/activityRoutes.js'
 import userRoutes from './routes/userRoutes.js';
 import submissionRoutes from './routes/submissionRoutes.js';
 import questionsRoutes from './routes/questionsRoutes.js';
-import courseRoutes from "./routes/courseRoutes.js";
-import moduleRoutes from "./routes/moduleRoutes.js";
+// <<<<<<< hassan
+// import badgeRoutes from './routes/badgeRoutes.js'
+// import certificateRoutes  from './routes/certificateRoutes.js'
+// =======
+// import courseRoutes from "./routes/courseRoutes.js";
+// import moduleRoutes from "./routes/moduleRoutes.js";
+// >>>>>>> master
 
 const { 
    PORT
@@ -34,8 +39,13 @@ app.use('/api/users', userRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/submission',submissionRoutes)
 app.use('/api/questions',questionsRoutes);
+// <<<<<<< hassan
+// app.use('/api/badges',badgeRoutes);
+// app.use('/api/certificates',certificateRoutes);
+// =======
 app.use("/api/courses", courseRoutes);
 app.use("/api/modules", moduleRoutes);
+// >>>>>>> master
 
 
 app.get('/', (req, res) => res.send('Server is ready'));
