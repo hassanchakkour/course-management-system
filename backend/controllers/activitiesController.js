@@ -1,6 +1,4 @@
-
-import Activity from'../models/activityModel.js';
-
+import Activity from "../models/activityModel.js";
 
 // Create a new activity
 const postActivity = async (req, res) => {
@@ -15,12 +13,12 @@ const postActivity = async (req, res) => {
 };
 
 // Get all activities
-const getActivites = async (req, res) => {
+const getActivities = async (req, res) => {
   try {
     const activities = await Activity.find({});
     res.status(200).json(activities);
   } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
@@ -31,10 +29,10 @@ const getActivity = async (req, res) => {
     if (activity) {
       res.status(200).json(activity);
     } else {
-      res.status(404).json({ message: 'Activity not found' });
+      res.status(404).json({ message: "Activity not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
@@ -43,37 +41,35 @@ const deleteActivity = async (req, res) => {
   try {
     const activity = await Activity.findByIdAndDelete(req.params.id);
     if (activity) {
-      res.status(200).json({ message: 'Activity deleted' });
+      res.status(200).json({ message: "Activity deleted" });
     } else {
-      res.status(404).json({ message: 'Activity not found' });
+      res.status(404).json({ message: "Activity not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
 // Update an activity by ID
 const putActivity = async (req, res) => {
   try {
-    const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (activity) {
       res.status(200).json(activity);
     } else {
-      res.status(404).json({ message: 'Activity not found' });
+      res.status(404).json({ message: "Activity not found" });
     }
   } catch (error) {
-    res.status(400).json({ error: 'Bad Request' });
+    res.status(400).json({ error: "Bad Request" });
   }
 };
 
-
-
-
-
 export {
-    postActivity,
-    getActivity,
-    getActivites,
-    deleteActivity,
-    putActivity 
-}
+  postActivity,
+  getActivity,
+  getActivities,
+  deleteActivity,
+  putActivity,
+};
