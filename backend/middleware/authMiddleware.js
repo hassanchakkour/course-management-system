@@ -31,7 +31,7 @@ const isTeacher = asyncHandler((req, res, next) => {
     next();
   } else {
     res.status(403);
-    throw new Error("Not authorized as a teacher");
+    throw new Error("Not authorized");
   }
 });
 

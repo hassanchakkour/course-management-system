@@ -26,7 +26,7 @@ const loginUser = asyncHandler(async (req, res) => {
     generateToken(res, user._id);
 
     res.status(201).json(responseData);
-    console.log(`Successfully signed up! ${user.firstName} ${user.lastName}`);
+    console.log(`Successfully logged in! ${user.firstName} ${user.lastName}`);
   } else {
     res.status(401); // Unauthorized
     throw new Error("Invalid email or password");
@@ -66,7 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Create a new user
-  const user = await User.create({
+  const user = new User({
     firstName,
     lastName,
     email,
@@ -78,6 +78,8 @@ const registerUser = asyncHandler(async (req, res) => {
     // Add specialization only for teacher role
     specialization: role === "teacher" ? specialization : undefined,
   });
+
+  await user.save();
 
   if (user) {
     const responseData = {
@@ -116,18 +118,47 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @route   GET/api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const responseData = {
-    _id: req.user._id,
-    name: `${req.user.firstName} ${req.user.lastName}`,
-    email: req.user.email,
-    role: req.user.role,
-    imageUrl: req.user.imageUrl,
-  };
+  const userId = req.user._id;
 
-  if (req.user.role === "teacher") {
-    responseData.specialization = req.user.specialization;
+  const user = await User.findById(userId);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
   }
-  res.status(200).json(responseData);
+
+  let populatedUser;
+
+  // Exclude badges, certificates, and studentEnrollmentCourses from the response for teachers
+  if (user.role === "teacher") {
+    populatedUser = {
+      _id: user._id,
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      role: user.role,
+      imageUrl: user.imageUrl,
+      specialization: user.specialization,
+      birthDate: new Date(user.birthDate).toISOString().split("T")[0],
+    };
+  } else {
+    // Populate studentEnrollmentCourses for students
+    populatedUser = await User.findById(userId)
+      .populate("studentEnrollmentCourses")
+      .select("-specialization")
+      .exec();
+
+    populatedUser = {
+      _id: populatedUser._id,
+      name: `${populatedUser.firstName} ${populatedUser.lastName}`,
+      email: populatedUser.email,
+      role: populatedUser.role,
+      imageUrl: populatedUser.imageUrl,
+      birthDate: new Date(populatedUser.birthDate).toISOString().split("T")[0],
+      studentEnrollmentCourses: populatedUser.studentEnrollmentCourses,
+    };
+  }
+
+  res.json(populatedUser);
 });
 
 // @desc    Update user profile

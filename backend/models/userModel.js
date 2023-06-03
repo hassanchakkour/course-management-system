@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import Course from "./courseModel.js";
 
 const { Schema, SchemaTypes } = mongoose;
 
@@ -30,12 +31,19 @@ const userSchema = Schema(
     birthDate: {
       type: Date,
       required: [true, "Please provide your birth date."],
+      get: function (value) {
+        // Format the birthDate when retrieving from the database
+        return value ? value.toISOString().split("T")[0] : null;
+      },
+      set: function (value) {
+        // Parse the birthDate when saving to the database
+        return value ? new Date(value) : null;
+      },
     },
     phoneNumber: {
       type: String,
       required: [true, "Please provide your phone number."],
     },
-
     gender: {
       type: String,
       enum: ["male", "female"],
@@ -64,26 +72,56 @@ const userSchema = Schema(
       },
       default: "",
     },
-
-    badges: [
-      {
-        type: SchemaTypes.ObjectId,
-        ref: "Badge",
+    studentEnrollmentCourses: {
+      type: [
+        {
+          type: SchemaTypes.ObjectId,
+          ref: "Course",
+        },
+      ],
+      default: function () {
+        if (this.role === "student") {
+          return [];
+        }
       },
-    ],
-    certificates: [
-      {
-        type: SchemaTypes.ObjectId,
-        ref: "Certificate",
+      select: false, // Exclude from query results
+    },
+    badges: {
+      type: [
+        {
+          type: SchemaTypes.ObjectId,
+          ref: "Badge",
+        },
+      ],
+      default: function () {
+        if (this.role === "student") {
+          return [];
+        }
       },
-    ],
+      select: false, // Exclude from query results
+    },
+    certificates: {
+      type: [
+        {
+          type: SchemaTypes.ObjectId,
+          ref: "Certificate",
+        },
+      ],
+      default: function () {
+        if (this.role === "student") {
+          return [];
+        }
+      },
+      select: false, // Exclude from query results
+    },
   },
   {
     timestamps: true,
+    toJSON: { getters: true, setters: true }, // Enable the transformation options
   }
 );
 
-// MiddleWare that run a function before we save
+// Middleware that runs a function before saving the user
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -92,6 +130,20 @@ userSchema.pre("save", async function (next) {
   // Hash the password before it's saved into the database
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+
+  if (this.role === "student") {
+    try {
+      const courseCount = await Course.countDocuments();
+      const randomCount = Math.floor(Math.random() * Math.min(courseCount, 6));
+      const courses = await Course.aggregate([
+        { $sample: { size: randomCount } },
+      ]);
+      const courseIds = courses.map((course) => course._id);
+      this.studentEnrollmentCourses = courseIds;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
