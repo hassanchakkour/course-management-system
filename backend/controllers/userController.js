@@ -37,6 +37,27 @@ const loginUser = asyncHandler(async (req, res) => {
 
 });
 
+const getAllUsers = asyncHandler(async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.status(200).json(users);
+      } catch (error) {
+        res.status(500).json({ message: 'something Went Wrong' });
+      }
+
+});
+
+const getSingleUser = asyncHandler(async (req, res) => {
+    
+        const user = await User.findById(req.params.id);
+        if (user) {
+          res.status(200).json(user);
+        } else {
+          res.status(404).json({ message: 'user not found' });
+        }
+     
+});
+
 // @desc    Register a new user
 // @route   POST/api/users
 // @access  Public
@@ -151,5 +172,7 @@ export {
     registerUser,
     logoutUser,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    getAllUsers,
+    getSingleUser
 }

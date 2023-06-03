@@ -12,11 +12,11 @@ const certificateSchema = Schema({
     ref: 'Course',
     required: [true, 'Please specify the associated course for the certificate.'],
   },
-  recipientId: {
+  recipientId:[ {
     type: SchemaTypes.ObjectId,
     ref: 'User',
     required: [true, 'Please specify the recipient of the certificate.'],
-  },
+  }],
   issueDate: {
     type: Date,
     required: [true, 'Please provide the issue date of the certificate.'],

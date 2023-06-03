@@ -10,6 +10,8 @@ import activityRoutes from './routes/activityRoutes.js'
 import userRoutes from './routes/userRoutes.js';
 import submissionRoutes from './routes/submissionRoutes.js';
 import questionsRoutes from './routes/questionsRoutes.js';
+import badgeRoutes from './routes/badgeRoutes.js'
+import certificateRoutes  from './routes/certificateRoutes.js'
 
 const { 
    PORT
@@ -32,6 +34,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/submission',submissionRoutes)
 app.use('/api/questions',questionsRoutes);
+app.use('/api/badges',badgeRoutes);
+app.use('/api/certificates',certificateRoutes);
 
 
 app.get('/', (req, res) => res.send('Server is ready'));
