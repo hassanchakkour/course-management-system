@@ -5,7 +5,8 @@ import {
     createBadge,
     getAllBadges,
     getSingleBadge,
-    updateBadge
+    updateBadge,
+    deleteBadge
 } from '../controllers/badgeController.js'
 
 
@@ -13,6 +14,7 @@ router.post("/", createBadge);
 router.get("/", getAllBadges);
 router.get("/:id", getSingleBadge);
 router.put("/update/:id", updateBadge);
+router.put("/delete", deleteBadge);
 
 
 export default router;

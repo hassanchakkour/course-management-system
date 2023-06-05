@@ -66,9 +66,26 @@ const getAllBadges = asyncHandler(async (req, res) => {
 
 });
 
+const deleteBadge = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const deletedBadge = await Badge.findByIdAndDelete(id);
+
+    if (deletedBadge) {
+      res.status(200).json({ message: 'Badge deleted successfully.' });
+    } else {
+      res.status(404).json({ message: 'Badge not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting Badge.', error });
+  }
+});
+
 export {
     createBadge,
     getAllBadges,
     getSingleBadge,
-    updateBadge
+    updateBadge,
+    deleteBadge
 }

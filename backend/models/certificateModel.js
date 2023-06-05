@@ -15,7 +15,7 @@ const certificateSchema = Schema({
   recipientId:[ {
     type: SchemaTypes.ObjectId,
     ref: 'User',
-    required: [true, 'Please specify the recipient of the certificate.'],
+    // required: [true, 'Please specify the recipient of the certificate.'],
   }],
   issueDate: {
     type: Date,
