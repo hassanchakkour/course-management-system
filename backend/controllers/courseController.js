@@ -56,6 +56,7 @@ const createCourse = asyncHandler(async (req, res) => {
 // @desc    Update a course by ID (if it belongs to the authenticated teacher)
 // @route   PUT /api/courses/:id
 // @access  Private (Teacher)
+
 const updateCourse = asyncHandler(async (req, res) => {
   const { title, description, duration } = req.body;
   const teacherId = req.user._id;

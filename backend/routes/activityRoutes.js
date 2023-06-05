@@ -7,11 +7,12 @@ import {
   deleteActivity,
   putActivity,
 } from "../controllers/activitiesController.js";
+import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
-router.post("/", postActivity);
-router.get("/", getActivities);
-router.get("/:id", getActivity);
-router.delete("/:id", deleteActivity);
-router.put("/:id", putActivity);
+router.post("/",protect,isTeacher,postActivity);
+router.get("/",protect,isTeacher, getActivities);
+router.get("/:id",protect,isTeacher, getActivity);
+router.delete("/:id", protect,isTeacher,deleteActivity);
+router.put("/:id",protect,isTeacher, putActivity);
 
 export default router;
