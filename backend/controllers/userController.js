@@ -216,5 +216,7 @@ export {
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  getAllUsers,
+  getSingleUser
 };
 // >>>>>>> master
