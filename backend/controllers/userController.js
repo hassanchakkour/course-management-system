@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import jwt from 'jsonwebtoken'
 import { validateRegister } from "../middleware/validatorMiddleware.js";
 import bcryptjs from 'bcryptjs'
+import nodemailer from 'nodemailer'
 
 // @desc    Authenticate user/set token
 // @route   POST/api/users/login
@@ -214,7 +215,33 @@ const forgotPassword = asyncHandler(async (req, res) => {
       expiresIn: '5m'
   })
   const link = `http://localhost:5000/api/users/forgot-password/${user._id}/${token}`
-  res.status(201).json({message: "click on the link", resetPasswordLink: link, expires: 'this link will expire in 5 minutes'})
+  
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { 
+      user: 'lms.esa.team@gmail.com',
+      pass: 'iwemztrkompofvlu'
+    }
+  })
+  const mailOptions = { 
+    from: 'lms.esa.team@gmail.com',
+    to: user.email,
+    subject: "Reset LMS Password",
+    html: `<div>
+          <h4>Click on the link below to reset your password</h4>
+          <a href="${link}"> Reset My Password</a>
+      </div>`
+  }
+
+  transporter.sendMail(mailOptions, function(error, success){ 
+    if(error){
+      console.log(error)
+    }else{ 
+      console.log("Email sent: ", success.response)
+    }
+  });
+
+  res.status(200).json({message: "link-sent"})
   } else {
     res.status(404);
     throw new Error("Invalid Email");
