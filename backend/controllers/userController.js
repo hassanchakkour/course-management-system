@@ -1,7 +1,9 @@
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
+import jwt from 'jsonwebtoken'
 import { validateRegister } from "../middleware/validatorMiddleware.js";
+import bcryptjs from 'bcryptjs'
 
 // @desc    Authenticate user/set token
 // @route   POST/api/users/login
@@ -200,6 +202,67 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({email});
+
+  if (user) {
+    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password
+    const token = jwt.sign({email: user.email, id: user.id}, secret, {
+      expiresIn: '5m'
+  })
+  const link = `http://localhost:5000/api/users/forgot-password/${user._id}/${token}`
+  res.status(201).json({message: "click on the link", resetPasswordLink: link, expires: 'this link will expire in 5 minutes'})
+  } else {
+    res.status(404);
+    throw new Error("Invalid Email");
+  }
+});
+
+const getResetPassword = asyncHandler(async (req, res) => {
+
+  const user = await User.findById(req.params.userId);
+  console.log(user)
+  if (user) {
+    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password
+    try{ 
+      jwt.verify(req.params.token, secret)
+      res.status(200).json({message: 'reset password'})
+    }catch(error){ 
+      console.log(error)
+      res.json({error})
+    }
+  } else {
+    console.log('smthng went wrong')
+    res.status(404);
+    throw new Error("Invalid Email");
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+
+  const user = await User.findById(req.params.userId);
+  console.log(user)
+  if (user) {
+    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password
+    try{ 
+      jwt.verify(req.params.token, secret)
+
+      user.password = req.body.password
+      await user.save()
+      res.status(200).json({message: "Password reset Successfully"})
+    }catch(error){ 
+      console.log(error)
+      res.json({error})
+    }
+  } else {
+    res.status(404);
+    throw new Error("user not found");
+  }
+});
+
 export {
   loginUser,
   registerUser,
@@ -207,6 +270,9 @@ export {
   getUserProfile,
   updateUserProfile,
   getAllUsers,
-  getSingleUser
+  getSingleUser,
+  forgotPassword,
+  getResetPassword,
+  resetPassword
 };
 
