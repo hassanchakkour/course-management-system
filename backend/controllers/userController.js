@@ -35,17 +35,17 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const getAllUsers = asyncHandler(async (req, res) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({}).populate('certificates', 'title');;
         res.status(200).json(users);
       } catch (error) {
-        res.status(500).json({ message: 'something Went Wrong' });
+        res.status(500).json({ message: 'Something Went Wrong' });
       }
 
 });
 
 const getSingleUser = asyncHandler(async (req, res) => {
     
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).populate('certificates', 'title');
         if (user) {
           res.status(200).json(user);
         } else {
@@ -201,20 +201,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 export {
-// <<<<<<< hassan
-//     loginUser,
-//     registerUser,
-//     logoutUser,
-//     getUserProfile,
-//     updateUserProfile,
-//     getAllUsers,
-//     getSingleUser
-// }
-// =======
   loginUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  getAllUsers,
+  getSingleUser
 };
-// >>>>>>> master
+
