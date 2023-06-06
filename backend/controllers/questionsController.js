@@ -26,8 +26,9 @@ const postQuestion = asyncHandler(async (req, res) => {
 // Get all questions for a specific TeacherID (user.id)
 const getQuestions = asyncHandler(async (req, res) => {
   try {
-    const teacherId = req.user.id; // Assuming user object is available with an id property
-    const questions = await Question.find({ teacherId });
+    const teacherId = req.user._id; // Assuming user object is available with an id property
+    console.log(teacherId)
+    const questions = await Question.find({teacherId});
     res.status(200).json(questions);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
@@ -38,7 +39,7 @@ const getQuestions = asyncHandler(async (req, res) => {
 const getQuestion = asyncHandler(async (req, res) => {
   try {
     const teacherId = req.user.id; // Assuming user object is available with an id property
-    const question = await Question.findOne({ _id: req.params.id, teacherId });
+    const question = await Question.findOne({ _id: req.params.id });
     if (question) {
       res.status(200).json(question);
     } else {
@@ -56,7 +57,7 @@ const putQuestion = asyncHandler(async (req, res) => {
     const teacherId = req.user.id; // Assuming user object is available with an id property
 
     const question = await Question.findOneAndUpdate(
-      { _id: req.params.id, teacherId },
+      { _id: req.params.id},
       { activityId, content, options, correctOption },
       { new: true }
     );
@@ -75,7 +76,7 @@ const putQuestion = asyncHandler(async (req, res) => {
 const deleteQuestion = asyncHandler(async (req, res) => {
   try {
     const teacherId = req.user.id; // Assuming user object is available with an id property
-    const question = await Question.findOneAndDelete({ _id: req.params.id, teacherId });
+    const question = await Question.findOneAndDelete({ _id: req.params.id });
     if (question) {
       res.status(200).json({ message: 'Question deleted' });
     } else {
