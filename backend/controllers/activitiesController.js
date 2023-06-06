@@ -3,11 +3,11 @@ import asyncHandler from "express-async-handler";
 
 // Create a new activity
 const postActivity = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
-  const { title, description, moduleId } = req.body;
+  
+  const { title, description, moduleId , deadline } = req.body;
 
   try {
-    const activity = await Activity.create({ title, description, moduleId, teacherId });
+    const activity = await Activity.create({ title, description, moduleId, deadline });
     res.status(201).json(activity);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -16,10 +16,10 @@ const postActivity = asyncHandler(async (req, res) => {
 
 // Get all activities
 const getActivities = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
+  
 
   try {
-    const activities = await Activity.find({ teacherId });
+    const activities = await Activity.find({ });
     res.status(200).json(activities);
   } catch (error) {
     res.status(500).json({ error: "Server Error" });
@@ -28,10 +28,10 @@ const getActivities = asyncHandler(async (req, res) => {
 
 // Get a specific activity by ID
 const getActivity = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
+
 
   try {
-    const activity = await Activity.findOne({ _id: req.params.id, teacherId });
+    const activity = await Activity.findOne({ _id: req.params.id});
     if (activity) {
       res.status(200).json(activity);
     } else {
@@ -44,10 +44,10 @@ const getActivity = asyncHandler(async (req, res) => {
 
 // Delete an activity by ID
 const deleteActivity = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
+  
 
   try {
-    const activity = await Activity.findOneAndDelete({ _id: req.params.id, teacherId });
+    const activity = await Activity.findOneAndDelete({ _id: req.params.id });
     if (activity) {
       res.status(200).json({ message: "Activity deleted" });
     } else {
@@ -60,10 +60,10 @@ const deleteActivity = asyncHandler(async (req, res) => {
 
 // Update an activity by ID
 const putActivity = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
+  
 
   try {
-    const activity = await Activity.findOneAndUpdate({ _id: req.params.id, teacherId }, req.body, {
+    const activity = await Activity.findOneAndUpdate({ _id: req.params.id  }, req.body, {
       new: true,
     });
     if (activity) {

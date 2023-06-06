@@ -13,6 +13,11 @@ const questionSchema = Schema({
     type: String,
     required: [true, 'Please provide the content of the question.'],
   },
+  teacherId: {
+    type: SchemaTypes.ObjectId,
+    ref: "User",
+    required: true,
+  },
   options: [
     {
       type: String,
