@@ -98,7 +98,7 @@ const userSchema = Schema(
           return [];
         }
       },
-      select: false, // Exclude from query results
+      select: false,
     },
     certificates: {
       type: [
@@ -112,7 +112,7 @@ const userSchema = Schema(
           return [];
         }
       },
-      select: false, // Exclude from query results
+      select: false,
     },
   },
   {
@@ -133,13 +133,38 @@ userSchema.pre("save", async function (next) {
 
   if (this.role === "student") {
     try {
+      // Specify the maximum number of courses a student can enroll in
+      const maxEnrollmentCount = 6;
+
+      // Get the total count of available courses
       const courseCount = await Course.countDocuments();
-      const randomCount = Math.floor(Math.random() * Math.min(courseCount, 6));
+
+      if (courseCount === 0 || maxEnrollmentCount === 0) {
+        // Handle edge cases where no courses are available or maximum enrollment count is zero
+        this.studentEnrollmentCourses = [];
+        return;
+      }
+
+      // Generate a random count to determine the number of courses to enroll in
+      const randomCount = Math.min(maxEnrollmentCount, courseCount);
+
+      // Fetch unique random courses using aggregation and $sample operator
       const courses = await Course.aggregate([
         { $sample: { size: randomCount } },
+        { $group: { _id: "$_id" } },
       ]);
+
+      // Extract the course IDs from the fetched courses
       const courseIds = courses.map((course) => course._id);
+
+      // Update the student's enrollment courses with the extracted course IDs
       this.studentEnrollmentCourses = courseIds;
+
+      // Update the enrollmentIds field in the Course model
+      await Course.updateMany(
+        { _id: { $in: courseIds } },
+        { $push: { enrollmentIds: this._id } }
+      );
     } catch (error) {
       console.error(error);
     }
