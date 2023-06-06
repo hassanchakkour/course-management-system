@@ -290,10 +290,7 @@ export {
   updateUserProfile,
   getAllUsers,
   getSingleUser,
-// <<<<<<< ali
-// =======
-//   forgotPassword,
-//   getResetPassword,
-//   resetPassword
-// >>>>>>> master
+  forgotPassword,
+  getResetPassword,
+  resetPassword
 };
