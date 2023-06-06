@@ -37,24 +37,24 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getAllUsers = asyncHandler(async (req, res) => {
-    try {
-        const users = await User.find({}).populate('certificates', 'title');;
-        res.status(200).json(users);
-      } catch (error) {
-        res.status(500).json({ message: 'Something Went Wrong' });
-      }
-
+  try {
+    const users = await User.find({}).populate("certificates", "title");
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Something Went Wrong" });
+  }
 });
 
 const getSingleUser = asyncHandler(async (req, res) => {
-    
-        const user = await User.findById(req.params.id).populate('certificates', 'title');
-        if (user) {
-          res.status(200).json(user);
-        } else {
-          res.status(404).json({ message: 'user not found' });
-        }
-     
+  const user = await User.findById(req.params.id).populate(
+    "certificates",
+    "title"
+  );
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).json({ message: "user not found" });
+  }
 });
 
 // @desc    Register a new user
@@ -144,42 +144,34 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const user = await User.findById(userId);
+  const user = await User.findById(userId)
+    .populate("studentEnrollmentCourses", "-specialization")
+    .exec();
 
   if (!user) {
     res.status(404);
     throw new Error("User not found");
   }
 
-  let populatedUser;
+  const populatedUser = {
+    _id: user._id,
+    name: `${user.firstName} ${user.lastName}`,
+    email: user.email,
+    role: user.role,
+    imageUrl: user.imageUrl,
+    birthDate: new Date(user.birthDate).toISOString().split("T")[0],
+  };
 
-  // Exclude badges, certificates, and studentEnrollmentCourses from the response for teachers
   if (user.role === "teacher") {
-    populatedUser = {
-      _id: user._id,
-      name: `${user.firstName} ${user.lastName}`,
-      email: user.email,
-      role: user.role,
-      imageUrl: user.imageUrl,
-      specialization: user.specialization,
-      birthDate: new Date(user.birthDate).toISOString().split("T")[0],
-    };
+    populatedUser.specialization = user.specialization;
+    delete populatedUser.studentEnrollmentCourses;
+    delete populatedUser.badges;
+    delete populatedUser.certificates;
   } else {
-    // Populate studentEnrollmentCourses for students
-    populatedUser = await User.findById(userId)
-      .populate("studentEnrollmentCourses")
-      .select("-specialization")
-      .exec();
-
-    populatedUser = {
-      _id: populatedUser._id,
-      name: `${populatedUser.firstName} ${populatedUser.lastName}`,
-      email: populatedUser.email,
-      role: populatedUser.role,
-      imageUrl: populatedUser.imageUrl,
-      birthDate: new Date(populatedUser.birthDate).toISOString().split("T")[0],
-      studentEnrollmentCourses: populatedUser.studentEnrollmentCourses,
-    };
+    populatedUser.badges = user.badges;
+    populatedUser.certificates = user.certificates;
+    populatedUser.studentEnrollmentCourses = user.studentEnrollmentCourses;
+    delete populatedUser.specialization;
   }
 
   res.json(populatedUser);
@@ -298,8 +290,10 @@ export {
   updateUserProfile,
   getAllUsers,
   getSingleUser,
-  forgotPassword,
-  getResetPassword,
-  resetPassword
+// <<<<<<< ali
+// =======
+//   forgotPassword,
+//   getResetPassword,
+//   resetPassword
+// >>>>>>> master
 };
-
