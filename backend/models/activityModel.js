@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema, SchemaTypes } = mongoose;
 
@@ -6,31 +6,54 @@ const activitySchema = Schema(
   {
     title: {
       type: String,
-      required: [true, 'Please provide the title of the activity.'],
+      required: [true, "Please provide the title of the activity."],
     },
     description: {
       type: String,
-      required: [true, 'Please provide a description for the activity.'],
+      default: "",
+      // required: [true, 'Please provide a description for the activity.'],
     },
-    moduleId: {
+    type: {
+      type: String,
+      default: "",
+    },
+    passingGrade: {
+      type: Number,
+      default: 0,
+    },
+    subModuleId: {
       type: SchemaTypes.ObjectId,
-      ref: 'Module',
-      required: [true, 'Please specify the associated module for the activity.'],
+      ref: "Submodule",
+      // required: [true, 'Please specify the associated module for the activity.'],
     },
-    deadline: {
+    startDate: {
       type: Date,
-      required: [true, 'Please provide the deadline for the activity.'],
+      default: "",
     },
-    submitted: {
-      type: Boolean,
-      default: false,
+    endDate: {
+      type: Date,
+      default: "",
     },
+    Duration: {
+      type: Number,
+      default: 0,
+    },
+    MediaUrl: {
+      type: String,
+      default: "",
+    },
+    submitted: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-const Activity = mongoose.model('Activity', activitySchema);
+const Activity = mongoose.model("Activity", activitySchema);
 
 export default Activity;

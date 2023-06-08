@@ -1,10 +1,9 @@
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 import { validateRegister } from "../middleware/validatorMiddleware.js";
-import bcryptjs from 'bcryptjs'
-import nodemailer from 'nodemailer'
+import nodemailer from "nodemailer";
 
 // @desc    Authenticate user/set token
 // @route   POST/api/users/login
@@ -195,45 +194,44 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  const user = await User.findOne({email});
+  const user = await User.findOne({ email });
 
   if (user) {
-    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password
-    const token = jwt.sign({email: user.email, id: user.id}, secret, {
-      expiresIn: '5m'
-  })
-  const link = `http://localhost:5000/api/users/forgot-password/${user._id}/${token}`
-  
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { 
-      user: 'lms.esa.team@gmail.com',
-      pass: 'iwemztrkompofvlu'
-    }
-  })
-  const mailOptions = { 
-    from: 'lms.esa.team@gmail.com',
-    to: user.email,
-    subject: "Reset LMS Password",
-    html: `<div>
+    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
+    const token = jwt.sign({ email: user.email, id: user.id }, secret, {
+      expiresIn: "5m",
+    });
+    const link = `http://localhost:5000/api/users/forgot-password/${user._id}/${token}`;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "lms.esa.team@gmail.com",
+        pass: "iwemztrkompofvlu",
+      },
+    });
+    const mailOptions = {
+      from: "lms.esa.team@gmail.com",
+      to: user.email,
+      subject: "Reset LMS Password",
+      html: `<div>
           <h4>Click on the link below to reset your password</h4>
           <a href="${link}"> Reset My Password</a>
-      </div>`
-  }
+      </div>`,
+    };
 
-  transporter.sendMail(mailOptions, function(error, success){ 
-    if(error){
-      console.log(error)
-    }else{ 
-      console.log("Email sent: ", success.response)
-    }
-  });
+    transporter.sendMail(mailOptions, function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: ", success.response);
+      }
+    });
 
-  res.status(200).json({message: "link-sent"})
+    res.status(200).json({ message: "link-sent" });
   } else {
     res.status(404);
     throw new Error("Invalid Email");
@@ -241,40 +239,38 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const getResetPassword = asyncHandler(async (req, res) => {
-
   const user = await User.findById(req.params.userId);
-  console.log(user)
+  console.log(user);
   if (user) {
-    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password
-    try{ 
-      jwt.verify(req.params.token, secret)
-      res.status(200).json({message: 'reset password'})
-    }catch(error){ 
-      console.log(error)
-      res.json({error})
+    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
+    try {
+      jwt.verify(req.params.token, secret);
+      res.status(200).json({ message: "reset password" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error });
     }
   } else {
-    console.log('smthng went wrong')
+    console.log("smthng went wrong");
     res.status(404);
     throw new Error("Invalid Email");
   }
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-
   const user = await User.findById(req.params.userId);
-  console.log(user)
+  console.log(user);
   if (user) {
-    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password
-    try{ 
-      jwt.verify(req.params.token, secret)
+    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
+    try {
+      jwt.verify(req.params.token, secret);
 
-      user.password = req.body.password
-      await user.save()
-      res.status(200).json({message: "Password reset Successfully"})
-    }catch(error){ 
-      console.log(error)
-      res.json({error})
+      user.password = req.body.password;
+      await user.save();
+      res.status(200).json({ message: "Password reset Successfully" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error });
     }
   } else {
     res.status(404);
@@ -292,5 +288,5 @@ export {
   getSingleUser,
   forgotPassword,
   getResetPassword,
-  resetPassword
+  resetPassword,
 };
