@@ -3,11 +3,10 @@ import asyncHandler from "express-async-handler";
 
 // Create a new activity
 const postActivity = asyncHandler(async (req, res) => {
-  
-  const { title, description, moduleId , deadline } = req.body;
+  const { title } = req.body;
 
   try {
-    const activity = await Activity.create({ title, description, moduleId, deadline });
+    const activity = await Activity.create({ title });
     res.status(201).json(activity);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -16,10 +15,8 @@ const postActivity = asyncHandler(async (req, res) => {
 
 // Get all activities
 const getActivities = asyncHandler(async (req, res) => {
-  
-
   try {
-    const activities = await Activity.find({ });
+    const activities = await Activity.find({});
     res.status(200).json(activities);
   } catch (error) {
     res.status(500).json({ error: "Server Error" });
@@ -28,10 +25,8 @@ const getActivities = asyncHandler(async (req, res) => {
 
 // Get a specific activity by ID
 const getActivity = asyncHandler(async (req, res) => {
-
-
   try {
-    const activity = await Activity.findOne({ _id: req.params.id});
+    const activity = await Activity.findOne({ _id: req.params.id });
     if (activity) {
       res.status(200).json(activity);
     } else {
@@ -44,8 +39,6 @@ const getActivity = asyncHandler(async (req, res) => {
 
 // Delete an activity by ID
 const deleteActivity = asyncHandler(async (req, res) => {
-  
-
   try {
     const activity = await Activity.findOneAndDelete({ _id: req.params.id });
     if (activity) {
@@ -60,12 +53,14 @@ const deleteActivity = asyncHandler(async (req, res) => {
 
 // Update an activity by ID
 const putActivity = asyncHandler(async (req, res) => {
-  
-
   try {
-    const activity = await Activity.findOneAndUpdate({ _id: req.params.id  }, req.body, {
-      new: true,
-    });
+    const activity = await Activity.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      {
+        new: true,
+      }
+    );
     if (activity) {
       res.status(200).json(activity);
     } else {
