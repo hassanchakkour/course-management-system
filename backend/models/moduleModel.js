@@ -17,11 +17,11 @@ const moduleSchema = Schema(
       ref: "Course",
       required: true,
     },
-    teacherId: {
-      type: SchemaTypes.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    // teacherId: {
+    //   type: SchemaTypes.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
   },
   {
     timestamps: true,

@@ -10,11 +10,11 @@ const submissionSchema = Schema(
       required: [true, 'Please specify the associated activity for the submission.'],
     },
  
-    teacherId: {
-      type: SchemaTypes.ObjectId,
-      ref: 'Teacher',
-      required: [true, 'Please specify the teacher associated with the activity.'],
-    },
+    // teacherId: {
+    //   type: SchemaTypes.ObjectId,
+    //   ref: 'Teacher',
+    //   required: [true, 'Please specify the teacher associated with the activity.'],
+    // },
     submissionDate: {
       type: Date,
       required: [true, 'Please provide the submission date.'],
@@ -22,7 +22,7 @@ const submissionSchema = Schema(
    
     fileUrl: {
       type: String,
-      required: [true, 'Please provide the URL of the submitted file.'],
+      // required: [true, 'Please provide the URL of the submitted file.'],
     },
   },
   {
