@@ -10,16 +10,30 @@ const activitySchema = Schema(
     },
     description: {
       type: String,
-      required: [true, 'Please provide a description for the activity.'],
+      // required: [true, 'Please provide a description for the activity.'],
     },
-    moduleId: {
+    type: {
+      type: String,
+    },
+    passingGrade: {
+      type: Number,
+    },
+    subModuleId: {
       type: SchemaTypes.ObjectId,
-      ref: 'Module',
-      required: [true, 'Please specify the associated module for the activity.'],
+      ref: 'Submodule',
+      // required: [true, 'Please specify the associated module for the activity.'],
     },
-    deadline: {
+    startDate: {
       type: Date,
-      required: [true, 'Please provide the deadline for the activity.'],
+    },
+    endDate: {
+      type: Date,
+    },
+    Duration: {
+      type: Number,
+    },
+    MediaUrl: {
+      type: String,
     },
     submitted: {
       type: Boolean,
