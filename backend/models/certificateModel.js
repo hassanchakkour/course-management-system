@@ -14,6 +14,12 @@ const certificateSchema = new Schema(
         ref: "Badges",
       },
     ],
+    activityId: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Activity",
+      },
+    ],
     recipientId: [
       {
         type: SchemaTypes.ObjectId,

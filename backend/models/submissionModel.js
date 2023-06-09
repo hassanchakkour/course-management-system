@@ -17,7 +17,7 @@ const submissionSchema = new Schema(
       type: SchemaTypes.ObjectId,
       ref: "User",
     },
-
+    
     fileUrl: {
       type: String,
       required: [true, "Please provide the URL of the submitted file."],
