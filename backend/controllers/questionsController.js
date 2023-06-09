@@ -5,7 +5,7 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/questions
 // @access  Private (Teacher only)
 const postQuestion = asyncHandler(async (req, res) => {
-  const { activityId, content, options, correctOption } = req.body;
+  const { activityId, type, content, options, correctOption } = req.body;
   const teacherId = req.user.id;
 
   if (!activityId) {
@@ -15,6 +15,7 @@ const postQuestion = asyncHandler(async (req, res) => {
 
   const question = await Question.create({
     activityId,
+    type,
     content,
     options,
     correctOption,

@@ -36,11 +36,11 @@ const activitySchema = Schema(
       type: Date,
       default: "",
     },
-    Duration: {
+    duration: {
       type: Number,
       default: 0,
     },
-    MediaUrl: {
+    mediaUrl: {
       type: String,
       default: "",
     },

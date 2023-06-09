@@ -12,18 +12,9 @@ const submissionSchema = new Schema(
         "Please specify the associated activity for the submission.",
       ],
     },
-
-    teacherId: {
+    studentId: {
       type: SchemaTypes.ObjectId,
-      ref: "Teacher",
-      required: [
-        true,
-        "Please specify the teacher associated with the activity.",
-      ],
-    },
-    submissionDate: {
-      type: Date,
-      required: [true, "Please provide the submission date."],
+      ref: "User",
     },
 
     fileUrl: {

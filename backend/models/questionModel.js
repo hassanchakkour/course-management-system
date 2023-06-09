@@ -12,6 +12,10 @@ const questionSchema = new Schema(
         "Please specify the associated activity for the question.",
       ],
     },
+    type: {
+      type: String,
+      required: [true, "Please specify the type of question."],
+    },
     content: {
       type: String,
       required: [true, "Please provide the content of the question."],

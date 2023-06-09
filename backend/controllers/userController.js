@@ -15,6 +15,8 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
+    generateToken(res, user._id);
+
     const responseData = {
       _id: user._id,
       name: `${user.firstName} ${user.lastName}`,
@@ -25,7 +27,6 @@ const loginUser = asyncHandler(async (req, res) => {
     if (user.role === "teacher") {
       responseData.specialization = user.specialization;
     }
-    generateToken(res, user._id);
 
     res.status(201).json(responseData);
     console.log(`Successfully logged in! ${user.firstName} ${user.lastName}`);
