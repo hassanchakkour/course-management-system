@@ -21,10 +21,14 @@ const activitySchema = Schema(
       type: Number,
       default: 0,
     },
-    subModuleId: {
+    submoduleId: {
       type: SchemaTypes.ObjectId,
       ref: "Submodule",
       // required: [true, 'Please specify the associated module for the activity.'],
+    },
+    teacherId: {
+      type: SchemaTypes.ObjectId,
+      ref: "User",
     },
     startDate: {
       type: Date,

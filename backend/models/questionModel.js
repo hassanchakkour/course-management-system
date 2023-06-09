@@ -19,17 +19,17 @@ const questionSchema = Schema(
     teacherId: {
       type: SchemaTypes.ObjectId,
       ref: "User",
-      required: true,
+      // required: true,
     },
     options: [
       {
         type: String,
-        required: [true, "Please provide the options for the question."],
+        // required: [true, "Please provide the options for the question."],
       },
     ],
     correctOption: {
       type: Number,
-      required: [true, "Please provide the index of the correct option."],
+      // required: [true, "Please provide the index of the correct option."],
     },
   },
   {
