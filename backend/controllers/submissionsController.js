@@ -1,28 +1,36 @@
-import Submission from '../models/submissionModel.js';
-import Activity from'../models/activityModel.js'
-import asyncHandler from 'express-async-handler';
+import Submission from "../models/submissionModel.js";
+import Activity from "../models/activityModel.js";
+import asyncHandler from "express-async-handler";
 
-// Create a new submission
+// @desc    Create a new Submission
+// @route   POST /api/submission
+// @access  Private (Student only)
 const postSubmission = asyncHandler(async (req, res) => {
-  const { activityId, userId, submissionDate, fileUrl } = req.body;
-  const teacherId = req.user._id;
+  const { activityId, fileUrl } = req.body;
+  const studentId = req.user._id;
 
-  
-  //const studentId = req.user._id;
+  // Check if the activity exists
+  const activity = await Activity.findById(activityId);
+  if (!activity) {
+    return res.status(404).json({ message: "Activity not found" });
+  } else {
+    const submission = await Submission.create({
+      activityId,
+      fileUrl,
+    });
+    // console.log(submission);
 
-  try {
-    // Check if the activity exists
-    const activity = await Activity.findById(activityId);
-    if (!activity) {
-      return res.status(404).json({ message: 'Activity not found okkk' });
+    const submitted = await Activity.findOneAndUpdate(
+      { activityId },
+      { $push: { studentId } },
+      { new: true }
+    ).populate("submitted", "firstName lastName");
+    // console.log(submitted);
+    if (submitted) {
+      res.status(200).json({ submission, submitted });
+    } else {
+      res.status(404).json({ message: "Something went wrong" });
     }
-
-    // Create a new submission
-   
-    const submission = await Submission.create({ activityId, userId, submissionDate, fileUrl, teacherId });
-    res.status(201).json(submission);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
 });
 
@@ -34,7 +42,7 @@ const getSubmissions = asyncHandler(async (req, res) => {
     const submissions = await Submission.find({ teacherId });
     res.status(200).json(submissions);
   } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
@@ -48,10 +56,10 @@ const getSubmission = asyncHandler(async (req, res) => {
     if (submission) {
       res.status(200).json(submission);
     } else {
-      res.status(404).json({ message: 'Submission not found' });
+      res.status(404).json({ message: "Submission not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
@@ -61,14 +69,17 @@ const deleteSubmission = asyncHandler(async (req, res) => {
   const teacherId = req.user._id;
 
   try {
-    const submission = await Submission.findOneAndDelete({ _id: id, teacherId });
+    const submission = await Submission.findOneAndDelete({
+      _id: id,
+      teacherId,
+    });
     if (submission) {
-      res.status(200).json({ message: 'Submission deleted' });
+      res.status(200).json({ message: "Submission deleted" });
     } else {
-      res.status(404).json({ message: 'Submission not found' });
+      res.status(404).json({ message: "Submission not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
@@ -78,14 +89,18 @@ const putSubmission = asyncHandler(async (req, res) => {
   const teacherId = req.user._id;
 
   try {
-    const submission = await Submission.findOneAndUpdate({ _id: id, teacherId }, req.body, { new: true });
+    const submission = await Submission.findOneAndUpdate(
+      { _id: id, teacherId },
+      req.body,
+      { new: true }
+    );
     if (submission) {
       res.status(200).json(submission);
     } else {
-      res.status(404).json({ message: 'Submission not found' });
+      res.status(404).json({ message: "Submission not found" });
     }
   } catch (error) {
-    res.status(400).json({ error: 'Bad Request' });
+    res.status(400).json({ error: "Bad Request" });
   }
 });
 
@@ -94,13 +109,12 @@ export {
   getSubmission,
   getSubmissions,
   deleteSubmission,
-  putSubmission
+  putSubmission,
 };
 
 //  import asyncHandler from 'express-async-handler';
 // import Submission  from '../models/submissionModel.js'
 // import Activity from'../models/activityModel.js'
-
 
 // // Submit an activity by a student
 // const submitActivity = asyncHandler(async (req, res) => {
@@ -175,11 +189,8 @@ export {
 //   }
 // });
 
-
-
-
 // export {
 //   submitActivity,
 //   getSubmissionsByActivity,
-//   getSubmissionsByStudent 
+//   getSubmissionsByStudent
 // };

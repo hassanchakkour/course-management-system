@@ -15,6 +15,8 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
+    generateToken(res, user._id);
+
     const responseData = {
       _id: user._id,
       name: `${user.firstName} ${user.lastName}`,
@@ -25,7 +27,6 @@ const loginUser = asyncHandler(async (req, res) => {
     if (user.role === "teacher") {
       responseData.specialization = user.specialization;
     }
-    generateToken(res, user._id);
 
     res.status(201).json(responseData);
     console.log(`Successfully logged in! ${user.firstName} ${user.lastName}`);
@@ -35,15 +36,23 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get All Students
+// @route   GET/api/users/
+// @access  Private
 const getAllUsers = asyncHandler(async (req, res) => {
-  try {
-    const users = await User.find({}).populate("certificates", "title");
+  const users = await User.find({}).populate("certificates", "title");
+
+  if (users) {
     res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Something Went Wrong" });
+  } else {
+    res.status(500);
+    throw new Error("Something Went Wrong");
   }
 });
 
+// @desc    Get Single Student
+// @route   GET/api/users/:id
+// @access  Private
 const getSingleUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).populate(
     "certificates",
@@ -238,44 +247,47 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get reset password
+// @route   GET/api/users/forgot-password/:userId/:token
+// @access  Public
 const getResetPassword = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.userId);
-  console.log(user);
-  if (user) {
-    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
-    try {
-      jwt.verify(req.params.token, secret);
-      res.status(200).json({ message: "reset password" });
-    } catch (error) {
-      console.log(error);
-      res.json({ error });
-    }
-  } else {
-    console.log("smthng went wrong");
+
+  if (!user) {
     res.status(404);
     throw new Error("Invalid Email");
   }
+
+  const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
+  jwt.verify(req.params.token, secret, (error) => {
+    if (error) {
+      res.status(400);
+      throw new Error(error.message);
+    } else {
+      res.status(200).json({ message: "reset password" });
+    }
+  });
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.userId);
-  console.log(user);
-  if (user) {
-    const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
-    try {
-      jwt.verify(req.params.token, secret);
 
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const secret = process.env.JWT_FORGOT_PASSWORD_SECRET + user.password;
+  jwt.verify(req.params.token, secret, async (error) => {
+    if (error) {
+      res.status(400);
+      throw new Error(error.message);
+    } else {
       user.password = req.body.password;
       await user.save();
-      res.status(200).json({ message: "Password reset Successfully" });
-    } catch (error) {
-      console.log(error);
-      res.json({ error });
+      res.status(200).json({ message: "Password Reset Successfully" });
     }
-  } else {
-    res.status(404);
-    throw new Error("user not found");
-  }
+  });
 });
 
 export {

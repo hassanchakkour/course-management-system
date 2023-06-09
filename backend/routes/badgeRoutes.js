@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
 import {
   createBadge,
@@ -9,10 +10,10 @@ import {
   deleteBadge,
 } from "../controllers/badgeController.js";
 
-router.post("/", createBadge);
-router.get("/", getAllBadges);
-router.get("/:id", getSingleBadge);
-router.put("/update/:id", updateBadge);
-router.delete("/delete", deleteBadge);
+router.post("/", protect, isTeacher, createBadge);
+router.get("/", protect, isTeacher, getAllBadges);
+router.get("/:id", protect, isTeacher, getSingleBadge);
+router.put("/update/:id", protect, isTeacher, updateBadge);
+router.delete("/delete", protect, isTeacher, deleteBadge);
 
 export default router;

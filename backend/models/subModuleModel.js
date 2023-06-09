@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema, SchemaTypes } = mongoose;
 
-const submoduleSchema = Schema(
+const submoduleSchema = new Schema(
   {
     title: {
       type: String,

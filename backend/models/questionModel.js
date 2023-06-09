@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema, SchemaTypes } = mongoose;
 
-const questionSchema = Schema(
+const questionSchema = new Schema(
   {
     activityId: {
       type: SchemaTypes.ObjectId,
@@ -12,6 +12,10 @@ const questionSchema = Schema(
         "Please specify the associated activity for the question.",
       ],
     },
+    type: {
+      type: String,
+      required: [true, "Please specify the type of question."],
+    },
     content: {
       type: String,
       required: [true, "Please provide the content of the question."],
@@ -19,18 +23,9 @@ const questionSchema = Schema(
     teacherId: {
       type: SchemaTypes.ObjectId,
       ref: "User",
-      required: true,
     },
-    options: [
-      {
-        type: String,
-        required: [true, "Please provide the options for the question."],
-      },
-    ],
-    correctOption: {
-      type: Number,
-      required: [true, "Please provide the index of the correct option."],
-    },
+    options: [String],
+    correctOption: Number,
   },
   {
     timestamps: true,

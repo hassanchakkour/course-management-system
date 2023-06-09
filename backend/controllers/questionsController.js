@@ -1,95 +1,97 @@
-
-import Question from '../models/questionModel.js';
+import Question from "../models/questionModel.js";
 import asyncHandler from "express-async-handler";
 
-// Create a new question
+// @desc    Create a new Question
+// @route   POST /api/questions
+// @access  Private (Teacher only)
 const postQuestion = asyncHandler(async (req, res) => {
-  try {
-    const { activityId, content, options, correctOption } = req.body;
-    const teacherId = req.user.id; // Assuming user object is available with an id property
+  const { activityId, type, content, options, correctOption } = req.body;
+  const teacherId = req.user.id;
 
-    // Create a new question document
-    const question = await Question.create({
-      activityId,
-      content,
-      options,
-      correctOption,
-      teacherId,
-    });
-
-    res.status(201).json(question);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+  if (!activityId) {
+    res.status(400);
+    throw new Error("activityId is required");
   }
+
+  const question = await Question.create({
+    activityId,
+    type,
+    content,
+    options,
+    correctOption,
+    teacherId,
+  });
+
+  res.status(201).json(question);
 });
 
-// Get all questions for a specific TeacherID (user.id)
-const getQuestions = asyncHandler(async (req, res) => {
-  try {
-    const teacherId = req.user._id; // Assuming user object is available with an id property
-    console.log(teacherId)
-    const questions = await Question.find({teacherId});
+// @desc    Get all questions by activity ID
+// @route   GET /api/questions/activity/:activityId
+// @access  Private (Teacher only)
+const getQuestionsByactivityId = asyncHandler(async (req, res) => {
+  const activityId = req.params.activityId;
+
+  const questions = await Question.find({ activityId });
+
+  if (questions.length > 0) {
     res.status(200).json(questions);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+  } else {
+    res.status(404);
+    throw new Error("No questions found for the specified submodule");
   }
 });
 
-// Get a specific question by ID for a specific TeacherID (user.id)
+// @desc    Get a specific question by ID
+// @route   GET /api/questions/:id
+// @access  Private (Teacher only)
 const getQuestion = asyncHandler(async (req, res) => {
-  try {
-    const teacherId = req.user.id; // Assuming user object is available with an id property
-    const question = await Question.findOne({ _id: req.params.id });
-    if (question) {
-      res.status(200).json(question);
-    } else {
-      res.status(404).json({ message: 'Question not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+  const question = await Question.findOne({ _id: req.params.id });
+
+  if (question) {
+    res.status(200).json(question);
+  } else {
+    res.status(404).json({ message: "Question not found" });
   }
 });
 
 // Update a question by ID for a specific TeacherID (user.id)
 const putQuestion = asyncHandler(async (req, res) => {
-  try {
-    const { activityId, content, options, correctOption } = req.body;
-    const teacherId = req.user.id; // Assuming user object is available with an id property
+  const { activityId, content, options, correctOption } = req.body;
 
-    const question = await Question.findOneAndUpdate(
-      { _id: req.params.id},
-      { activityId, content, options, correctOption },
-      { new: true }
-    );
+  const question = await Question.findOne({ _id: req.params.id });
 
-    if (question) {
-      res.status(200).json(question);
-    } else {
-      res.status(404).json({ message: 'Question not found' });
-    }
-  } catch (error) {
-    res.status(400).json({ message: 'Invalid Request' });
+  if (!question) {
+    throw new Error("Question not found");
   }
+
+  Object.assign(question, {
+    content: content || question.content,
+    options: options || question.options,
+    activityId: activityId || question.activityId,
+    correctOption: correctOption || question.correctOption,
+  });
+
+  await question.save();
+
+  res.status(200).json(question);
 });
 
-// Delete a question by ID for a specific TeacherID (user.id)
+// @desc    Delete a question by ID
+// @route   DELETE /api/questions/:id
+// @access  Private (Teacher only)
 const deleteQuestion = asyncHandler(async (req, res) => {
-  try {
-    const teacherId = req.user.id; // Assuming user object is available with an id property
-    const question = await Question.findOneAndDelete({ _id: req.params.id });
-    if (question) {
-      res.status(200).json({ message: 'Question deleted' });
-    } else {
-      res.status(404).json({ message: 'Question not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+  const question = await Question.findOneAndDelete({ _id: req.params.id });
+
+  if (question) {
+    res.status(200).json({ message: "Question deleted" });
+  } else {
+    res.status(404).json({ message: "Question not found or unauthorized" });
   }
 });
 
 export {
   postQuestion,
-  getQuestions,
+  getQuestionsByactivityId,
   getQuestion,
   deleteQuestion,
   putQuestion,

@@ -11,7 +11,6 @@ const activitySchema = Schema(
     description: {
       type: String,
       default: "",
-      // required: [true, 'Please provide a description for the activity.'],
     },
     type: {
       type: String,
@@ -21,10 +20,13 @@ const activitySchema = Schema(
       type: Number,
       default: 0,
     },
-    subModuleId: {
+    submoduleId: {
       type: SchemaTypes.ObjectId,
       ref: "Submodule",
-      // required: [true, 'Please specify the associated module for the activity.'],
+    },
+    teacherId: {
+      type: SchemaTypes.ObjectId,
+      ref: "User",
     },
     startDate: {
       type: Date,
@@ -34,18 +36,18 @@ const activitySchema = Schema(
       type: Date,
       default: "",
     },
-    Duration: {
+    duration: {
       type: Number,
       default: 0,
     },
-    MediaUrl: {
+    mediaUrl: {
       type: String,
       default: "",
     },
     submitted: [
       {
         type: SchemaTypes.ObjectId,
-        ref: "Users",
+        ref: "User",
       },
     ],
   },

@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
 import {
   createCertificate,
@@ -10,11 +11,11 @@ import {
   removeRecipient,
 } from "../controllers/certificatesController.js";
 
-router.post("/", createCertificate);
-router.get("/", getAllCertificates);
-router.get("/single", getSingleCertificates);
-router.post("/addStudent", addRecipient);
-router.put("/removeStudent", removeRecipient);
-router.delete("/delete", deleteCertificate);
+router.post("/", protect, isTeacher, createCertificate);
+router.get("/", protect, isTeacher, getAllCertificates);
+router.get("/single", protect, isTeacher, getSingleCertificates);
+router.post("/addStudent", protect, isTeacher, addRecipient);
+router.put("/removeStudent", protect, isTeacher, removeRecipient);
+router.delete("/delete", protect, isTeacher, deleteCertificate);
 
 export default router;

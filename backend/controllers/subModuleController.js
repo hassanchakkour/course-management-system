@@ -88,6 +88,7 @@ const updateSubmodule = asyncHandler(async (req, res) => {
 // @access  Private (Teacher only)
 const deleteSubmodule = asyncHandler(async (req, res) => {
   const submodule = await Submodule.findById(req.params.id);
+
   if (submodule) {
     await Submodule.deleteOne({ _id: req.params.id });
     res.status(200).json({ message: "Submodule deleted" });
