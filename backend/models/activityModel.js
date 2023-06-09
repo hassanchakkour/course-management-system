@@ -11,7 +11,6 @@ const activitySchema = Schema(
     description: {
       type: String,
       default: "",
-      // required: [true, 'Please provide a description for the activity.'],
     },
     type: {
       type: String,
@@ -24,7 +23,6 @@ const activitySchema = Schema(
     submoduleId: {
       type: SchemaTypes.ObjectId,
       ref: "Submodule",
-      // required: [true, 'Please specify the associated module for the activity.'],
     },
     teacherId: {
       type: SchemaTypes.ObjectId,
@@ -49,7 +47,7 @@ const activitySchema = Schema(
     submitted: [
       {
         type: SchemaTypes.ObjectId,
-        ref: "Users",
+        ref: "User",
       },
     ],
   },

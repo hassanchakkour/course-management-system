@@ -1,28 +1,34 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema, SchemaTypes } = mongoose;
 
-const submissionSchema = Schema(
+const submissionSchema = new Schema(
   {
     activityId: {
       type: SchemaTypes.ObjectId,
-      ref: 'Activity',
-      required: [true, 'Please specify the associated activity for the submission.'],
+      ref: "Activity",
+      required: [
+        true,
+        "Please specify the associated activity for the submission.",
+      ],
     },
- 
+
     teacherId: {
       type: SchemaTypes.ObjectId,
-      ref: 'Teacher',
-      required: [true, 'Please specify the teacher associated with the activity.'],
+      ref: "Teacher",
+      required: [
+        true,
+        "Please specify the teacher associated with the activity.",
+      ],
     },
     submissionDate: {
       type: Date,
-      required: [true, 'Please provide the submission date.'],
+      required: [true, "Please provide the submission date."],
     },
-   
+
     fileUrl: {
       type: String,
-      required: [true, 'Please provide the URL of the submitted file.'],
+      required: [true, "Please provide the URL of the submitted file."],
     },
   },
   {
@@ -30,6 +36,6 @@ const submissionSchema = Schema(
   }
 );
 
-const Submission = mongoose.model('Submission', submissionSchema);
+const Submission = mongoose.model("Submission", submissionSchema);
 
 export default Submission;

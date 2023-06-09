@@ -31,14 +31,8 @@ const userSchema = Schema(
     birthDate: {
       type: Date,
       required: [true, "Please provide your birth date."],
-      get: function (value) {
-        // Format the birthDate when retrieving from the database
-        return value ? value.toISOString().split("T")[0] : null;
-      },
-      set: function (value) {
-        // Parse the birthDate when saving to the database
-        return value ? new Date(value) : null;
-      },
+      get: (value) => (value ? value.toISOString().split("T")[0] : null),
+      set: (value) => (value ? new Date(value) : null),
     },
     phoneNumber: {
       type: String,
@@ -51,7 +45,7 @@ const userSchema = Schema(
     },
     imageUrl: {
       type: String,
-      default: function () {
+      default() {
         if (this.role === "teacher" && this.gender === "male") {
           return "/assets/images/teacher-male.png";
         } else if (this.role === "teacher" && this.gender === "female") {
@@ -79,12 +73,12 @@ const userSchema = Schema(
           ref: "Course",
         },
       ],
-      default: function () {
+      default() {
         if (this.role === "student") {
           return [];
         }
       },
-      select: false, // Exclude from query results
+      select: false,
     },
     badges: {
       type: [
@@ -93,7 +87,7 @@ const userSchema = Schema(
           ref: "Badge",
         },
       ],
-      default: function () {
+      default() {
         if (this.role === "student") {
           return [];
         }
@@ -107,7 +101,7 @@ const userSchema = Schema(
           ref: "Certificate",
         },
       ],
-      default: function () {
+      default() {
         if (this.role === "student") {
           return [];
         }
@@ -117,7 +111,7 @@ const userSchema = Schema(
   },
   {
     timestamps: true,
-    toJSON: { getters: true, setters: true }, // Enable the transformation options
+    toJSON: { getters: true, setters: true },
   }
 );
 
