@@ -12,6 +12,7 @@ const submissionSchema = new Schema(
         "Please specify the associated activity for the submission.",
       ],
     },
+
     studentId: {
       type: SchemaTypes.ObjectId,
       ref: "User",

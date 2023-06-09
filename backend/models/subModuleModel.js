@@ -10,18 +10,18 @@ const submoduleSchema = new Schema(
     },
     content: {
       type: String,
-      required: [true, "Please provide the content for the submodule."],
+      // required: [true, "Please provide the content for the submodule."],
     },
     moduleId: {
       type: SchemaTypes.ObjectId,
       ref: "Module",
       required: true,
     },
-    teacherId: {
-      type: SchemaTypes.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    // teacherId: {
+    //   type: SchemaTypes.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
   },
   {
     timestamps: true,
