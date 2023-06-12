@@ -41,7 +41,7 @@ const getActivitiesBySubModuleId = asyncHandler(async (req, res) => {
 // @route   GET /api/activities/:id
 // @access  Private (Teacher only)
 const getActivity = asyncHandler(async (req, res) => {
-  const activity = await Activity.findOne({ _id: req.params.id });
+  const activity = await Activity.findOne({ _id: req.params.id }).populate('submitted','studentId')
 
   if (activity) {
     res.status(200).json(activity);
