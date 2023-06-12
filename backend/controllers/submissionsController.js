@@ -25,7 +25,9 @@ const createSubmission = async (req, res) => {
       activityId,
       studentId,
       fileUrl,
+
     });
+
 
     // Save the submission
     await submission.save();

@@ -47,7 +47,7 @@ const activitySchema = Schema(
     submitted: [
       {
         type: SchemaTypes.ObjectId,
-        ref: "User",
+        ref: "Submission",
       },
     ],
   },
