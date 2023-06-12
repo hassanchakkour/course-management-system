@@ -31,7 +31,7 @@ app.use("/api/modules", moduleRoutes);
 app.use("/api/submodules", subModulesRoutes);
 app.use("/api/activities", activityRoutes);
 app.use("/api/questions", questionsRoutes);
-app.use("/api/submission", submissionRoutes);
+app.use("/api/submissions", submissionRoutes);
 app.use("/api/badges", badgeRoutes);
 app.use("/api/certificates", certificateRoutes);
 

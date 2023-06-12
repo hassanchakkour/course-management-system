@@ -1,87 +1,111 @@
 import Submission from "../models/submissionModel.js";
 import Activity from "../models/activityModel.js";
+import User from "../models/userModel.js"
 import asyncHandler from "express-async-handler";
 
-// @desc    Create a new Submission
-// @route   POST /api/submission
-// @access  Private (Student only)
-const postSubmission = asyncHandler(async (req, res) => {
-  const { activityId, fileUrl } = req.body;
-  const studentId = req.user._id;
 
-  // Check if the activity exists
-  const activity = await Activity.findById(activityId);
-  if (!activity) {
-    return res.status(404).json({ message: "Activity not found" });
-  } else {
-    const submission = await Submission.create({
+const createSubmission = async (req, res) => {
+  try {
+    const { activityId, studentId, fileUrl } = req.body; // Get the activityId, studentId, and fileUrl from the request body
+
+    // Check if the activity exists
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ error: 'Activity not found' });
+    }
+
+    // Check if the student exists (if needed)
+    const student = await User.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    // Create a new submission
+    const submission = new Submission({
       activityId,
+      studentId,
       fileUrl,
     });
-    // console.log(submission);
 
-    const submitted = await Activity.findOneAndUpdate(
-      { activityId },
-      { $push: { studentId } },
-      { new: true }
-    ).populate("submitted", "firstName lastName");
-    // console.log(submitted);
-    if (submitted) {
-      res.status(200).json({ submission, submitted });
-    } else {
-      res.status(404).json({ message: "Something went wrong" });
-    }
+    // Save the submission
+    await submission.save();
+
+    // Update the submitted array in the activity
+    activity.submitted.push(studentId);
+    await activity.save();
+
+    res.status(201).json({ message: 'Submission created successfully', submission });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
   }
-});
+};
+
+
 
 // Get all submissions
 const getSubmissions = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
+ 
 
   try {
-    const submissions = await Submission.find({ teacherId });
+    const submissions = await Submission.find({  });
     res.status(200).json(submissions);
   } catch (error) {
     res.status(500).json({ error: "Server Error" });
   }
 });
 
-// Get a specific submission by ID
-const getSubmission = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const teacherId = req.user._id;
-
+//getSUBMISSIOn by activity
+const getSubmissionsByActivity = async (req, res) => {
   try {
-    const submission = await Submission.findOne({ _id: id, teacherId });
-    if (submission) {
-      res.status(200).json(submission);
-    } else {
-      res.status(404).json({ message: "Submission not found" });
+    const { activityId } = req.params; // Get the activityId from the request parameters
+
+    // Check if the activity exists
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ error: 'Activity not found' });
     }
+
+    // Get all submissions for the activity
+    const submissions = await Submission.find({ activityId });
+
+    res.status(200).json({ submissions });
   } catch (error) {
-    res.status(500).json({ error: "Server Error" });
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
   }
-});
+};
+
 
 // Delete a submission by ID
-const deleteSubmission = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const teacherId = req.user._id;
+// const deleteSubmission = asyncHandler(async (req, res) => {
+//   try {
+//     const submissionId = req.params.id;
+//     // Assuming you have implemented authentication and have access to the teacher's ID
+//     const teacherId = req.user._id; // Fetch the teacher's ID from the authenticated user
 
-  try {
-    const submission = await Submission.findOneAndDelete({
-      _id: id,
-      teacherId,
-    });
-    if (submission) {
-      res.status(200).json({ message: "Submission deleted" });
-    } else {
-      res.status(404).json({ message: "Submission not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Server Error" });
-  }
-});
+//     // Find the submission by ID and check if the associated teacher matches the authenticated teacher
+//     const submission = await Submission.findById(submissionId).populate('activityId','title');
+//     if (!submission) {
+//       return res.status(404).json({ message: 'Submission not found' });
+//     }
+
+//     // Check if the authenticated teacher is the owner of the associated activity
+//     if (submission.activityId.teacherId.toString() !== teacherId) {
+//       return res.status(403).json({ message: 'Unauthorized to delete this submission' });
+//     }
+
+//     // Delete the submission from the database
+//     await submission.delete();
+
+//     res.status(200).json({ message: 'Submission deleted successfully' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error deleting submission' });
+//   }
+  
+
+// });
 
 // Update a submission by ID
 const putSubmission = asyncHandler(async (req, res) => {
@@ -105,92 +129,10 @@ const putSubmission = asyncHandler(async (req, res) => {
 });
 
 export {
-  postSubmission,
-  getSubmission,
+  createSubmission,
   getSubmissions,
-  deleteSubmission,
+  getSubmissionsByActivity,
+  
+ 
   putSubmission,
 };
-
-//  import asyncHandler from 'express-async-handler';
-// import Submission  from '../models/submissionModel.js'
-// import Activity from'../models/activityModel.js'
-
-// // Submit an activity by a student
-// const submitActivity = asyncHandler(async (req, res) => {
-//   const { activityId, answers } = req.body;
-//   const studentId = req.user._id;
-
-//   try {
-//     // Check if the activity exists
-//     const activity = await Activity.findById(activityId);
-//     if (!activity) {
-//       return res.status(404).json({ message: 'Activity not found' });
-//     }
-
-//     // Create a new submission
-//     const submission = await Submission.create({
-//       activityId,
-//       studentId,
-//       answers,
-//     });
-
-//     // Update the activity's submission status
-//     activity.submitted = true;
-//     await activity.save();
-
-//     res.status(201).json(submission);
-//   } catch (error) {
-//     res.status(400).json({ error: error.message });
-//   }
-// });
-
-// // Get all submissions for a specific activity (accessible by teacher)
-// const getSubmissionsByActivity = asyncHandler(async (req, res) => {
-//   const { activityId } = req.params;
-//   const teacherId = req.user._id;
-
-//   try {
-//     // Check if the activity exists and belongs to the teacher
-//     const activity = await Activity.findOne({
-//       _id: activityId,
-//       teacherId,
-//     });
-//     if (!activity) {
-//       return res.status(404).json({ message: 'Activity not found' });
-//     }
-
-//     // Get all submissions for the activity
-//     const submissions = await Submission.find({ activityId });
-//     res.status(200).json(submissions);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server Error' });
-//   }
-// });
-
-// // Get all submissions by a specific student (accessible by teacher)
-// const getSubmissionsByStudent = asyncHandler(async (req, res) => {
-//   const { studentId } = req.params;
-//   const teacherId = req.user._id;
-
-//   try {
-//     // Check if the student exists and the teacher is allowed to access their submissions
-//     // (You may have additional logic here based on your application's requirements)
-//     const student = await Student.findOne({ _id: studentId, teacherId });
-//     if (!student) {
-//       return res.status(404).json({ message: 'Student not found' });
-//     }
-
-//     // Get all submissions made by the student
-//     const submissions = await Submission.find({ studentId });
-//     res.status(200).json(submissions);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server Error' });
-//   }
-// });
-
-// export {
-//   submitActivity,
-//   getSubmissionsByActivity,
-//   getSubmissionsByStudent
-// };
