@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-import { Courses, Students, Content, Editor, Question, Quiz } from "./pages";
+import { Courses, Students, Content, Question, Quiz } from "./pages";
 
 import "./App.css";
+import Login from "./components/Login/Login";
 
 const App = () => {
   const activeMenu = true;
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="/" element={<Courses />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/students" element={<Students />} />
+                {/* <Route path="/login" element={<Login />} /> */}
               </Routes>
             </div>
           </div>
