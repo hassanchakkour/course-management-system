@@ -3,12 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import { Courses, Students, Content, Question, Quiz } from "./pages";
-
-import "./App.css";
 import Login from "./components/Login/Login";
 
+import "./App.css";
+import { useStateContext } from "./contexts/ContextProvider";
+
 const App = () => {
-  const activeMenu = true;
+  const { activeMenu } = useStateContext();
   return (
     <>
       <BrowserRouter>
@@ -32,6 +33,7 @@ const App = () => {
             </div>
 
             <div>
+              <ThemeSettings />
               <Routes>
                 <Route path="/" element={<Courses />} />
                 <Route path="/courses" element={<Courses />} />

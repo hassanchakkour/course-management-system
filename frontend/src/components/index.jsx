@@ -13,3 +13,4 @@ export { default as Module } from "./Module";
 export { default as SubModule } from "./SubModule";
 export { default as Footer } from "./Footer";
 export { default as Media } from "./Media";
+export { default as Chat } from "./Chat";
