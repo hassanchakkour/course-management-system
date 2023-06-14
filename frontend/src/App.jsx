@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
 import { Courses, Students, Content, Question, Quiz } from "./pages";
 
@@ -16,6 +19,7 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
+      <ToastContainer />
         <div className="flex relative dark:bg-main-dark-bg">
           {activeMenu ? (
             <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
@@ -45,8 +49,8 @@ const App = () => {
                  <Route path="/media" element={<Media />} />
                  <Route path="/quiz" element={<Quiz />} />
                  <Route path="/question" element={<Question />} />
-
-                 {/* <Route path="/login" element={<Login />} /> */}
+                  
+                 <Route path="/login" element={<Login />} />
 
               </Routes>
             </div>
