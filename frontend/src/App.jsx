@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// <<<<<<< walaa
-// import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
-// import { Courses, Students, Content, Question, Quiz } from "./pages";
-// =======
-// import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-// import { Courses, Students, Content, Question, Quiz } from "./pages";
-// import Login from "./components/Login/Login";
-// >>>>>>> master
+import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
+import { Courses, Students, Content, Question, Quiz } from "./pages";
+
+
+import Login from "./components/Login/Login";
+
 
 import "./App.css";
 import { useStateContext } from "./contexts/ContextProvider";
@@ -43,13 +41,13 @@ const App = () => {
                 <Route path="/" element={<Courses />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/students" element={<Students />} />
-//<<<<<<< walaa
-//                 <Route path="/media" element={<Media />} />
-//                 <Route path="/quiz" element={<Quiz />} />
-//                 <Route path="/question" element={<Question />} />
-//=======
-//                 {/* <Route path="/login" element={<Login />} /> */}
-//>>>>>>> master
+
+                 <Route path="/media" element={<Media />} />
+                 <Route path="/quiz" element={<Quiz />} />
+                 <Route path="/question" element={<Question />} />
+
+                 {/* <Route path="/login" element={<Login />} /> */}
+
               </Routes>
             </div>
           </div>
