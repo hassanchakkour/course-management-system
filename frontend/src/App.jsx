@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
-import { Courses, Students, Content, Question, Quiz } from "./pages";
+// <<<<<<< walaa
+// import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
+// import { Courses, Students, Content, Question, Quiz } from "./pages";
+// =======
+// import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
+// import { Courses, Students, Content, Question, Quiz } from "./pages";
+// import Login from "./components/Login/Login";
+// >>>>>>> master
 
 import "./App.css";
+import { useStateContext } from "./contexts/ContextProvider";
 
 const App = () => {
-  const activeMenu = true;
+  const { activeMenu } = useStateContext();
   return (
     <>
       <BrowserRouter>
@@ -31,13 +38,18 @@ const App = () => {
             </div>
 
             <div>
+              <ThemeSettings />
               <Routes>
                 <Route path="/" element={<Courses />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/students" element={<Students />} />
-                <Route path="/media" element={<Media />} />
-                <Route path="/quiz" element={<Quiz />} />
-                <Route path="/question" element={<Question />} />
+//<<<<<<< walaa
+//                 <Route path="/media" element={<Media />} />
+//                 <Route path="/quiz" element={<Quiz />} />
+//                 <Route path="/question" element={<Question />} />
+//=======
+//                 {/* <Route path="/login" element={<Login />} /> */}
+//>>>>>>> master
               </Routes>
             </div>
           </div>
