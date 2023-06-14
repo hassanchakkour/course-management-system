@@ -3,7 +3,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
-
+import {toast} from 'react-toastify'
 import avatar from "../assets/images/avatar3.jpg";
 import { Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -66,7 +66,7 @@ const Navbar = () => {
     try{
       await logoutApiCall().unwrap();
       dispatch(logout());
-      console.log('logged Out')
+      toast.success('Logged Out Successfully !!')
     }catch(error){ 
       console.log(error)
     }
