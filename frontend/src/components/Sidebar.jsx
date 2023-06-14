@@ -4,9 +4,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Tooltip } from "@mui/material";
 
 import { RiDashboardFill } from "react-icons/ri";
-import { AiFillBook } from "react-icons/ai";
-import { FaCalendar, FaUserFriends, FaEnvelope } from "react-icons/fa";
+import {
+  FaCalendar,
+  FaChalkboardTeacher,
+  FaUserFriends,
+  FaEnvelope,
+} from "react-icons/fa";
 
+// import links from "../constants/links";
 const links = [
   {
     title: "dashboard",
@@ -14,7 +19,7 @@ const links = [
   },
   {
     title: "courses",
-    icon: <AiFillBook />,
+    icon: <FaChalkboardTeacher />,
   },
   {
     title: "students",
@@ -30,8 +35,16 @@ const links = [
   },
 ];
 
+import { useStateContext } from "../contexts/ContextProvider";
+
 const Sidebar = () => {
-  const activeMenu = true;
+  const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+
+  const handleCloseSideBar = () => {
+    if (activeMenu && screenSize <= 900) {
+      setActiveMenu(false);
+    }
+  };
 
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 bg-blue-500 text-white";
@@ -45,14 +58,18 @@ const Sidebar = () => {
           <div className="flex justify-between items-center">
             <Link
               to="/"
-              onClick={() => {}}
+              onClick={handleCloseSideBar}
               className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
             >
               <FaBookOpen /> <span>LMS</span>
             </Link>
 
             <div className="p-3 mt-4 block md:hidden">
-              <IconButton onClick={() => {}}>
+              <IconButton
+                onClick={() =>
+                  setActiveMenu((prevActiveMenu) => !prevActiveMenu)
+                }
+              >
                 <CloseIcon />
               </IconButton>
             </div>
@@ -62,7 +79,7 @@ const Sidebar = () => {
               <NavLink
                 to={`/${item.title}`}
                 key={item.title}
-                onClick={() => {}}
+                onClick={handleCloseSideBar}
                 className={({ isActive }) =>
                   isActive ? activeLink : normalLink
                 }
