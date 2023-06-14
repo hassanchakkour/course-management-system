@@ -53,3 +53,14 @@
 .e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left) {
   border: none;
 }
+
+/*Media Form*/
+.QuizForm{ 
+   margin:auto;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: auto;
+  margin-top: 50px;
+  width:60;
+  /* padding:10px; */
+}

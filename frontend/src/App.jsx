@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-import { Courses, Students, Content, Editor, Question, Quiz } from "./pages";
+import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
+import { Courses, Students, Content, Question, Quiz } from "./pages";
 
 import "./App.css";
 
@@ -35,6 +35,9 @@ const App = () => {
                 <Route path="/" element={<Courses />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/students" element={<Students />} />
+                <Route path="/media" element={<Media />} />
+                <Route path="/quiz" element={<Quiz />} />
+                <Route path="/question" element={<Question />} />
               </Routes>
             </div>
           </div>
