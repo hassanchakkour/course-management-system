@@ -33,7 +33,7 @@ const handleSubmit = async (e) => {
             password
         }).unwrap();
         dispatch(setCredentials({...res}))
-        console.log('navigate to home')
+        toast.success("Sign In Successfull !!")
     }catch(error){ 
         toast.error(error?.data.message || error.error)
     }
