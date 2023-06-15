@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
-
+import {toast} from 'react-toastify'
 import avatar from "../assets/images/avatar3.jpg";
 import { Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
+
+import {useSelector, useDispatch} from 'react-redux'
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import { logout } from "../slices/authSlice";
 
 const NavButton = ({ customFunc, icon, color, dotColor }) => (
   <button
@@ -51,6 +55,23 @@ const Navbar = () => {
     }
   }, [screenSize]);
 
+  const userInfo = useSelector((state) => state.auth)
+  console.log(userInfo)
+
+  const dispatch = useDispatch();
+
+  const [logoutApiCall] = useLogoutMutation()
+
+  const handleLogout = async () => { 
+    try{
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      toast.success('Logged Out Successfully !!')
+    }catch(error){ 
+      console.log(error)
+    }
+  }
+
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
       <NavButton
@@ -79,9 +100,11 @@ const Navbar = () => {
           <img className="rounded-full w-12 h-12" src={avatar} alt="profile" />
           <p>
             <span className="text-gray-400 text-14">Hi, </span>
-            <span className="text-gray-400 font-bold ml-1 text-14">Ali</span>
+            <span className="text-gray-400 font-bold ml-1 text-14">{userInfo.userInfo != null ? userInfo.userInfo.name : ''}</span>
           </p>
           <MdKeyboardArrowDown className="text-gray-400 text-14" />
+          {userInfo.userInfo != null ? <button onClick={handleLogout} className="p-1 rounded bg-red-500 text-white">Logout</button> : 
+          <button  className="p-1 rounded bg-green-500 text-white">sign</button>}
         </div>
         {isClicked.chat && <Chat />}
         {isClicked.notification && <Notification />}
