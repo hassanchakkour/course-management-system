@@ -75,7 +75,7 @@ const Navbar = () => {
     try{
       await logoutApiCall().unwrap();
       dispatch(logout());
-      toast.success('Logged Out Successfully !!')
+      toast.success('Logged Out Successfully !!') 
     }catch(error){ 
       console.log(error)
     }
@@ -118,10 +118,10 @@ const Navbar = () => {
               alt="profile"
             />
             <p>
-              <span className="text-gray-400 text-14">Hi, </span>
-              <span className="text-gray-400 font-bold ml-1 text-14">Ali</span>
+              <span className="text-gray-400 font-bold ml-1 text-14">{userInfo ? userInfo.userInfo.name : null}</span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
+            <button onClick={handleLogout}>Logout</button>
           </div>
         </Tooltip>
 
