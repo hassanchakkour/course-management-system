@@ -37,13 +37,6 @@ const handleSubmit = async (e) => {
     }catch(error){ 
         toast.error(error?.data.message || error.error)
     }
-    // let sendData = { 
-    //     email: email,
-    //     password: password
-    // }
-    // const res = await axios.post('http://localhost:5000/api/users/login', sendData);
-
-    // console.log(res)
 }
   return (
     <div className='my-16 mx-[30%]'>
