@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa";
-import CloseIcon from "@mui/icons-material/Close";
-import { IconButton, Tooltip } from "@mui/material";
+import { MdOutlineCancel } from "react-icons/md";
 
 import { RiDashboardFill } from "react-icons/ri";
 import {
@@ -38,16 +37,17 @@ const links = [
 import { useStateContext } from "../contexts/ContextProvider";
 
 const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, screenSize } =
+    useStateContext();
 
   const handleCloseSideBar = () => {
-    if (activeMenu && screenSize <= 900) {
+    if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
   };
 
   const activeLink =
-    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 bg-blue-500 text-white";
+    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
@@ -64,15 +64,14 @@ const Sidebar = () => {
               <FaBookOpen /> <span>LMS</span>
             </Link>
 
-            <div className="p-3 mt-4 block md:hidden">
-              <IconButton
-                onClick={() =>
-                  setActiveMenu((prevActiveMenu) => !prevActiveMenu)
-                }
-              >
-                <CloseIcon />
-              </IconButton>
-            </div>
+            <button
+              type="button"
+              onClick={() => setActiveMenu(!activeMenu)}
+              style={{ color: currentColor }}
+              className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
+            >
+              <MdOutlineCancel />
+            </button>
           </div>
           <div className="mt-10">
             {links.map((item) => (
@@ -80,13 +79,15 @@ const Sidebar = () => {
                 to={`/${item.title}`}
                 key={item.title}
                 onClick={handleCloseSideBar}
+                style={({ isActive }) => ({
+                  backgroundColor: isActive ? currentColor : "",
+                })}
                 className={({ isActive }) =>
                   isActive ? activeLink : normalLink
                 }
               >
                 {item.icon}
                 <span className="capitalize">{item.title}</span>
-                {/* <p className="text-gray-400 m-3 mt-4">{item.title}</p> */}
               </NavLink>
             ))}
           </div>
