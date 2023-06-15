@@ -46,7 +46,7 @@ const Question = () => {
         <form onSubmit={handleSubmit}>
           <Box mb={2}>
             <FormControl fullWidth>
-              <InputLabel id="activityId-label">Activity</InputLabel>
+              <InputLabel id="activityId-label">Type</InputLabel>
               <Select
                 labelId="activityId-label"
                 id="activityId"
@@ -62,7 +62,7 @@ const Question = () => {
             </FormControl>
           </Box>
 
-          <Box mb={2}>
+          {/* <Box mb={2}>
             <TextField
               label="Type"
               fullWidth
@@ -70,7 +70,7 @@ const Question = () => {
               onChange={(event) => setType(event.target.value)}
               required
             />
-          </Box>
+          </Box> */}
 
           <Box mb={2}>
             <TextField

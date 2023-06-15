@@ -77,7 +77,7 @@ const Quiz = () => {
                     onClick={editor.focus}
                     sx={{
                       marginBottom: '16px',
-                      maxHeight: '300px',
+                      maxHeight: '500px',
                       overflowY: 'auto',
                     }}
                   />
@@ -137,13 +137,14 @@ const Quiz = () => {
               onChange={(event) => setName(event.target.value)}
               margin="normal"
             />
-           <FormLabel component="legend" sx={{ marginTop: '16px', display: 'inline-block' }}>Load Quiz:
+           <FormLabel component="legend" sx={{ marginTop: '16px', margin_right:'10px',display: 'inline-block' }}>Load Quiz:
            <InputLabel id="demo-simple-select-label"></InputLabel>
              <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              className='mr-5 w-[60%] ml-5' 
               // value={age}
-              width="50%"
+              width="100%"
               label=""
                 // onChange={handleChange}
                >
@@ -152,7 +153,7 @@ const Quiz = () => {
                <MenuItem value={30}>Thirty</MenuItem>
          </Select>
 
-              <Button type="button" variant="contained" color="primary">
+              <Button type="button" variant="contained" color="primary" className='right-0'>
                 Create New Quiz
               </Button>
               </FormLabel>
