@@ -10,7 +10,7 @@ import {
 } from "../controllers/questionsController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
-router.post("/", protect, isTeacher, postQuestion);
+router.post("/",  postQuestion);
 router.get(
   "/activity/:activityId",
   protect,
