@@ -18,7 +18,6 @@ const postQuestion = asyncHandler(async (req, res) => {
     type,
     content,
     options,
-    correctOption,
     teacherId,
   });
 
