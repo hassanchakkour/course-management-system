@@ -65,11 +65,7 @@ const App = () => {
                 </div>
               )}
               <div
-// <<<<<<< ali
-//                 className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full ${
-// =======
-//                 className={`dark:bg-main-bg bg-main-bg min-h-screen w-full ${
-// >>>>>>> master
+                className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full ${
                   activeMenu ? "md:ml-72" : "flex-2"
                 }`}
               >
@@ -80,13 +76,11 @@ const App = () => {
                 <div>
                   {themeSettings && <ThemeSettings />}
                   <Routes>
-                    <Route path="/" element={<Courses />} />
+                    {/* <Route path="/courses" element={<Courses />} /> */}
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/students" element={<Students />} />
-//<<<<<<< ali
-// =======
+
                     <Route path="/calendar" element={<Content />} />
-//>>>>>>> master
                   </Routes>
                 </div>
               </div>
@@ -95,7 +89,7 @@ const App = () => {
         ) : (
           <div>
             <Routes>
-              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Login />} />
             </Routes>
           </div>
         )}
