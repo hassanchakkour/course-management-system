@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import {useSelector, useDispatch} from 'react-redux'
-import { useLogoutMutation } from "../slices/usersApiSlice";
-import { logout } from "../slices/authSlice";
-import {toast} from 'react-toastify'
+import { useSelector } from "react-redux";
 
 import { Tooltip } from "@mui/material";
 
-
 import avatar from "../assets/images/avatar3.jpg";
+import { UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -29,9 +26,6 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
       {icon}
     </button>
   </Tooltip>
-
-
-
 );
 
 const Navbar = () => {
@@ -40,6 +34,7 @@ const Navbar = () => {
     activeMenu,
     setActiveMenu,
     handleClick,
+    isClicked,
     screenSize,
     setScreenSize,
   } = useStateContext();
@@ -61,26 +56,10 @@ const Navbar = () => {
     }
   }, [screenSize]);
 
-
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
-  const userInfo = useSelector((state) => state.auth)
-  console.log(userInfo)
-
-  const dispatch = useDispatch();
-
-  const [logoutApiCall] = useLogoutMutation()
-
-  const handleLogout = async () => { 
-    try{
-      await logoutApiCall().unwrap();
-      dispatch(logout());
-      toast.success('Logged Out Successfully !!') 
-    }catch(error){ 
-      console.log(error)
-    }
-  }
-
+  const userInfo = useSelector((state) => state.auth);
+  console.log(userInfo);
 
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
@@ -118,13 +97,14 @@ const Navbar = () => {
               alt="profile"
             />
             <p>
-              <span className="text-gray-400 font-bold ml-1 text-14">{userInfo ? userInfo.userInfo.name : null}</span>
+              <span className="text-gray-400 font-bold ml-1 text-14">
+                {userInfo ? userInfo.userInfo.name : null}
+              </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
-            <button onClick={handleLogout}>Logout</button>
           </div>
         </Tooltip>
-
+        {isClicked.userProfile && <UserProfile />}
       </div>
     </div>
   );
