@@ -6,16 +6,8 @@ import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Navbar, Footer, Sidebar, ThemeSettings ,Media} from "./components";
 import { Courses, Students, Content, Question, Quiz } from "./pages";
-// <<<<<<< walaa
-
-// import Login from "./components/Login/Login";
-
-
-
-// =======
-// import Login from "./components/Login/Login";
-// import { useSelector } from "react-redux";
-// >>>>>>> master
+import Login from "./components/Login/Login";
+import { useSelector } from "react-redux";
 import "./App.css";
 import { useStateContext } from "./contexts/ContextProvider";
 
@@ -63,20 +55,6 @@ const App = () => {
                 </button>
               </Tooltip>
             </div>
-
-// <<<<<<< walaa
-
-
-
-                 <Route path="/media" element={<Media />} />
-                 <Route path="/quiz" element={<Quiz />} />
-                 <Route path="/question" element={<Question />} />
-                  
-                 <Route path="/login" element={<Login />} />
-
-
-              </Routes>
-// =======
             {activeMenu ? (
               <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
                 <Sidebar />
@@ -103,14 +81,12 @@ const App = () => {
                   <Route path="/students" element={<Students />} />
                 </Routes>
               </div>
-{*>>>>>>> master *}
             </div>
           </div>
       </div>) : <div>
       <Routes>
-
-                  <Route path="/login" element={<Login />} />
-                </Routes>
+       <Route path="/login" element={<Login />} />
+       </Routes>
         </div>}
       </BrowserRouter>
     </>
