@@ -37,9 +37,10 @@ const App = () => {
   }, []);
   return (
     <>
-// <<<<<<< ali
+{/* // <<<<<<< ali */}
       <div className={currentMode === "Dark" ? "dark" : ""}>
         <BrowserRouter>
+        <ToastContainer />
           <div className="flex relative dark:bg-main-dark-bg">
             <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
               <Tooltip title="Settings" placement="top" arrow>
@@ -81,9 +82,9 @@ const App = () => {
                   {/* <Route path="/login" element={<Login />} /> */}
                 </Routes>
               </div>
-// =======
+{/* // =======
       <BrowserRouter>
-      <ToastContainer />
+     
         <div className="flex relative dark:bg-main-dark-bg">
           {activeMenu ? (
             <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
@@ -117,7 +118,7 @@ const App = () => {
                  <Route path="/login" element={<Login />} />
 
               </Routes>
-// >>>>>>> master
+// >>>>>>> master */}
             </div>
           </div>
         </BrowserRouter>
