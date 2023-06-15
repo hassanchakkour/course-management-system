@@ -80,6 +80,7 @@ const App = () => {
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/students" element={<Students />} />
                     <Route path="/calendar" element={<Content />} />
+                    <Route path="/question" element={<Question />} />
                   </Routes>
                 </div>
               </div>

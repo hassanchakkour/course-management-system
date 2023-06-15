@@ -13,26 +13,29 @@ import {
 import '../App.css';
 
 const Question = () => {
-  const [activityId, setActivityId] = useState('');
+  const [type, setType] = useState('');
   const [content, setContent] = useState('');
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState('');
   const [correctOption, setCorrectOption] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     const questionData = {
-      activityId,
-      content,
-      options,
-      correctOption,
+      activityId:'6482f11016516151a65b1c9d',
+      type : type,
+      content:content,
+      options:options,
+      correctOption:correctOption,
     };
-    
-    axios.post('http://localhost:5000/api/questions', questionData)
+    console.log(questionData)
+
+    axios
+      .post('http://localhost:5000/api/questions', questionData)
       .then((response) => {
         console.log('Question created:', response.data);
         // Reset form fields
-        setActivityId('');
+        setType('');
         setContent('');
         setOptions([]);
         setCorrectOption('');
@@ -40,18 +43,25 @@ const Question = () => {
       .catch((error) => {
         console.error('Error creating question:', error);
       });
-  };
 
+  };
+  let optionsData = []
+  const handleOption =()=>{
+    optionsData.push(options)
+   console.log(options)
+   console.log(optionsData,'====')
+  }
+ 
   return (
-    <div className='QuizForm'>
-      <Container 
+    <div className="QuizForm">
+      <Container
         maxWidth="30%"
         sx={{
-          border: "1px solid #ccc",
-          borderRadius: "10px",
-          padding: "20px",
-          maxHeight: "60vh", // Set the desired height for the scrollable area
-          overflowY: "auto", // Enable vertical scrolling
+          border: '1px solid #ccc',
+          borderRadius: '10px',
+          padding: '20px',
+          maxHeight: '60vh', // Set the desired height for the scrollable area
+          overflowY: 'auto', // Enable vertical scrolling
         }}
       >
         <Box my={4}>
@@ -62,8 +72,8 @@ const Question = () => {
                 <Select
                   labelId="activityId-label"
                   id="activityId"
-                  value={activityId}
-                  onChange={(event) => setActivityId(event.target.value)}
+                  value={type}
+                  onChange={(event) => setType(event.target.value)}
                   required
                 >
                   {/* Render the list of activities */}
@@ -90,12 +100,13 @@ const Question = () => {
               <TextField
                 label="Options"
                 multiline
-                rows={4}
+                rows={1}
                 fullWidth
-                value={options.join('\n')}
-                onChange={(event) => setOptions(event.target.value.split('\n'))}
+                // value={options.join('\n')}
+                onChange={(event) => setOptions(event.target.value)}
                 required
               />
+              <Button onClick={handleOption}>Add option</Button>
             </Box>
 
             <Box mb={2}>
@@ -109,11 +120,16 @@ const Question = () => {
                   required
                 >
                   {/* Render the list of options */}
-                  {options.map((option, index) => (
-                    <MenuItem key={index} value={index}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {options && optionsData.map((option, index) => 
+                  // (
+                  //   <MenuItem key={index} >
+                  //     {index}
+                  //   </MenuItem>
+                  // )
+                  console.log(index)
+                  ) 
+                 
+                  }
                 </Select>
               </FormControl>
             </Box>
