@@ -1,7 +1,7 @@
 import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { BsCurrencyDollar, BsShield } from "react-icons/bs";
-
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
@@ -13,6 +13,8 @@ import avatar from "../assets/images/avatar3.jpg";
 
 const UserProfile = () => {
   const { currentColor, setIsClicked, initialState } = useStateContext();
+
+  const navigate = useNavigate();
 
   const userProfileData = [
     {
@@ -42,6 +44,7 @@ const UserProfile = () => {
       await logoutApiCall().unwrap();
       dispatch(logout());
       toast.success("Logged Out Successfully !!");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

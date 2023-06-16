@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../../slices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Container, Paper, Grid, Button, Typography } from "@mui/material";
@@ -29,7 +28,6 @@ const Login = () => {
       console.log("navigate");
     }
   }, [userInfo]);
-  const navigate = useNavigate();
   useEffect(() => {
     const typingDelay = 100; // Delay between each character typing
     const welcomeMessage = "Welcome to the future of education";
@@ -63,10 +61,6 @@ const Login = () => {
         password,
       }).unwrap();
       dispatch(setCredentials({ ...res }));
-      toast.success("Sign In Successfull !!");
-      if (res) {
-        navigate("/");
-      }
     } catch (error) {
       toast.error(error?.data.message || error.error);
     }
