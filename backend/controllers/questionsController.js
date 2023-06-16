@@ -5,24 +5,35 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/questions
 // @access  Private (Teacher only)
 const postQuestion = asyncHandler(async (req, res) => {
-  const { activityId, type, content, options, correctOption } = req.body;
-  const teacherId = req.user.id;
+  const { activityId, type, content, options, correctOption,teacherId } = req.body;
+  // const teacherId = req.user.id;
+  // console.log(teacherId)
+  // console.log('===')
+  // console.log(req.user._id)
 
   if (!activityId) {
+      console.log('hello')
     res.status(400);
     throw new Error("activityId is required");
+  
   }
 
-  const question = await Question.create({
-    activityId,
-    type,
-    content,
-    options,
-    teacherId,
-  });
+  try {
+    const question = await Question.create({
+      activityId,
+      type,
+      content,
+      options,
+      correctOption,
+       teacherId,
+    });
 
-  res.status(201).json(question);
+    res.status(201).json(question);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
+
 
 // @desc    Get all questions by activity ID
 // @route   GET /api/questions/activity/:activityId

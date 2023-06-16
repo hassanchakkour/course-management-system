@@ -5,7 +5,10 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/activities
 // @access  Private (Teacher only)
 const postActivity = asyncHandler(async (req, res) => {
-  const { title, submoduleId, type, teacherId } = req.body;
+
+  const { title, submoduleId,type,duration,passingGrade,note,teacherId } = req.body;
+  // const teacherId = req.user._id;
+
 
   if (!submoduleId) {
     res.status(400);
@@ -17,6 +20,9 @@ const postActivity = asyncHandler(async (req, res) => {
     teacherId,
     type,
     submoduleId,
+    duration,
+    passingGrade,
+    note,
   });
   res.status(201).json(activity);
 });
