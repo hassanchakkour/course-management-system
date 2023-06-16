@@ -15,6 +15,17 @@ const getModules = asyncHandler(async (req, res) => {
     throw new Error("No modules found for the authenticated teacher");
   }
 });
+const getModulesbyCourseId = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
+  const modules = await Module.find({ courseId });
+
+  if (modules.length > 0) {
+    res.status(200).json(modules);
+  } else {
+    res.status(404);
+    throw new Error("No modules found for the authenticated teacher");
+  }
+});
 
 // @desc    Get a specific module by ID
 // @route   GET /api/modules/:id
@@ -92,4 +103,11 @@ const deleteModule = asyncHandler(async (req, res) => {
   }
 });
 
-export { getModules, getModuleById, createModule, updateModule, deleteModule };
+export {
+  getModules,
+  getModuleById,
+  createModule,
+  updateModule,
+  deleteModule,
+  getModulesbyCourseId,
+};
