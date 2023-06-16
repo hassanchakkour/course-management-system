@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import axios from "axios";
+import { useSelector } from "react-redux";
+
 
 import '../App.css'
 
@@ -9,42 +12,43 @@ import '../App.css'
 import { TextField, Button, Container, Box} from "@mui/material";
 
 const Media = () => {
-  const [nb, setnb] = useState('');
-  const [value, setValue]= useState('');
-  const [title, settitle] = useState('');
-  const [paragraphs, setParagraphs] = useState('');
-  const [communityimg, setCommunityimg] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [mediaFile, setMediaFile] = useState(null);
-  const currentDate = new Date();
-  // const [isMediaVisible, setIsMediaVisible] = useState(true);
 
-  // const [content, setContent] = useState('');
-  
-  
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+ 
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
+  const [file, setFile] = useState('');
+  const { userInfo } = useSelector((state) => state.auth)
 
-  const handleMediaUpload = (e) => {
-    <p></p>
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const intercards = {
-      title,
-      nb,
-      paragraphs,
-      communityimg: communityimg,
-      id: Math.floor(Math.random() * 1000) + 1, // generate a random ID
+    const resourceData = {
+      teacherId:userInfo._id,
+      submoduleId: "648314914e78666518b69c5d",
+      submitted:"648797b20da8cd5459f029ff",
+     title:title,
+     description:description,
+      file:file,
     };
+    console.log(resourceData)
+    try {
+      const response =  await axios.post(
+        `http://localhost:5000/api/activities`,
+        resourceData
+       
+      ); console.log( resourceData)
+      console.log("Resource  created:", response.data);
+      // Reset form fields
+      setTitle("");
+      setDescription("");
+      
+      setFile("");
+    } catch (error) {
+      console.error("Error creating question:", error);
+    }
 
-    
-
-    // Reset the form fields
-    setnb('');
-    settitle('');
-    setParagraphs('');
  
   };
 
@@ -65,7 +69,7 @@ const Media = () => {
 
   const formats = [    'header',    'bold',    'italic',    'underline',    'strike',    'blockquote',    'list', 
      'bullet',    'link',    'image',    'size',    'color',    'background',    'font',    'align',  ];
-     const isMediaVisible = startDate <= currentDate && currentDate <= endDate;
+     
   return (
     <div className='QuizForm'>
        
@@ -81,7 +85,7 @@ const Media = () => {
       >
         <form onSubmit={handleSubmit}>
           <Box marginBottom="20px">
-            <h4>Media Name</h4>
+            <h4>Resource Name</h4>
             <TextField
               variant="outlined"
               fullWidth
@@ -91,11 +95,11 @@ const Media = () => {
             />
           </Box>
           <Box marginBottom="16px">
-            <h4>Media Description</h4>
+            <h4>Resource Description</h4>
             <ReactQuill
               label="Media Description"
-              value={paragraphs}
-              onChange={setParagraphs}
+              value={description}
+              onChange={setDescription}
               modules={modules}
               formats={formats}
               render={() => (
@@ -114,16 +118,40 @@ const Media = () => {
               )}
             />
           </Box>
+          {/* <Box>
+          <form noValidate>
+            <TextField
+    id="datetime-local"
+    label="Next appointment"
+    type="datetime-local"
+    defaultValue="2017-05-24T10:30"
+    // className={classes.textField}
+    InputLabelProps={{
+      shrink: true,
+    }}
+      />
+        <TextField
+    id="datetime-local"
+    label="Next appointment"
+    type="datetime-local"
+    defaultValue="2017-05-24T10:30"
+    // className={classes.textField}
+    InputLabelProps={{
+      shrink: true,
+    }}
+      />
+    </form>
+    </Box> */}
           <Box marginBottom="16px">
-            <h4>Upload Media</h4>
-            <input type="file" onChange={handleMediaUpload} />
+            <h4>Upload Resource</h4>
+            <input type="file" onChange={(e) => setFile(e.target.value)}  />
           </Box>
           <Button variant="contained" color="primary" type="submit" sx={{ borderRadius: "20%" }}>
             Submit
           </Button>
-          <Button variant="contained" color="secondary" sx={{ borderRadius: "20%", marginLeft: "10px" }}>
+          {/* <Button variant="contained" color="secondary" sx={{ borderRadius: "20%", marginLeft: "10px" }}>
             Cancel
-          </Button>
+          </Button> */}
         </form>
       </Container>
   </div>

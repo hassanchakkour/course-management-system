@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import {
   TextField,
   Button,
@@ -15,40 +16,44 @@ import "../App.css";
 const Question = () => {
   const [type, setType] = useState("");
   const [content, setContent] = useState("");
-  const [options, setOptions] = useState();
+  const [options, setOptions] = useState([]);
   const [correctOption, setCorrectOption] = useState("");
-  const [optionsData, setOptionsData] = useState([]);
+  const { userInfo } = useSelector((state) => state.auth)
+  console.log('userInfo',userInfo._id)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const questionData = {
-      activityId: "6482f11016516151a65b1c9d",
+      activityId: "648c028e02c7e993d609a471",
+      teacherId:userInfo._id,
       type: type,
       content: content,
-      options: optionsData,
+      options: options,
+      correctOption: correctOption,
     };
-    console.log(questionData);
-
-    await axios
-      .post("http://localhost:5000/api/questions", questionData)
-      .then((response) => {
-        console.log("Question created:", response.data);
-        // Reset form fields
-        setType("");
-        setContent("");
-        setOptions([]);
-        setCorrectOption("");
-      })
-      .catch((error) => {
-        console.error("Error creating question:", error);
-      });
+    console.log(questionData)
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/questions`,
+        questionData
+       
+      ); console.log(questionData)
+      console.log("Question created:", response.data);
+      // Reset form fields
+      setType("");
+      setContent("");
+      setOptions([]);
+      setCorrectOption("");
+    } catch (error) {
+      console.error("Error creating question:", error);
+    }
   };
-  const handleOption = () => {
-    if (options != "") {
-      setOptionsData([...optionsData, options]);
 
-      console.log(optionsData);
+  const handleOption = () => {
+    if (options !== "") {
+      setOptions([...options, options]);
+      console.log(options);
     }
   };
 
@@ -77,8 +82,8 @@ const Question = () => {
                   required
                 >
                   {/* Render the list of activities */}
-                  <MenuItem value="activity1">True or false</MenuItem>
-                  <MenuItem value="activity2">Multiple Choice</MenuItem>
+                  <MenuItem value="True or false">True or false</MenuItem>
+                  <MenuItem value="Multiple Choice">Multiple Choice</MenuItem>
                   {/* Add more MenuItem components for each activity */}
                 </Select>
               </FormControl>
@@ -102,8 +107,10 @@ const Question = () => {
                 multiline
                 rows={1}
                 fullWidth
-                // value={options.join('\n')}
-                onChange={(event) => setOptions(event.target.value)}
+                value={options.join("\n")}
+                onChange={(event) =>
+                  setOptions(event.target.value.split("\n"))
+                }
                 required
               />
               <Button onClick={handleOption}>Add option</Button>
@@ -111,18 +118,23 @@ const Question = () => {
 
             <Box mb={2}>
               <FormControl fullWidth>
-                <InputLabel id="correctOption-label">Correct Option</InputLabel>
+                <InputLabel id="correctOption-label">
+                  Correct Option
+                </InputLabel>
                 <Select
                   labelId="correctOption-label"
                   id="correctOption"
                   value={correctOption}
-                  onChange={(event) => setCorrectOption(event.target.value)}
+                  onChange={(event) =>
+                    setCorrectOption(event.target.value)
+                  }
                 >
                   {/* Render the list of options */}
-                  {options &&
-                    optionsData.map((option, index) => (
-                      <MenuItem key={index}>{option}</MenuItem>
-                    ))}
+                  {options.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Box>

@@ -82,6 +82,9 @@ const App = () => {
 
                     <Route path="/calendar" element={<Content />} />
                     <Route path="/question" element={<Question />} />
+                    <Route path="/media" element={<Media />} />
+                    <Route path="/quiz" element={<Quiz />} />
+
                   </Routes>
                 </div>
               </div>

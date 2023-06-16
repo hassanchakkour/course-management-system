@@ -9,7 +9,7 @@ import {
 } from "../controllers/activitiesController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
-router.post("/", protect, isTeacher, postActivity);
+router.post("/", postActivity);
 router.get(
   "/submodule/:submoduleId",
   protect,
