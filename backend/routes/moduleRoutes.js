@@ -6,22 +6,25 @@ import {
   deleteModule,
   getModuleById,
   getModules,
+  getModulesbyCourseId,
 } from "../controllers/moduleController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
 // Create a new module
-router.post("/", protect, isTeacher, createModule);
+router.post("/", createModule);
+
+router.post("/course", getModulesbyCourseId);
 
 // Update a module by ID
-router.put("/:id", protect, isTeacher, updateModule);
+router.put("/:id", updateModule);
 
 // Delete a module by ID
-router.delete("/:id", protect, isTeacher, deleteModule);
+router.delete("/:id", deleteModule);
 
 // Get a specific module by ID
-router.get("/:id", protect, isTeacher, getModuleById);
+router.get("/:id", getModuleById);
 
 // Get a list of all modules
-router.get("/", protect, isTeacher, getModules);
+router.get("/", getModules);
 
 export default router;
