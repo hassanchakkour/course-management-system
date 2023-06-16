@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const DashBoard = () => {
-  const { currentColor, currentMode, currentBgColor } = useStateContext();
+  const { currentColor, currentBgColor } = useStateContext();
   const userInfo = useSelector((state) => state.auth);
 
   console.log(userInfo.userInfo._id);

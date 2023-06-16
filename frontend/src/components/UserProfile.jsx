@@ -113,7 +113,10 @@ const UserProfile = () => {
             borderRadius: "10px",
           }}
           className="p-3 w-full hover:drop-shadow-xl"
-          onClick={handleLogout}
+          onClick={() => {
+            setIsClicked(initialState);
+            handleLogout();
+          }}
         >
           Logout
         </button>
