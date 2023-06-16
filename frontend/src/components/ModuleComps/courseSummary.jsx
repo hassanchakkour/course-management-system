@@ -41,7 +41,7 @@ const CourseSummary = () => {
     let quizTemp = 0;
     let onlineTemp = 0;
     for (let i = 0; i < res.data.length; i++) {
-      if (res.data[i].type === "Quizz") {
+      if (res.data[i].type === "Quiz") {
         quizTemp += 1;
       }
       if (res.data[i].type === "Assignment") {
