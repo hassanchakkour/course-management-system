@@ -5,8 +5,7 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/activities
 // @access  Private (Teacher only)
 const postActivity = asyncHandler(async (req, res) => {
-  const { title, submoduleId } = req.body;
-  const teacherId = req.user._id;
+  const { title, submoduleId, type, teacherId } = req.body;
 
   if (!submoduleId) {
     res.status(400);
@@ -16,6 +15,7 @@ const postActivity = asyncHandler(async (req, res) => {
   const activity = await Activity.create({
     title,
     teacherId,
+    type,
     submoduleId,
   });
   res.status(201).json(activity);
@@ -37,9 +37,9 @@ const getActivitiesBySubModuleId = asyncHandler(async (req, res) => {
   }
 });
 const getActivitiesTeacherId = asyncHandler(async (req, res) => {
-  const teacherId = req.body;
+  const { teacherId } = req.body;
 
-  const activities = await Activity.find({ teacherId });
+  const activities = await Activity.find({ teacherId: teacherId });
   console.log(activities.length);
 
   if (activities.length > 0) {
