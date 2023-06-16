@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const StateContext = createContext();
 
@@ -13,8 +13,26 @@ export const ContextProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(initialState);
   const [screenSize, setScreenSize] = useState(undefined);
   const [currentColor, setCurrentColor] = useState("#03C9D7");
+  const [currentBgColor, setCurrentBgColor] = useState("bg-hero-2");
   const [currentMode, setCurrentMode] = useState("Dark");
   const [themeSettings, setThemeSettings] = useState(false);
+
+  useEffect(() => {
+    // Update currentBgColor based on currentColor
+    if (currentColor === "#1A97F5") {
+      setCurrentBgColor("bg-hero-1");
+    } else if (currentColor === "#03C9D7") {
+      setCurrentBgColor("bg-hero-2");
+    } else if (currentColor === "#7352FF") {
+      setCurrentBgColor("bg-hero-3");
+    } else if (currentColor === "#FF5C8E") {
+      setCurrentBgColor("bg-hero-4");
+    } else if (currentColor === "#1E4DB7") {
+      setCurrentBgColor("bg-hero-5");
+    } else if (currentColor === "#FB9678") {
+      setCurrentBgColor("bg-hero-6");
+    }
+  }, [currentColor]);
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -37,6 +55,8 @@ export const ContextProvider = ({ children }) => {
         currentMode,
         activeMenu,
         screenSize,
+        currentBgColor,
+        setCurrentBgColor,
         setScreenSize,
         handleClick,
         isClicked,

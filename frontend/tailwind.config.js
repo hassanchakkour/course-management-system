@@ -38,7 +38,12 @@ export const theme = {
       590: "590px",
     },
     backgroundImage: {
-      "hero-pattern": "url('https://i.ibb.co/MkvLDfb/Rectangle-4389.png')",
+      "hero-1": "url('./assets/images/hero/hero1-blue.svg')",
+      "hero-2": "url('./assets/images/hero/hero2-green.svg')",
+      "hero-3": "url('./assets/images/hero/hero3-purple.svg')",
+      "hero-4": "url('./assets/images/hero/hero4-red.svg')",
+      "hero-5": "url('./assets/images/hero/hero5-indigo.svg')",
+      "hero-6": "url('./assets/images/hero/hero6-orange.svg')",
     },
   },
 };

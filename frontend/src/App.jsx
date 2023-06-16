@@ -5,7 +5,7 @@ import { Tooltip } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Navbar, Footer, Sidebar, ThemeSettings, Media } from "./components";
-import { Courses, Students, Content, Question, Quiz } from "./pages";
+import { DashBoard, Courses, Students, Content, Question, Quiz } from "./pages";
 import Login from "./components/Login/Login";
 import { useSelector } from "react-redux";
 import "./App.css";
@@ -76,7 +76,7 @@ const App = () => {
                 <div>
                   {themeSettings && <ThemeSettings />}
                   <Routes>
-                    {/* <Route path="/courses" element={<Courses />} /> */}
+                    <Route path="/dashboard" element={<DashBoard />} />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/students" element={<Students />} />
 
