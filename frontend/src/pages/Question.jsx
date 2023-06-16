@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 import {
   TextField,
   Button,
@@ -9,42 +9,52 @@ import {
   MenuItem,
   Container,
   Box,
-} from '@mui/material';
-import '../App.css';
+} from "@mui/material";
+import "../App.css";
 
 const Question = () => {
-  const [activityId, setActivityId] = useState('');
-  const [content, setContent] = useState('');
-  const [options, setOptions] = useState([]);
-  const [correctOption, setCorrectOption] = useState('');
+  const [type, setType] = useState("");
+  const [content, setContent] = useState("");
+  const [options, setOptions] = useState();
+  const [correctOption, setCorrectOption] = useState("");
+  const [optionsData, setOptionsData] = useState([]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const questionData = {
-      activityId,
-      content,
-      options,
-      correctOption,
+      activityId: "6482f11016516151a65b1c9d",
+      type: type,
+      content: content,
+      options: optionsData,
     };
-    
-    axios.post('http://localhost:5000/api/questions', questionData)
+    console.log(questionData);
+
+    await axios
+      .post("http://localhost:5000/api/questions", questionData)
       .then((response) => {
-        console.log('Question created:', response.data);
+        console.log("Question created:", response.data);
         // Reset form fields
-        setActivityId('');
-        setContent('');
+        setType("");
+        setContent("");
         setOptions([]);
-        setCorrectOption('');
+        setCorrectOption("");
       })
       .catch((error) => {
-        console.error('Error creating question:', error);
+        console.error("Error creating question:", error);
       });
+  };
+  const handleOption = () => {
+    if (options != "") {
+      setOptionsData([...optionsData, options]);
+
+      console.log(optionsData);
+    }
   };
 
   return (
-    <div className='QuizForm'>
-      <Container 
+    <div className="QuizForm">
+      <Container
         maxWidth="30%"
         sx={{
           border: "1px solid #ccc",
@@ -62,8 +72,8 @@ const Question = () => {
                 <Select
                   labelId="activityId-label"
                   id="activityId"
-                  value={activityId}
-                  onChange={(event) => setActivityId(event.target.value)}
+                  value={type}
+                  onChange={(event) => setType(event.target.value)}
                   required
                 >
                   {/* Render the list of activities */}
@@ -90,12 +100,13 @@ const Question = () => {
               <TextField
                 label="Options"
                 multiline
-                rows={4}
+                rows={1}
                 fullWidth
-                value={options.join('\n')}
-                onChange={(event) => setOptions(event.target.value.split('\n'))}
+                // value={options.join('\n')}
+                onChange={(event) => setOptions(event.target.value)}
                 required
               />
+              <Button onClick={handleOption}>Add option</Button>
             </Box>
 
             <Box mb={2}>
@@ -106,14 +117,12 @@ const Question = () => {
                   id="correctOption"
                   value={correctOption}
                   onChange={(event) => setCorrectOption(event.target.value)}
-                  required
                 >
                   {/* Render the list of options */}
-                  {options.map((option, index) => (
-                    <MenuItem key={index} value={index}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {options &&
+                    optionsData.map((option, index) => (
+                      <MenuItem key={index}>{option}</MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Box>

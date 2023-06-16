@@ -55,12 +55,12 @@
 }
 
 /*Media Form*/
-.QuizForm{ 
-   margin:auto;
+.QuizForm {
+  margin: auto;
   margin-left: 50px;
   margin-right: 50px;
   margin-bottom: auto;
   margin-top: 50px;
-  width:60;
+  width: 60;
   /* padding:10px; */
 }

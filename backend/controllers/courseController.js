@@ -5,8 +5,8 @@ import Course from "../models/courseModel.js";
 // @route   GET /api/courses
 // @access  Private (Teacher)
 const getCourses = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
-  const courses = await Course.find({ teacherId });
+  const { teacherId } = req.body;
+  const courses = await Course.find({ teacherId: teacherId });
 
   if (courses.length > 0) {
     res.status(200).json(courses);
