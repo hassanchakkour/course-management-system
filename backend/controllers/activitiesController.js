@@ -46,8 +46,6 @@ const getActivitiesTeacherId = asyncHandler(async (req, res) => {
   const { teacherId } = req.body;
 
   const activities = await Activity.find({ teacherId: teacherId });
-  console.log(activities.length);
-
   if (activities.length > 0) {
     res.status(200).json(activities);
   } else {

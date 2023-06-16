@@ -64,7 +64,9 @@ const Login = () => {
       }).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success("Sign In Successfull !!");
-      navigate("/");
+      if (res) {
+        navigate("/");
+      }
     } catch (error) {
       toast.error(error?.data.message || error.error);
     }
