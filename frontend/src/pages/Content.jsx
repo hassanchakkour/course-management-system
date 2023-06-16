@@ -3,11 +3,15 @@ import { BsFillMicFill } from "react-icons/bs";
 import { AiFillFileText } from "react-icons/ai";
 import { RiSurveyFill } from "react-icons/ri";
 import { MdViewModule, MdDocumentScanner } from "react-icons/md";
+import CourseSummary from "../components/ModuleComps/courseSummary";
 
 const Content = () => {
   return (
     <div className="">
-      <div className="border flex">
+      <div>
+        <CourseSummary />
+      </div>
+      <div className=" flex">
         <div className="my-[8%]">
           <div className="ml-10 bg-secondary-dark-bg mt-10 rounded p-4 text-2xl flex">
             <ul className=" rounded">

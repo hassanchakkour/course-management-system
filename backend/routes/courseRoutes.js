@@ -9,10 +9,8 @@ import {
 } from "../controllers/courseController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
-router
-  .route("/")
-  .get(protect, isTeacher, getCourses)
-  .post(protect, isTeacher, createCourse);
+router.route("/").post(getCourses);
+// .post(protect, isTeacher, createCourse);
 
 router
   .route("/:id")

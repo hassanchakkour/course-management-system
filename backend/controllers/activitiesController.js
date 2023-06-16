@@ -5,8 +5,10 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/activities
 // @access  Private (Teacher only)
 const postActivity = asyncHandler(async (req, res) => {
+
   const { title, submoduleId,type,duration,passingGrade,note,teacherId } = req.body;
   // const teacherId = req.user._id;
+
 
   if (!submoduleId) {
     res.status(400);
@@ -40,12 +42,28 @@ const getActivitiesBySubModuleId = asyncHandler(async (req, res) => {
     throw new Error("No activities found for the specified submodule");
   }
 });
+const getActivitiesTeacherId = asyncHandler(async (req, res) => {
+  const { teacherId } = req.body;
+
+  const activities = await Activity.find({ teacherId: teacherId });
+  console.log(activities.length);
+
+  if (activities.length > 0) {
+    res.status(200).json(activities);
+  } else {
+    res.status(404);
+    throw new Error("No activities found for the specified teacher");
+  }
+});
 
 // @desc    Get a specific activity by ID
 // @route   GET /api/activities/:id
 // @access  Private (Teacher only)
 const getActivity = asyncHandler(async (req, res) => {
-  const activity = await Activity.findOne({ _id: req.params.id }).populate('submitted','studentId')
+  const activity = await Activity.findOne({ _id: req.params.id }).populate(
+    "submitted",
+    "studentId"
+  );
 
   if (activity) {
     res.status(200).json(activity);
@@ -112,4 +130,5 @@ export {
   getActivitiesBySubModuleId,
   deleteActivity,
   putActivity,
+  getActivitiesTeacherId,
 };
