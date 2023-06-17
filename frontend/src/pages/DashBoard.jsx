@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -6,6 +7,7 @@ import { useSelector } from "react-redux";
 const DashBoard = () => {
   const { currentColor, currentBgColor } = useStateContext();
   const userInfo = useSelector((state) => state.auth);
+  // const navigate = useNavigate();
 
   console.log(userInfo.userInfo._id);
 
@@ -37,7 +39,7 @@ const DashBoard = () => {
       <div className="flex flex-wrap lg:flex-nowrap justify-center ">
         <div className={dynamicClass}>
           <div className="flex justify-between p-6">
-            <p className="text-xl text-gray-400 mt-16 md:mt-14 ">
+            <p className="text-xl text-gray-500 dark:text-gray-400 lg:dark:text-white mt-16 md:mt-14 ">
               <span className="font-bold">Academic</span> Session
             </p>
             <p className="text-base md:text-xl text-gray-400 font-bold -mt-9 ">
@@ -47,12 +49,17 @@ const DashBoard = () => {
                   borderRadius: "50%",
                   filter: `drop-shadow(0px 0px 6px ${currentColor})`,
                 }}
-                className="text-xl opacity-0.9 text-white rounded-full mr-1 p-3 md:p-4"
+                className="text-xl opacity-0.9 text-white rounded-full mr-1 p-2 md:p-3"
               >
                 {numberOfCourses}
               </span>
               {"  "}
-              My Classes
+              <NavLink
+                className="hover:text-gray-500 dark:hover:text-white hover:transition ease-out duration-700 "
+                to={"/courses"}
+              >
+                My Classes
+              </NavLink>
             </p>
           </div>
         </div>
