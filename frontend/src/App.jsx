@@ -76,7 +76,11 @@ const App = () => {
                 <div>
                   {themeSettings && <ThemeSettings />}
                   <Routes>
-                    <Route path="/dashboard" element={<DashBoard />} />
+                    <Route
+                      index={true}
+                      path="/dashboard"
+                      element={<DashBoard />}
+                    />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/students" element={<Students />} />
 
@@ -84,7 +88,6 @@ const App = () => {
                     <Route path="/question" element={<Question />} />
                     <Route path="/media" element={<Media />} />
                     <Route path="/quiz" element={<Quiz />} />
-
                   </Routes>
                 </div>
               </div>

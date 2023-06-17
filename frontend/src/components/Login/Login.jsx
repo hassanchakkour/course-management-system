@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../../slices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
@@ -18,6 +19,7 @@ const theme = createTheme({
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -61,6 +63,7 @@ const Login = () => {
         password,
       }).unwrap();
       dispatch(setCredentials({ ...res }));
+      navigate("/dashboard");
     } catch (error) {
       toast.error(error?.data.message || error.error);
     }
