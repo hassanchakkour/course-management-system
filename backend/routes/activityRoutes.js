@@ -6,7 +6,7 @@ import {
   getActivitiesBySubModuleId,
   deleteActivity,
   putActivity,
-  getActivitiesTeacherId,
+  getActivitiesCourseId,
 } from "../controllers/activitiesController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
@@ -21,6 +21,6 @@ router.get(
 router.get("/:id", getActivity);
 router.delete("/:id", deleteActivity);
 router.put("/:id", putActivity);
-router.post("/teacher", getActivitiesTeacherId);
+router.post("/course", getActivitiesCourseId);
 
 export default router;

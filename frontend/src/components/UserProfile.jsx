@@ -43,7 +43,9 @@ const UserProfile = () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
-      toast.success("Logged Out Successfully !!");
+      toast.info("Logged Out Successfully !!", {
+        theme: "dark",
+      });
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -51,9 +53,9 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
+    <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-8 rounded-lg w-96">
       <div className="flex justify-between items-center">
-        <p className="font-semibold text-lg dark:text-gray-200">User Profile</p>
+        <p className="font-semibold text-lg">User Profile</p>
         <Button
           icon={<MdOutlineCancel />}
           color="rgb(153, 171, 180)"
@@ -70,15 +72,15 @@ const UserProfile = () => {
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200">
+          <p className="font-semibold text-xl">
             {" "}
             {userInfo ? userInfo.userInfo.name : null}{" "}
           </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400 capitalize">
+          <p className="text-gray-500 text-sm capitalize">
             {" "}
             {userInfo ? userInfo.userInfo.specialization : null}{" "}
           </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
+          <p className="text-gray-500 text-sm font-semibold">
             {" "}
             {userInfo ? userInfo.userInfo.email : null}{" "}
           </p>
@@ -88,22 +90,19 @@ const UserProfile = () => {
         {userProfileData.map((item, index) => (
           <div
             key={index}
-            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
+            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer dark:hover:bg-[#42464D]"
           >
             <button
               type="button"
               style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-              className=" text-xl rounded-lg p-3 hover:bg-light-gray"
+              className="text-xl rounded-lg p-3 hover:bg-light-gray"
             >
               {item.icon}
             </button>
 
             <div>
-              <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
-              <p className="text-gray-500 text-sm dark:text-gray-400">
-                {" "}
-                {item.desc}{" "}
-              </p>
+              <p className="font-semibold">{item.title}</p>
+              <p className="text-gray-500 text-sm">{item.desc}</p>
             </div>
           </div>
         ))}

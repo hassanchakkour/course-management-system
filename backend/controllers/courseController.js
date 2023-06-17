@@ -35,14 +35,15 @@ const getCourseById = asyncHandler(async (req, res) => {
 // @route   POST /api/courses
 // @access  Private (Teacher)
 const createCourse = asyncHandler(async (req, res) => {
-  const { title, description, duration } = req.body;
-  const teacherId = req.user._id;
+  const { title, description, duration, courseSKU, teacherId } = req.body;
+  // const teacherId = req.user._id;
 
   const course = await Course.create({
     title,
     description,
     teacherId,
     duration,
+    courseSKU,
   });
 
   if (course) {

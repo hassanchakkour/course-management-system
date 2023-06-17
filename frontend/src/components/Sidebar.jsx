@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 
@@ -35,6 +35,7 @@ const links = [
 ];
 
 import { useStateContext } from "../contexts/ContextProvider";
+import { useEffect } from "react";
 
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
@@ -45,6 +46,11 @@ const Sidebar = () => {
       setActiveMenu(false);
     }
   };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    // navigate("/dashboard");
+  }, []);
 
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
