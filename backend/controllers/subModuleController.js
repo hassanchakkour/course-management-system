@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Submodule from "../models/subModuleModel.js";
+import Module from "../models/moduleModel.js";
 
 // @desc    Get all submodules by module ID
 // @route   GET /api/submodules/module/:moduleId
@@ -39,9 +40,7 @@ const getSubmoduleById = asyncHandler(async (req, res) => {
 // @route   POST /api/submodules
 // @access  Private (Teacher only)
 const createSubmodule = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
-  const moduleId = req.body.moduleId;
-  const teacherId = req.user._id;
+  const { title, moduleId } = req.body;
 
   if (!moduleId) {
     res.status(400);
@@ -50,10 +49,16 @@ const createSubmodule = asyncHandler(async (req, res) => {
 
   const submodule = await Submodule.create({
     title,
-    content,
     moduleId,
-    teacherId,
   });
+  if (submodule) {
+    const addToModule = await Module.findById(moduleId);
+
+    addToModule.submoduleId.push(submodule._id);
+    console.log(addToModule);
+
+    await addToModule.save();
+  }
 
   res.status(201).json(submodule);
 });

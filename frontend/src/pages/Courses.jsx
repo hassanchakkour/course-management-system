@@ -7,7 +7,8 @@ import { FiEdit2 } from "react-icons/fi";
 import { Tooltip } from "@mui/material";
 
 const Courses = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, courseID, setCourse_ID, course_Name } =
+    useStateContext();
   const userInfo = useSelector((state) => state.auth);
 
   const [courses, setCourses] = useState([]);
@@ -29,7 +30,7 @@ const Courses = () => {
     getCourses();
   }, []);
 
-  console.log("Courses:", courses);
+  // console.log("Courses:", courseID);
 
   return (
     <div className="mt-24 sm:mt-18 md:mt-11">
@@ -51,16 +52,19 @@ const Courses = () => {
                   {course.courseSKU}
                 </button>
                 <Tooltip arrow title="Edit">
-                  <button
-                    type="button"
-                    style={{
-                      backgroundColor: currentColor,
-                      borderRadius: "50%",
-                    }}
-                    className="md:text-2xl text-base text-white dark:text-gray-700 opacity-0.9 rounded-full p-3 hover:drop-shadow-xl hover:transition hover:text-gray-700 dark:hover:text-white ease-out duration-700"
-                  >
-                    <FiEdit2 />
-                  </button>
+                  <NavLink to="/courseName">
+                    <button
+                      type="button"
+                      onClick={() => setCourse_ID(course._id, course.title)}
+                      style={{
+                        backgroundColor: currentColor,
+                        borderRadius: "50%",
+                      }}
+                      className="md:text-2xl text-base text-white dark:text-gray-700 opacity-0.9 rounded-full p-3 hover:drop-shadow-xl hover:transition hover:text-gray-700 dark:hover:text-white ease-out duration-700"
+                    >
+                      <FiEdit2 />
+                    </button>
+                  </NavLink>
                 </Tooltip>
               </div>
               <p className="mt-3">
