@@ -9,7 +9,7 @@ import {
 } from "../controllers/subModuleController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
-router.route("/").post(protect, isTeacher, createSubmodule);
+router.route("/").post(createSubmodule);
 
 router
   .route("/:id")
