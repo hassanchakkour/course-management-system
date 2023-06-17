@@ -65,7 +65,7 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       navigate("/dashboard");
     } catch (error) {
-      toast.error(error?.data.message || error.error);
+      toast.error(error?.data.message || error.error, { theme: "dark" });
     }
   };
   return (

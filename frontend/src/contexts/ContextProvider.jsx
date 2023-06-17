@@ -16,6 +16,8 @@ export const ContextProvider = ({ children }) => {
   const [currentBgColor, setCurrentBgColor] = useState("bg-hero-2");
   const [currentMode, setCurrentMode] = useState("Dark");
   const [themeSettings, setThemeSettings] = useState(false);
+  const [courseID, setCourseID] = useState("");
+  const [courseName, setCourseName] = useState("");
 
   useEffect(() => {
     // Update currentBgColor based on currentColor
@@ -44,6 +46,13 @@ export const ContextProvider = ({ children }) => {
     localStorage.setItem("colorMode", color);
   };
 
+  const setCourse_ID = (course_ID, course_Name) => {
+    setCourseID(course_ID);
+    setCourseName(course_Name);
+    localStorage.setItem("course_id", course_ID);
+    localStorage.setItem("course_name", course_Name);
+  };
+
   const handleClick = (clicked) => {
     setIsClicked({ ...initialState, [clicked]: true });
   };
@@ -61,6 +70,10 @@ export const ContextProvider = ({ children }) => {
         handleClick,
         isClicked,
         initialState,
+        courseID,
+        setCourseID,
+        courseName,
+        setCourseName,
         setIsClicked,
         setActiveMenu,
         setCurrentColor,
@@ -69,6 +82,7 @@ export const ContextProvider = ({ children }) => {
         setColor,
         themeSettings,
         setThemeSettings,
+        setCourse_ID,
       }}
     >
       {children}

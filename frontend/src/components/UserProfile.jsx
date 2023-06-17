@@ -43,7 +43,7 @@ const UserProfile = () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
-      toast.success("Logged Out Successfully !!", {
+      toast.info("Logged Out Successfully !!", {
         theme: "dark",
       });
       navigate("/");

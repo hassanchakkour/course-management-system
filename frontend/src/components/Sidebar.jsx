@@ -49,7 +49,7 @@ const Sidebar = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/dashboard");
+    // navigate("/dashboard");
   }, []);
 
   const activeLink =

@@ -8,15 +8,21 @@ const moduleSchema = new Schema(
       type: String,
       required: [true, "Please provide the title of the module."],
     },
-    description: {
-      type: String,
-      required: [true, "Please provide a description for the module."],
-    },
+    // description: {
+    //   type: String,
+    //   required: [true, "Please provide a description for the module."],
+    // },
     courseId: {
       type: SchemaTypes.ObjectId,
       ref: "Course",
       required: true,
     },
+    submoduleId: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Submodule",
+      },
+    ],
   },
   {
     timestamps: true,
