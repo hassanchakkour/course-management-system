@@ -1,5 +1,6 @@
 import Activity from "../models/activityModel.js";
 import asyncHandler from "express-async-handler";
+import Submodule from "../models/subModuleModel.js";
 
 // @desc    Create a new activity
 // @route   POST /api/activities
@@ -32,6 +33,16 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     courseId,
   });
+
+  if (activity) {
+    const addTosubmodule = await Submodule.findById(submoduleId).populate(
+      "activityId"
+    );
+
+    addTosubmodule.activityId.push(activity._id);
+    // console.log(addTosubmodule);
+    await addTosubmodule.save();
+  }
   res.status(201).json(activity);
 });
 

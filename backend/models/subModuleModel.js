@@ -16,6 +16,13 @@ const submoduleSchema = new Schema(
       ref: "Module",
       required: true,
     },
+    activityId: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Activity",
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,

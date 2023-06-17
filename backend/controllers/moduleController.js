@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Module from "../models/moduleModel.js";
+import Submodule from "../models/subModuleModel.js";
 
 // @desc    Get a list of all modules
 // @route   GET /api/modules
@@ -17,7 +18,16 @@ const getModules = asyncHandler(async (req, res) => {
 });
 const getModulesbyCourseId = asyncHandler(async (req, res) => {
   const { courseId } = req.body;
-  const modules = await Module.find({ courseId });
+  const modules = await Module.find({ courseId })
+    .populate({
+      path: "submoduleId",
+      populate: {
+        path: "activityId",
+        model: "Activity",
+        strictPopulate: false,
+      },
+    })
+    .exec();
 
   if (modules.length > 0) {
     res.status(200).json(modules);
