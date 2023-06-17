@@ -45,7 +45,7 @@ const Courses = () => {
                 <button
                   type="button"
                   style={{ backgroundColor: currentColor }}
-                  className="md:text-lg text-base text-white dark:text-white opacity-0.9 rounded-full -ml-8 py-2 px-4 hover:drop-shadow-xl hover:transition ease-out duration-700"
+                  className="md:text-lg text-base text-gray-700 dark:text-white opacity-0.9 rounded-full -ml-8 py-2 px-4 hover:drop-shadow-xl hover:transition ease-out duration-700"
                 >
                   {/* Codeof The Course */}
                   CODE
@@ -57,7 +57,7 @@ const Courses = () => {
                       backgroundColor: currentColor,
                       borderRadius: "50%",
                     }}
-                    className="md:text-2xl text-base text-white dark:text-white opacity-0.9 rounded-full p-3 hover:drop-shadow-xl hover:transition ease-out duration-700"
+                    className="md:text-2xl text-base text-white dark:text-gray-700 opacity-0.9 rounded-full p-3 hover:drop-shadow-xl hover:transition hover:text-gray-700 dark:hover:text-white ease-out duration-700"
                   >
                     <FiEdit2 />
                   </button>
