@@ -5,7 +5,7 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/questions
 // @access  Private (Teacher only)
 const postQuestion = asyncHandler(async (req, res) => {
-  const { activityId, type, content, options, correctOption,teacherId } = req.body;
+  const { activityId, type, content, options,teacherId } = req.body;
   // const teacherId = req.user.id;
   // console.log(teacherId)
   // console.log('===')
@@ -24,7 +24,7 @@ const postQuestion = asyncHandler(async (req, res) => {
       type,
       content,
       options,
-      correctOption,
+     
        teacherId,
     });
 
