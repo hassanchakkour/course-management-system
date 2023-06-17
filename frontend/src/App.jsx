@@ -10,6 +10,7 @@ import Login from "./components/Login/Login";
 import { useSelector } from "react-redux";
 import "./App.css";
 import { useStateContext } from "./contexts/ContextProvider";
+import Resources from "./pages/Resources";
 
 const App = () => {
   const {
@@ -84,6 +85,7 @@ const App = () => {
                     <Route path="/question" element={<Question />} />
                     <Route path="/media" element={<Media />} />
                     <Route path="/quiz" element={<Quiz />} />
+                    <Route path="/resources" element={<Resources />} />
 
                   </Routes>
                 </div>

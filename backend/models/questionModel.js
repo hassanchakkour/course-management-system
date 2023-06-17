@@ -25,7 +25,7 @@ const questionSchema = new Schema(
       ref: "User",
     },
     options: [String],
-    // correctOption: Number,
+    // correctOption: String,
   },
   {
     timestamps: true,
