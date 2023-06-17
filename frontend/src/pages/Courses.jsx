@@ -48,7 +48,7 @@ const Courses = () => {
                   className="md:text-lg text-base text-white dark:text-white opacity-0.9 rounded-full -ml-8 py-2 px-4 hover:drop-shadow-xl hover:transition ease-out duration-700"
                 >
                   {/* Codeof The Course */}
-                  CODE
+                  {course.courseSKU}
                 </button>
                 <Tooltip arrow title="Edit">
                   <button

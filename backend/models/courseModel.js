@@ -8,6 +8,10 @@ const courseSchema = new Schema(
       type: String,
       required: [true, "Please provide the title of the course."],
     },
+    courseSKU: {
+      type: String,
+      required: [true, "Please provide the title of the course."],
+    },
     description: {
       type: String,
       required: [true, "Please provide a description for the course."],

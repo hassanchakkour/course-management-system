@@ -10,12 +10,8 @@ import {
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
 router.route("/").post(getCourses);
-// .post(protect, isTeacher, createCourse);
+router.post("/create", createCourse);
 
-router
-  .route("/:id")
-  .get(protect, isTeacher, getCourseById)
-  .put(protect, isTeacher, updateCourse)
-  .delete(protect, isTeacher, deleteCourse);
+router.route("/:id").get(getCourseById).put(updateCourse).delete(deleteCourse);
 
 export default router;
