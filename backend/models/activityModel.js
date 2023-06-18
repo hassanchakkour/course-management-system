@@ -28,6 +28,11 @@ const activitySchema = Schema(
       type: SchemaTypes.ObjectId,
       ref: "User",
     },
+    studentId: {
+      type:  SchemaTypes.ObjectId,
+      ref: 'User',
+      
+    },
     startDate: {
       type: Date,
       default: "",

@@ -106,13 +106,13 @@ const Quiz = () => {
   const formats = [    'header',    'bold',    'italic',    'underline',    'strike',    'blockquote',    'list', 
      'bullet',    'link',    'image',    'size',    'color',    'background',    'font',    'align',  ];
   return (
-    <div className='QuizForm'>
+   
       <Container
         maxWidth="20%"
         sx={{
-          border: "1px solid #ccc",
+          // border: "1px solid #ccc",
           borderRadius: "10px",
-          padding: "20px",
+          // padding: "px",
           maxHeight: "60vh", // Set the desired height for the scrollable area
           overflowY: "auto", // Enable vertical scrolling
         }}
@@ -263,7 +263,7 @@ const Quiz = () => {
           </form>
         </Box>
       </Container>
-    </div>
+    
   );
 };
 

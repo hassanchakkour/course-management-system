@@ -58,11 +58,11 @@ const Question = () => {
   };
 
   return (
-    <div className="QuizForm">
+   
       <Container
         maxWidth="30%"
         sx={{
-          border: "1px solid #ccc",
+          // border: "1px solid #ccc",
           borderRadius: "10px",
           padding: "20px",
           maxHeight: "60vh", // Set the desired height for the scrollable area
@@ -145,7 +145,7 @@ const Question = () => {
           </form>
         </Box>
       </Container>
-    </div>
+ 
   );
 };
 

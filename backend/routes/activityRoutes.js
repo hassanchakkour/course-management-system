@@ -7,6 +7,8 @@ import {
   deleteActivity,
   putActivity,
   getActivitiesTeacherId,
+  getActivitiesByStudentId,
+  getAllActivities,
 } from "../controllers/activitiesController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
@@ -22,5 +24,7 @@ router.get("/:id", getActivity);
 router.delete("/:id", deleteActivity);
 router.put("/:id", putActivity);
 router.post("/teacher", getActivitiesTeacherId);
-
+// GET /api/activities/student/:studentId
+router.get('/student/:id', getActivitiesByStudentId);
+router.get("/", getAllActivities);
 export default router;
