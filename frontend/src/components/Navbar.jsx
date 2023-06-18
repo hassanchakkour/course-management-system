@@ -4,9 +4,7 @@ import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useSelector } from "react-redux";
-
 import { Tooltip } from "@mui/material";
-
 import avatar from "../assets/images/avatar3.jpg";
 import { UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -63,12 +61,26 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
-      <NavButton
-        title="Menu"
-        customFunc={handleActiveMenu}
-        color={currentColor}
-        icon={<AiOutlineMenu />}
-      />
+      <div className="flex">
+        <NavButton
+          title="Menu"
+          customFunc={handleActiveMenu}
+          color={currentColor}
+          icon={<AiOutlineMenu />}
+        />
+
+        <p className="text-4xl dark:text-white text-gray-500 ml-1">
+          <span className="text-14">Welcome</span>
+          <span className="font-bold ml-1 text-14">
+            {userInfo ? userInfo.userInfo.name : null}
+            {" !"}
+          </span>
+        </p>
+      </div>
+
+      <div className="flex items-center flex-grow mx-2">
+        <div className="border-b border-gray-400 w-full"></div>
+      </div>
 
       <div className="flex">
         <NavButton
@@ -91,18 +103,12 @@ const Navbar = () => {
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
             onClick={() => handleClick("userProfile")}
           >
+            <MdKeyboardArrowDown className="text-gray-400 text-14" />
             <img
               className="rounded-full w-12 h-12"
               src={avatar}
               alt="profile"
             />
-            <p>
-              <span className="text-gray-400 text-14">Hi,</span>{" "}
-              <span className="text-gray-400 font-bold ml-1 text-14">
-                {userInfo ? userInfo.userInfo.name : null}
-              </span>
-            </p>
-            <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>
         </Tooltip>
         {isClicked.userProfile && <UserProfile />}
