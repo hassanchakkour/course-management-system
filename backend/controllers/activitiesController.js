@@ -5,10 +5,17 @@ import asyncHandler from "express-async-handler";
 // @route   POST /api/activities
 // @access  Private (Teacher only)
 const postActivity = asyncHandler(async (req, res) => {
-
-  const { title, submoduleId,type,duration,passingGrade,note,teacherId } = req.body;
+  const {
+    title,
+    submoduleId,
+    type,
+    duration,
+    passingGrade,
+    note,
+    teacherId,
+    courseId,
+  } = req.body;
   // const teacherId = req.user._id;
-
 
   if (!submoduleId) {
     res.status(400);
@@ -23,6 +30,7 @@ const postActivity = asyncHandler(async (req, res) => {
     duration,
     passingGrade,
     note,
+    courseId,
   });
   res.status(201).json(activity);
 });
@@ -42,15 +50,15 @@ const getActivitiesBySubModuleId = asyncHandler(async (req, res) => {
     throw new Error("No activities found for the specified submodule");
   }
 });
-const getActivitiesTeacherId = asyncHandler(async (req, res) => {
-  const { teacherId } = req.body;
+const getActivitiesCourseId = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
 
-  const activities = await Activity.find({ teacherId: teacherId });
+  const activities = await Activity.find({ courseId: courseId });
   if (activities.length > 0) {
     res.status(200).json(activities);
   } else {
     res.status(404);
-    throw new Error("No activities found for the specified teacher");
+    throw new Error("No activities found for the specified course");
   }
 });
 
@@ -155,7 +163,11 @@ export {
   getActivitiesBySubModuleId,
   deleteActivity,
   putActivity,
+<<<<<<< HEAD
   getActivitiesTeacherId,
   getActivitiesByStudentId ,
   getAllActivities,
+=======
+  getActivitiesCourseId,
+>>>>>>> 5d363d2269f597438433d4f055f8875e76ecde16
 };

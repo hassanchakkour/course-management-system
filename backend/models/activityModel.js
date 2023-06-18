@@ -28,10 +28,16 @@ const activitySchema = Schema(
       type: SchemaTypes.ObjectId,
       ref: "User",
     },
+<<<<<<< HEAD
     studentId: {
       type:  SchemaTypes.ObjectId,
       ref: 'User',
       
+=======
+    courseId: {
+      type: SchemaTypes.ObjectId,
+      ref: "Courses",
+>>>>>>> 5d363d2269f597438433d4f055f8875e76ecde16
     },
     startDate: {
       type: Date,

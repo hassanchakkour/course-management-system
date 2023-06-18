@@ -48,9 +48,8 @@ const getModuleById = asyncHandler(async (req, res) => {
 // @route   POST /api/modules
 // @access  Private (Teacher only)
 const createModule = asyncHandler(async (req, res) => {
-  const { title, description } = req.body;
-  const courseId = req.body.courseId;
-  const teacherId = req.user._id;
+  const { title, courseId } = req.body;
+  // const teacherId = req.user._id;
 
   if (!courseId) {
     res.status(400);
@@ -59,9 +58,7 @@ const createModule = asyncHandler(async (req, res) => {
 
   const module = await Module.create({
     title,
-    description,
     courseId,
-    teacherId,
   });
 
   res.status(201).json(module);

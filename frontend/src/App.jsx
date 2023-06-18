@@ -79,14 +79,27 @@ const App = () => {
                 <div>
                   {themeSettings && <ThemeSettings />}
                   <Routes>
-                    <Route path="/dashboard" element={<DashBoard />} />
+                    <Route
+                      index={true}
+                      path="/dashboard"
+                      element={<DashBoard />}
+                    />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/students" element={<Students />} />
+<<<<<<< HEAD
                     <Route path="/calendar" element={<Content />} />
                     <Route path="/questionsBank" element={< QuestionsBank />} />
                     <Route path="/resources" element={<Resources />} />
                     <Route path="/quiz" element={<QuizModal />} />
 
+=======
+
+                    <Route path="/courseName" element={<Content />} />
+                    <Route path="/question" element={<Question />} />
+                    <Route path="/media" element={<Media />} />
+                    <Route path="/quiz" element={<Quiz />} />
+                    <Route path="/resources" element={<Resources />} />
+>>>>>>> 5d363d2269f597438433d4f055f8875e76ecde16
                   </Routes>
                 </div>
               </div>
