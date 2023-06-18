@@ -35,6 +35,7 @@ const activitySchema = Schema(
     courseId: {
       type: SchemaTypes.ObjectId,
       ref: "Courses",
+      required: true,
     },
     startDate: {
       type: Date,
