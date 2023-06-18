@@ -1,31 +1,25 @@
-
-
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Dropzone, FileMosaic } from "@dropzone-ui/react";
+// import { Dropzone, FileMosaic } from "@dropzone-ui/react";
 import ReactDOM from "react-dom";
 
+import "../App.css";
 
-import '../App.css'
-
-  
-
-import { TextField, Button, Container, Box} from "@mui/material";
+import { TextField, Button, Container, Box } from "@mui/material";
 
 const Media = () => {
-
   const [files, setFiles] = useState([]);
   const updateFiles = (incommingFiles) => {
     setFiles(incommingFiles);
   };
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [file, setFile] = useState('');
-  const { userInfo } = useSelector((state) => state.auth)
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState("");
+  const { userInfo } = useSelector((state) => state.auth);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,7 +31,7 @@ const Media = () => {
       title: title,
       description: description,
       file: file,
-      type:"Media",
+      type: "Media",
     };
 
     try {
@@ -59,37 +53,37 @@ const Media = () => {
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image'],
-      [{ size: ['small', false, 'large', 'huge'] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      [{ size: ["small", false, "large", "huge"] }],
       [{ color: [] }, { background: [] }],
       [{ font: [] }],
       [{ align: [] }],
-      ['clean'],
+      ["clean"],
     ],
   };
 
   const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'link',
-    'image',
-    'size',
-    'color',
-    'background',
-    'font',
-    'align',
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+    "image",
+    "size",
+    "color",
+    "background",
+    "font",
+    "align",
   ];
 
   return (
-    <div className='QuizForm'>
+    <div className="QuizForm">
       <Container
         maxWidth="30%"
         sx={{
@@ -139,23 +133,23 @@ const Media = () => {
             <h4>Upload Resource</h4>
             {/* <input type="file" onChange={(e) => setFile(e.target.value)} /> */}
             <Dropzone onChange={updateFiles} value={files}>
-        {files.map((file) => (
-          <FileMosaic {...file} preview />
-        ))}
-      </Dropzone>
+              {files.map((file) => (
+                <FileMosaic {...file} preview />
+              ))}
+            </Dropzone>
           </Box>
-          <Button variant="contained" color="primary" type="submit" sx={{ borderRadius: "20%" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ borderRadius: "20%" }}
+          >
             Submit
           </Button>
         </form>
       </Container>
-
-      
     </div>
   );
-}
+};
 
-
- 
 export default Media;
-
