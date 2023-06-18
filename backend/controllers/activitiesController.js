@@ -141,11 +141,44 @@ const putActivity = asyncHandler(async (req, res) => {
   res.status(200).json(activity);
 });
 
+// @desc    Get all activities by student ID with student name
+// @route   GET /api/activities/student/:studentId
+// @access  Private (Student only)
+const getActivitiesByStudentId = asyncHandler(async (req, res) => {
+  const studentId = req.params.studentId;
+
+  const activities = await Activity.find({ studentId }).populate('studentId', 'name');
+  
+
+  if (activities.length > 0) {
+    res.status(200).json(activities);
+  } else {
+    res.status(404).json({ message: 'No activities found for the specified student' });
+  }
+});
+
+const getAllActivities = asyncHandler(async (req, res) => {
+  const activities = await Activity.find().populate("submitted", "studentId");
+
+  if (activities.length > 0) {
+    res.status(200).json(activities);
+  } else {
+    res.status(404).json({ message: "No activities found" });
+  }
+});
+
+
 export {
   postActivity,
   getActivity,
   getActivitiesBySubModuleId,
   deleteActivity,
   putActivity,
+<<<<<<< HEAD
+  getActivitiesTeacherId,
+  getActivitiesByStudentId ,
+  getAllActivities,
+=======
   getActivitiesCourseId,
+>>>>>>> 5d363d2269f597438433d4f055f8875e76ecde16
 };

@@ -14,6 +14,7 @@
   "author": "Ali Mansour, Walaa Nasser and Hassan Chakkour",
   "license": "ISC",
   "dependencies": {
+    "@dropzone-ui/react": "^7.0.4",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
