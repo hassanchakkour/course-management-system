@@ -60,7 +60,7 @@ const Navbar = () => {
   console.log(userInfo);
 
   return (
-    <div className="flex justify-between p-2 md:mx-6 relative">
+    <div className="flex justify-between p-2  relative">
       <div className="flex">
         <NavButton
           title="Menu"
@@ -69,9 +69,9 @@ const Navbar = () => {
           icon={<AiOutlineMenu />}
         />
 
-        <p className="text-4xl dark:text-white text-gray-500 ml-1">
-          <span className="text-14">Welcome</span>
-          <span className="font-bold ml-1 text-14">
+        <p className=" dark:text-white text-gray-500 mt-4 md:mt-3 ld:mt-2 ml-1">
+          <span className="text-xl md:text-2xl ">Welcome</span>
+          <span className="font-bold ml-2.5 text-xl md:text-2xl ">
             {userInfo ? userInfo.userInfo.name : null}
             {" !"}
           </span>
@@ -79,7 +79,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center flex-grow mx-2">
-        <div className="border-b border-gray-400 w-full"></div>
+        <div className="border-b border-gray-500 w-full"></div>
       </div>
 
       <div className="flex">

@@ -10,9 +10,11 @@ import { toast } from "react-toastify";
 import { Button } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../assets/images/avatar3.jpg";
+import { FiSettings } from "react-icons/fi";
 
 const UserProfile = () => {
-  const { currentColor, setIsClicked, initialState } = useStateContext();
+  const { currentColor, setIsClicked, initialState, setThemeSettings } =
+    useStateContext();
 
   const navigate = useNavigate();
 
@@ -86,41 +88,29 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
-      <div>
-        {userProfileData.map((item, index) => (
-          <div
-            key={index}
-            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer dark:hover:bg-[#42464D]"
-          >
-            <button
-              type="button"
-              style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-              className="text-xl rounded-lg p-3 hover:bg-light-gray"
-            >
-              {item.icon}
-            </button>
 
-            <div>
-              <p className="font-semibold">{item.title}</p>
-              <p className="text-gray-500 text-sm">{item.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
       <div className="mt-5">
         <button
           style={{
-            backgroundColor: currentColor,
             color: "white",
             borderRadius: "10px",
           }}
-          className="p-3 w-full hover:drop-shadow-xl"
+          className="p-3 w-full bg-gray-700 dark:bg-gray-500 hover:drop-shadow-xl"
           onClick={() => {
             setIsClicked(initialState);
             handleLogout();
           }}
         >
           Logout
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setThemeSettings(true)}
+          style={{ background: currentColor, borderRadius: "10px" }}
+          className="text-base w-full mt-5 text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+        >
+          Settings
         </button>
       </div>
     </div>

@@ -47,7 +47,7 @@ const App = () => {
                 className="fixed right-4 bottom-4"
                 style={{ zIndex: "1000" }}
               >
-                <Tooltip title="Settings" placement="top" arrow>
+                {/* <Tooltip title="Settings" placement="top" arrow>
                   <button
                     type="button"
                     onClick={() => setThemeSettings(true)}
@@ -56,7 +56,7 @@ const App = () => {
                   >
                     <FiSettings />
                   </button>
-                </Tooltip>
+                </Tooltip> */}
               </div>
               {activeMenu ? (
                 <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
