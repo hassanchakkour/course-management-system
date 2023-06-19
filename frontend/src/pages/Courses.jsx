@@ -40,44 +40,44 @@ const Courses = () => {
             <div
               key={course._id}
               style={{ filter: `drop-shadow(0px 0px 3px ${currentColor})` }}
-              className=" bg-white h-48 dark:text-gray-200 dark:bg-secondary-dark-bg w-52 md:w-80 p-4 pt-9 rounded-2xl "
+              className=" bg-white h-40 dark:text-gray-200 dark:bg-secondary-dark-bg w-72 md:w-96 p-4 rounded-3xl "
             >
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  style={{ backgroundColor: currentColor }}
-                  className="md:text-lg text-base text-gray-700 dark:text-white opacity-0.9 rounded-full -ml-8 py-2 px-4 hover:drop-shadow-xl hover:transition ease-out duration-700"
+              <p className="mb-3">
+                <span
+                  className={`text-base font-semibold md:text-lg text-gray-700 dark:text-white`}
                 >
-                  {/* Codeof The Course */}
-                  {course.courseSKU}
-                </button>
-                <Tooltip arrow title="Edit">
+                  {course.title}
+                </span>
+              </p>
+              <button
+                type="button"
+                style={{ backgroundColor: currentColor }}
+                className="md:text-lg text-base text-gray-700 dark:text-white opacity-0.9 rounded-2xl -ml-8 py-2 px-4 hover:drop-shadow-xl hover:transition ease-out duration-700  md:w-36 "
+              >
+                {/* Codeof The Course */}
+                <span className="ml-4 md:ml-1">{course.courseSKU}</span>
+              </button>
+
+              <div className="flex justify-between">
+                <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-2">
+                  {course.duration}
+                </p>
+                <Tooltip arrow title="Edit" placement="top">
                   <NavLink to="/courseName">
                     <button
                       type="button"
                       onClick={() => setCourse_ID(course._id, course.title)}
                       style={{
-                        backgroundColor: currentColor,
+                        color: currentColor,
                         borderRadius: "50%",
                       }}
-                      className="md:text-2xl text-base text-white dark:text-gray-700 opacity-0.9 rounded-full p-3 hover:drop-shadow-xl hover:transition hover:text-gray-700 dark:hover:text-white ease-out duration-700"
+                      className="md:text-xl hover:bg-light-gray dark:hover:bg-gray-700 text-lg rounded-full p-3 hover:drop-shadow-xl hover:transition ease-out duration-700"
                     >
                       <FiEdit2 />
                     </button>
                   </NavLink>
                 </Tooltip>
               </div>
-              <p className="mt-3">
-                <span
-                  style={{ color: currentColor }}
-                  className={`text-base font-semibold md:text-lg text-gray-400`}
-                >
-                  {course.title}
-                </span>
-              </p>
-              <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-2">
-                {course.duration}
-              </p>
             </div>
           ))}
         </div>
