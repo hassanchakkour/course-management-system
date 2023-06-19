@@ -1,6 +1,11 @@
 import Activity from "../models/activityModel.js";
 import asyncHandler from "express-async-handler";
 import Submodule from "../models/subModuleModel.js";
+import multer from 'multer'
+
+
+
+
 
 // @desc    Create a new activity
 // @route   POST /api/activities
@@ -23,6 +28,8 @@ const postActivity = asyncHandler(async (req, res) => {
     throw new Error("submoduleId is required");
   }
 
+
+  
   const activity = await Activity.create({
     title,
     teacherId,
@@ -32,6 +39,7 @@ const postActivity = asyncHandler(async (req, res) => {
     passingGrade,
     note,
     courseId,
+ 
   });
 
   if (activity) {
