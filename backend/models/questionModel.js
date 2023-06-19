@@ -24,9 +24,14 @@ const questionSchema = new Schema(
       type: SchemaTypes.ObjectId,
       ref: "User",
     },
+    point: {
+      type: Number,
+      default:"",
+    },
     options: [String],
     // correctOption: String,
   },
+
   {
     timestamps: true,
   }

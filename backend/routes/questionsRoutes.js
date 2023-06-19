@@ -13,8 +13,7 @@ import { protect, isTeacher } from "../middleware/authMiddleware.js";
 router.post("/", postQuestion);
 router.get(
   "/activity/:activityId",
-  protect,
-  isTeacher,
+
   getQuestionsByactivityId
 );
 router.get("/:id", protect, isTeacher, getQuestion);

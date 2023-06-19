@@ -3,6 +3,7 @@ import { TextField, Button, Container,Modal, Box,MenuItem, Select,Radio,FormGrou
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
+import Questions from'./Question'
 import axios from 'axios';
 import '../App.css';
 
@@ -44,11 +45,9 @@ const Quiz = () => {
       aria-labelledby="child-modal-title"
       aria-describedby="child-modal-description"
     >
-      <Box sx={{ ...style, width: 400 }}>
-        <h2 id="child-modal-title">Text in a child modal</h2>
-        <p id="child-modal-description">
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </p>
+      <Box sx={{ ...style, width: 800 }}>
+        <h1>Summary</h1>
+       <Questions />
       </Box>
     </Modal>
 
@@ -218,9 +217,9 @@ const Quiz = () => {
               label=""
                 // onChange={handleChange}
                >
-                {/* <MenuItem value={1}>Ten</MenuItem>
-                 <MenuItem value={2}>Twenty</MenuItem>
-               <MenuItem value={30}>Thirty</MenuItem> */}
+                <MenuItem value={1}>Quiz1</MenuItem>
+                 <MenuItem value={2}>Quiz2</MenuItem>
+               <MenuItem value={30}>Quiz3</MenuItem>
          </Select>
 
               <Button type="button" onClick={handleOpen} variant="contained" color="primary" className='right-0'>

@@ -4,22 +4,29 @@ import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 // import { Dropzone, FileMosaic } from "@dropzone-ui/react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 
 import "../App.css";
 
 import { TextField, Button, Container, Box } from "@mui/material";
 
 const Media = () => {
-  const [files, setFiles] = useState([]);
-  const updateFiles = (incommingFiles) => {
-    setFiles(incommingFiles);
-  };
+  // const [files, setFiles] = useState([]);
+  // const updateFiles = (incommingFiles) => {
+  //   setFiles(incommingFiles);
+  // };
+  // const [selectedImage, setSelectedImage] = useState(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
   const { userInfo } = useSelector((state) => state.auth);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,8 +35,9 @@ const Media = () => {
       teacherId: userInfo._id,
       submoduleId: "648314914e78666518b69c5d",
       submitted: "648797b20da8cd5459f029ff",
+      courseId:"648d8878a3be048f181521a5",
       title: title,
-      description: description,
+      description: JSON.stringify(description),
       file: file,
       type: "Media",
     };
@@ -44,7 +52,7 @@ const Media = () => {
 
       setTitle("");
       setDescription("");
-      setFile("");
+      setFile(null);
     } catch (error) {
       console.error("Error creating question:", error);
     }
@@ -81,6 +89,7 @@ const Media = () => {
     "font",
     "align",
   ];
+  
 
   return (
     <div className="QuizForm">
@@ -131,12 +140,17 @@ const Media = () => {
           </Box>
           <Box marginBottom="16px">
             <h4>Upload Resource</h4>
-            {/* <input type="file" onChange={(e) => setFile(e.target.value)} /> */}
+            {/* <input type="file" onChange={(e) => setFile(e.target.value)} />
             <Dropzone onChange={updateFiles} value={files}>
               {files.map((file) => (
                 <FileMosaic {...file} preview />
               ))}
-            </Dropzone>
+            </Dropzone> */}
+             <Box marginBottom="16px">
+            <h4>Upload Resource</h4>
+            <input type="file" onChange={handleFileChange} />
+           
+          </Box>
           </Box>
           <Button
             variant="contained"
