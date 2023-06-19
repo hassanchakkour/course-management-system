@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useSelector } from "react-redux";
 import {
@@ -20,6 +20,8 @@ const Question = () => {
   const [correctOption, setCorrectOption] = useState("");
   const { userInfo } = useSelector((state) => state.auth)
   console.log('userInfo',userInfo._id)
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,6 +58,29 @@ const Question = () => {
       console.log(options);
     }
   };
+  
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        let sendData={ 
+          activityId:'648c028e02c7e993d609a47'
+        }
+        const response = await axios.post(`http://localhost:5000/api/questions/activity`,sendData);
+        console.log(response)
+        setQuestions(response.data);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  const handleQuestionChange = (event) => {
+    setSelectedQuestion(event.target.value);
+  };
+
 
   return (
    
@@ -144,7 +169,18 @@ const Question = () => {
             </Button>
           </form>
         </Box>
+        <Box>
+        <select value={selectedQuestion} onChange={handleQuestionChange}>
+        <option value="">Select a question</option>
+        {questions.map((question) => (
+          <option key={question.id} value={question.id}>
+            {question.text}
+          </option>
+        ))}
+      </select>
+        </Box>
       </Container>
+      
  
   );
 };
