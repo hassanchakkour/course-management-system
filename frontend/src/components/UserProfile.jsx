@@ -18,22 +18,6 @@ const UserProfile = () => {
 
   const navigate = useNavigate();
 
-  const userProfileData = [
-    {
-      icon: <BsCurrencyDollar />,
-      title: "My Profile",
-      desc: "Account Settings",
-      iconColor: "#03C9D7",
-      iconBg: "#E5FAFB",
-    },
-    {
-      icon: <BsShield />,
-      title: "My Inbox",
-      desc: "Messages & Emails",
-      iconColor: "rgb(0, 194, 146)",
-      iconBg: "rgb(235, 250, 242)",
-    },
-  ];
   const userInfo = useSelector((state) => state.auth);
   console.log(userInfo);
 
@@ -55,19 +39,18 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-8 rounded-lg w-96">
-      <div className="flex justify-between items-center">
-        <p className="font-semibold text-lg">User Profile</p>
+    <div className="nav-item absolute right-4 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-7 rounded-2xl w-64">
+      <div className="-mt-6 -ml-6 ">
         <Button
           icon={<MdOutlineCancel />}
           color="rgb(153, 171, 180)"
           bgHoverColor="light-gray"
-          size="2xl"
+          size="xl"
           borderRadius="50%"
           onClick={() => setIsClicked(initialState)}
         />
       </div>
-      <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
+      {/* <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <img
           className="rounded-full h-24 w-24"
           src={avatar}
@@ -87,15 +70,15 @@ const UserProfile = () => {
             {userInfo ? userInfo.userInfo.email : null}{" "}
           </p>
         </div>
-      </div>
+      </div> */}
 
-      <div className="mt-5">
+      <div className="mt-1">
         <button
           style={{
             color: "white",
             borderRadius: "10px",
           }}
-          className="p-3 w-full bg-gray-700 dark:bg-gray-500 hover:drop-shadow-xl"
+          className="p-3 w-full bg-gray-700 dark:bg-gray-500 dark:hover:bg-red-400 hover:drop-shadow-xl hover:transition ease-out duration-700"
           onClick={() => {
             setIsClicked(initialState);
             handleLogout();
