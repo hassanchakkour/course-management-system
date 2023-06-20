@@ -69,7 +69,7 @@ const DashBoard = () => {
   const iconStyles = {
     // borderRadius: "50%",
     // transition: "border-radius 0.3s ease",
-    backgroundColor: "transparent",
+    pointerEvents: "none",
   };
 
   return (
@@ -103,6 +103,12 @@ const DashBoard = () => {
             </p>
           </div>
         </div>
+
+        {courses.length === 0 && (
+          <p className="flex justify-center mx-auto text-2xl text-gray-700 dark:text-white mt-5 -mb-10">
+            No Registered Classes Yet
+          </p>
+        )}
 
         <div className="flex m-4 mt-14 justify-center">
           <BsChevronLeft
