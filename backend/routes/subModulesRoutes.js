@@ -17,6 +17,8 @@ router
   .delete(protect, isTeacher, deleteSubmodule)
   .get(protect, isTeacher, getSubmoduleById);
 
+router.post("/update", updateSubmodule);
+
 router
   .route("/module/:moduleId")
   .get(protect, isTeacher, getSubmodulesByModuleId);
