@@ -77,7 +77,11 @@ const CourseSummary = (course) => {
 
   return (
     <div className="text-white mt-10 flex flex-row">
-      {/* <div className="absolute text-2xl font-bold max-[850px]:invisible text-[#03C9D7] ml-[10%] top-5">
+// <<<<<<< hassan
+//       <div className="absolute mt-12 text-2xl font-bold max-[850px]:invisible text-[#03C9D7] ml-[10%] top-5">
+// =======
+//       {/* <div className="absolute text-2xl font-bold max-[850px]:invisible text-[#03C9D7] ml-[10%] top-5">
+// >>>>>>> master
         {course.coursename}
       </div> */}
       <div className={courseSummaryClass}>

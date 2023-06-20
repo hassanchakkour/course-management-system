@@ -61,6 +61,7 @@ const Module = (course) => {
     iconsClass =
       "mx-[80%] max-[850px]:mt-0 max-[850px]:mx-[60%] absolute mt-12";
   }
+
   return (
     <>
       <div className="my-[8%]">
@@ -100,52 +101,65 @@ const Module = (course) => {
           </li>
         </ul>
       </div>
-      <div className="my-[5%] rounded-3xl text-white flex border-gray-500 border w-full h-[50vh]">
-        {module &&
-          module.map((mods) => {
-            console.log("res", mods.submoduleId);
-            return (
-              <div
-                key={mods._id}
-                className="ml-10 mb-5 rounded-3xl text-xl  w-[400px] border-gray-500 border mt-10"
-              >
-                <p className="ml-5 mt-2 flex text-xl mb-2">
-                  {mods.title}
-                  <BsThreeDots className="text-l mt-1" />
-                </p>
-                {mods.submoduleId.map((submodule) => {
-                  // console.log(submodule.activityId);
-                  return (
-                    <div
-                      key={submodule._id}
-                      className="border border-gray-500 text-2xl ml-2 mr-2 text-center"
-                    >
-                      <p className="ml-2 flex">
-                        {submodule.title}
-                        <BsThreeDotsVertical className="text-l mt-1" />
-                      </p>
+      <DragDropContext>
+        <div className="my-[5%] rounded-3xl text-white flex border-gray-500 border w-full h-[50vh]">
+          {module &&
+            module.map((mods) => {
+              // console.log("res", mods.submoduleId);
+              return (
+                <div
+                  key={mods._id}
+                  className="ml-10 mb-5 rounded-3xl text-xl  w-[400px] border-gray-500 border mt-10"
+                >
+                  <p className="ml-5 mt-2 flex text-xl mb-2 justify-between">
+                    {mods.title}
+                    <BsThreeDots className="text-l mt-1 mr-4" />
+                  </p>
+                  {mods.submoduleId.map((submodule) => {
+                    console.log(submodule.activityId);
+                    return (
+                      <div
+                        key={submodule._id}
+                        className="border mb-1 border-gray-500 text-2xl ml-2 mr-2 text-center"
+                      >
+                        <p className="ml-2 flex justify-center">
+                          {submodule.title}
+                          <BsThreeDotsVertical className="text-l mt-1" />
+                        </p>
 
-                      {submodule.activityId.map((activity) => {
-                        // console.log(activity);
-                        return (
-                          <div
-                            key={activity._id}
-                            className="border border-gray-500   text-left"
-                          >
-                            <p className="ml-5 flex">
-                              {activity.title}
-                              <BsThreeDotsVertical className="text-l mt-1 " />
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-      </div>
+                        {submodule.activityId.map((activity) => {
+                          console.log(activity.type);
+                          return (
+                            <div
+                              key={activity._id}
+                              // className="border border-orange-500   text-left"
+                              className={
+                                activity.type === "Assignment"
+                                  ? "border-2 border-orange-500 mb-2 "
+                                  : activity.type === "Quiz"
+                                  ? "border-2 border-purple-500 mb-2"
+                                  : activity.type === "online session"
+                                  ? "border-2 border-blue-400 mb-2"
+                                  : activity.type === "Recorded Session"
+                                  ? "border-2 border-blue-400 mb-2"
+                                  : "border border-gray-400 "
+                              }
+                            >
+                              <p className="ml-5 flex justify-between">
+                                {activity.title}
+                                <BsThreeDotsVertical className="text-l mt-1 " />
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+        </div>
+      </DragDropContext>
     </>
   );
 };
