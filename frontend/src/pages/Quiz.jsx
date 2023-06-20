@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,   useEffect } from 'react';
 import { TextField, Button, Container,Modal, Box,MenuItem, Select,Radio,FormGroup, FormControlLabel,Switch,InputLabel, RadioGroup, FormControl, FormLabel } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -9,7 +9,6 @@ import '../App.css';
 
 const Quiz = () => {
   const [title,setTitle] = useState('');
-
   const [description, setDescription] = useState('');
   const [instructions, setInstructions] = useState('');
   const [passingGrade, setPassinggrade] = useState();
@@ -18,56 +17,60 @@ const Quiz = () => {
   const [note,setNote]=useState('')
   const { userInfo } = useSelector((state) => state.auth)
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-  };
+  // const style = {
+  //   position: 'absolute',
+  //   top: '50%',
+  //   left: '50%',
+  //   transform: 'translate(-50%, -50%)',
+  //   bgcolor: 'background.paper',
+  //   boxShadow: 24,
+  //   p: 4,
+  // };
 
-  const ChildModal = () => (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="child-modal-title"
-      aria-describedby="child-modal-description"
-    >
-      <Box sx={{ ...style, width: 800 }}>
-        <h1>Summary</h1>
-       <Questions />
-      </Box>
-    </Modal>
+  // const ChildModal = () => (
+  //   <Modal
+  //     open={open}
+  //     onClose={handleClose}
+  //     aria-labelledby="child-modal-title"
+  //     aria-describedby="child-modal-description"
+  //   >
+  //     <Box sx={{ ...style, width: 800 }}>
+  //       <h1>Summary</h1>
+  //      <Questions />
+  //     </Box>
+  //   </Modal>
 
-  )
+  // )
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const sanitizedDescription = description || '';
   
     const quizdata = {
-      activityId: "648c028e02c7e993d609a471",
-      submoduleId:"648a2081f2af7070f75492a3",
-      submitted:"648797b20da8cd5459f029ff",
+    
+      submoduleId:"648314914e78666518b69c5d",
+     // submitted:"648797b20da8cd5459f029ff",
       teacherId:userInfo._id,
       title:title,
-      description:description,
+      courseId:"648d8878a3be048f181521a5",
+      description:sanitizedDescription,
       passingGrade:passingGrade,
       duration:duration,
       note:note,
       type:'Quiz',
-    
+     
+  
     };
+    console.log(quizdata)
   
     try {
       const response = await axios.post(
@@ -83,11 +86,72 @@ const Quiz = () => {
      
       setNote("");
     } catch (error) {
-      console.error("Error creating question:", error);
+      console.error("Error creating Quiz:", error);
     }
   };
-  
+  const [quizzes, setQuizzes] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState("");
 
+  useEffect(() => {
+    // Fetch quizzes from the API
+    
+     axios.post("http://localhost:5000/api/activities/course")
+      .then(response => {
+        setQuizzes(response.data);
+        console.log(quizzes)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+   const loadedQuiz = async(load) => {
+  let id = {_id:load};
+    const response = await axios.post(`http://localhost:5000/api/activities/single`,id)
+
+    console.log(response.data)
+
+    setPassinggrade(response.data.passingGrade)
+    setTitle(response.data.title)
+    setDescription(response.data.description)
+    setDuration(response.data.duration)
+    setNote(response.data.note)
+
+    // const updatedRes = {
+    //   ...response.data,
+    //   passingGrade: passingGrade,
+    //   title: title,
+    //   description: description,
+    //   duration: duration,
+    //   note: note,
+    //   submoduleId:"648314914e78666518b69c5d",
+      
+      
+    //    courseId:response.data.courseId,
+    // };
+  
+    // try {
+    //   await axios.post(`http://localhost:5000/api/activities/single/${load}`, updatedRes);
+    //   console.log(updatedRes);
+    //   console.log(created)
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+  }
+
+
+ 
+  const handleQuizChange = async(event) => {
+    setSelectedQuiz(event.target.value);
+    if (quizzes) {
+      await loadedQuiz(event.target.value);
+    }
+    console.log(typeof(event.target.value))
+   
+  };
+
+ 
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -126,31 +190,37 @@ const Quiz = () => {
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               margin="normal"
+              sx={{
+                marginBottom: "16px", // Add margin at the bottom
+                borderRadius: "10px", // Set border radius
+                // Add any additional styling properties as needed
+              }}
             />
 
              <FormControl fullWidth sx={{ marginTop: '16px' }}>
               <FormLabel>Quiz Description</FormLabel>
               <ReactQuill
-                value={description}
-                onChange={(e)=>setDescription(event.target.value)}
-                modules={modules}
-                formats={formats}
-                render={({ editor }) => (
-                  <TextField
-                    label="Media"
-                    multiline
-                    rows={6}
-                    variant="outlined"
-                    fullWidth
-                    onClick={editor.focus}
-                    sx={{
-                      marginBottom: '16px',
-                      maxHeight: '500px',
-                      overflowY: 'auto',
-                    }}
-                  />
-                )}
-              />
+                   value={description}
+                   onChange={(value) => setDescription(value)}
+                   modules={modules}
+                   formats={formats}
+                  render={({ editor }) => (
+                         <TextField
+                        label="Media"
+                         multiline
+                         rows={6}
+                 variant="outlined"
+                        fullWidth
+                 onClick={editor.focus}
+                         sx={{
+        marginBottom: '16px',
+        maxHeight: '500px',
+        overflowY: 'auto',
+      }}
+    />
+  )}
+/>
+              
               <FormLabel component="legend" sx={{ marginTop: '16px' }}>Instructions</FormLabel>
               <ReactQuill
                 value={instructions}
@@ -207,30 +277,36 @@ const Quiz = () => {
               margin="normal"
             />
            <FormLabel component="legend" sx={{ marginTop: '16px', margin_right:'10px',display: 'inline-block' }}>Load Quiz:
-           <InputLabel id="demo-simple-select-label"></InputLabel>
-             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              className='mr-5 w-[60%] ml-5' 
-              // value={age}
-              width="100%"
-              label=""
-                // onChange={handleChange}
-               >
-                <MenuItem value={1}>Quiz1</MenuItem>
-                 <MenuItem value={2}>Quiz2</MenuItem>
-               <MenuItem value={30}>Quiz3</MenuItem>
-         </Select>
+          
+              <Select
+               labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                 className="mr-5 w-[40%] ml-5"
+                 value={selectedQuiz || ""} 
+               onChange={handleQuizChange}
+                width="100%"
+                 label="Quiz"
+                   >
+                 {quizzes && quizzes.map(quiz => (
+                    <MenuItem key={quiz._id} value={quiz._id}>
+                    {quiz.title}
+                    </MenuItem>
+                   ))}
+                   
+              </Select>
+              
+            
 
-              <Button type="button" onClick={handleOpen} variant="contained" color="primary" className='right-0'>
+
+              <Button type="button" variant="contained" color="primary" className='right-0'>
                 Create New Quiz
               </Button>
-              <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
+              {/* <ModalonClick={handleOpen} 
+                        open={open}
+                  onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+             aria-describedby="parent-modal-description"
+          >
         <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">Text in a modal</h2>
           <p id="parent-modal-description">
@@ -238,7 +314,7 @@ const Quiz = () => {
           </p>
           <ChildModal />
         </Box>
-      </Modal>
+      </Modal> */}
               
               </FormLabel>
          
