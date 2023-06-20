@@ -94,6 +94,7 @@ const Question = () => {
           overflowY: "auto", // Enable vertical scrolling
         }}
       >
+  
         <Box my={4}>
           <form onSubmit={handleSubmit}>
             <Box mb={2}>
@@ -141,28 +142,27 @@ const Question = () => {
               <Button onClick={handleOption}>Add option</Button>
             </Box>
 
-            <Box mb={2}>
-              <FormControl fullWidth>
-                <InputLabel id="correctOption-label">
-                  Correct Option
-                </InputLabel>
-                <Select
-                  labelId="correctOption-label"
-                  id="correctOption"
-                  value={correctOption}
-                  onChange={(event) =>
-                    setCorrectOption(event.target.value)
-                  }
-                >
-                  {/* Render the list of options */}
-                  {options.map((option, index) => (
-                    <MenuItem key={index} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
+            
+            
+<Box mb={2}>
+  <FormControl fullWidth>
+    <InputLabel id="correctOption-label">Correct Option</InputLabel>
+    <Select
+      labelId="correctOption-label"
+      id="correctOption"
+      value={correctOption}
+      onChange={(event) => setCorrectOption(event.target.value)}
+    >
+      {/* Render the list of options */}
+      {options.map((option, index) => (
+        <MenuItem key={index} value={option}>
+          {option}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+</Box>
+
 
             <Button type="submit" variant="contained" color="primary">
               Create Question

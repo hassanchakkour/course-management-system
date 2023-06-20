@@ -1,5 +1,8 @@
 import express from "express";
+import multer from 'multer'
+const upload = multer({ dest: 'assets/uploads/' })
 const router = express.Router();
+
 import {
   postActivity,
   getActivity,
@@ -12,8 +15,8 @@ import {
   getActivitiesCourseId,
 } from "../controllers/activitiesController.js";
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
-
-router.post("/", postActivity);
+const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
+router.post("/",  cpUpload,postActivity);
 // router.post("/",upload.single('file'), postActivity);
 router.get(
   "/submodule/:submoduleId",
@@ -21,7 +24,7 @@ router.get(
   getActivitiesBySubModuleId
 );
 
-router.get("/:id", getActivity);
+router.post("/single", getActivity);
 router.delete("/:id", deleteActivity);
 router.put("/:id", putActivity);
 

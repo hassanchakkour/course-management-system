@@ -14,6 +14,13 @@ import submissionRoutes from "./routes/submissionRoutes.js";
 import questionsRoutes from "./routes/questionsRoutes.js";
 import badgeRoutes from "./routes/badgeRoutes.js";
 import certificateRoutes from "./routes/certificateRoutes.js";
+import multer from "multer"
+import path from "path"
+import {fileURLToPath} from "url"
+
+//configurations
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 connectDB();
@@ -35,8 +42,22 @@ app.use("/api/submissions", submissionRoutes);
 app.use("/api/badges", badgeRoutes);
 app.use("/api/certificates", certificateRoutes);
 
+
 app.use(notFound);
 app.use(errorHandler);
+
+//file storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb){
+    cb(null, "assets/uploads/");
+  },
+  filename: function (req, file, cb){
+    cb(null, file.fieldname+ "_" +Date.now() + path.extname(file.originalname))
+  }
+})
+const upload = multer({
+  storage:storage
+})
 
 app.listen(port, () =>
   console.log(`Server started on PORT ${port}`.yellow.bold)
