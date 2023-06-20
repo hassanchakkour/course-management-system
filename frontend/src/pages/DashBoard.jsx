@@ -6,13 +6,17 @@ import { useSelector } from "react-redux";
 import { FiEdit2 } from "react-icons/fi";
 import { Tooltip } from "@mui/material";
 
+import "react-calendar/dist/Calendar.css";
+
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 // import Slider from "react-slick";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
+import Calendar from "react-calendar";
 
 const DashBoard = () => {
-  const { currentColor, courseID, setCourse_ID, course_Name } =
+  const { currentColor, currentMode, courseID, setCourse_ID, course_Name } =
     useStateContext();
   const userInfo = useSelector((state) => state.auth);
   // const navigate = useNavigate();
@@ -56,6 +60,17 @@ const DashBoard = () => {
   }, []);
 
   console.log("Number of courses:", numberOfCourses);
+
+  const [date, setDate] = useState(new Date());
+  const onChange = (date) => {
+    setDate(date);
+  };
+
+  const iconStyles = {
+    // borderRadius: "50%",
+    // transition: "border-radius 0.3s ease",
+    backgroundColor: "transparent",
+  };
 
   return (
     <div className="mt-20 md:mt-3">
@@ -144,6 +159,81 @@ const DashBoard = () => {
             className="opacity-20 dark:text-white text-gray-900 cursor-pointer  hover:opacity-80 mt-14 hover:transition ease-out duration-700"
             // onClick={slideLeft}
             size={40}
+          />
+        </div>
+        <div
+          style={{ filter: `drop-shadow(0px 0px 3px ${currentColor})` }}
+          className="mx-auto"
+        >
+          <Calendar
+            className={`${
+              currentMode === "Dark" ? "dark:bg-secondary-dark-bg" : "bg-white"
+            } rounded-3xl mt-10 p-4 mx-auto w-6/12 ${
+              currentMode === "Dark" ? "text-white" : "text-gray-700"
+            } border`}
+            onChange={onChange}
+            value={date}
+            tileClassName={({ date, view }) => {
+              if (view === "month") {
+                const dayOfWeek = date.getDay();
+                const isSunday = dayOfWeek === 0;
+                const isSaturday = dayOfWeek === 6;
+
+                let classNames = "rounded";
+
+                if ((isSunday || isSaturday) && currentMode !== "Dark") {
+                  classNames += " text-red-400";
+                }
+
+                if ((isSunday || isSaturday) && currentMode === "Dark") {
+                  classNames += " text-red-400";
+                }
+
+                return classNames;
+              }
+
+              return "";
+            }}
+            prevLabel={
+              <div
+                className={`rounded ${
+                  currentMode === "Dark" ? "bg-secondary-dark-bg" : "bg-white"
+                }`}
+                style={iconStyles}
+              >
+                <BsChevronLeft size={20} color={currentColor} />
+              </div>
+            }
+            nextLabel={
+              <div
+                className={`rounded ${
+                  currentMode === "Dark" ? "bg-secondary-dark-bg" : "bg-white"
+                }`}
+                style={iconStyles}
+              >
+                <BsChevronRight size={20} color={currentColor} />
+              </div>
+            }
+            prev2Label={
+              <div
+                className={`rounded ${
+                  currentMode === "Dark" ? "bg-secondary-dark-bg" : "bg-white"
+                }`}
+                style={iconStyles}
+              >
+                <RxDoubleArrowLeft size={20} color={currentColor} />
+              </div>
+            }
+            next2Label={
+              <div
+                className={`rounded ${
+                  currentMode === "Dark" ? "bg-secondary-dark-bg" : "bg-white"
+                }`}
+                style={iconStyles}
+              >
+                <RxDoubleArrowRight size={20} color={currentColor} />
+              </div>
+            }
           />
         </div>
       </div>
