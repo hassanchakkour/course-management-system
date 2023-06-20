@@ -9,6 +9,7 @@ import CourseSummary from "../components/ModuleComps/courseSummary";
 import { useStateContext } from "../contexts/ContextProvider";
 import Module from "../components/Module";
 import Header from "../components/Header";
+import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
 
 const Content = () => {
   const { courseID, course_name, activeMenu } = useStateContext();
@@ -23,7 +24,9 @@ const Content = () => {
         <CourseSummary course={course} coursename={course_Name} />
       </div>
       <div className=" flex">
-        <Module course={course} />
+        <DragDropContext>
+          <Module course={course} />
+        </DragDropContext>
       </div>
     </div>
   );

@@ -67,21 +67,32 @@ const createSubmodule = asyncHandler(async (req, res) => {
 // @route   PUT /api/submodules/:id
 // @access  Private (Teacher only)
 const updateSubmodule = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
-  const teacherId = req.user._id;
+  const { title, content, id, newmodsId, oldmodsId } = req.body;
+  // const teacherId = req.user._id;
 
   let submodule = await Submodule.findOne({
-    _id: req.params.id,
-    teacherId,
+    _id: id,
   });
 
   if (submodule) {
     submodule.title = title || submodule.title;
     submodule.content = content || submodule.content;
+    submodule.moduleId = newmodsId || submodule.moduleId;
 
-    submodule = await submodule.save();
+    const removeFromModules = await Module.findOneAndUpdate(
+      { _id: oldmodsId },
+      { $pull: { submoduleId: { $in: [`${submodule._id}`] } } }
+    );
 
-    res.status(200).json(submodule);
+    const addTonewModules = await Module.findOneAndUpdate(
+      { _id: newmodsId },
+      { $push: { submoduleId: { $each: [`${submodule._id}`] } } }
+    );
+
+    res.status(200).json({
+      submodule: submodule,
+      message: "updated Successfully",
+    });
   } else {
     res.status(404);
     throw new Error("Submodule not found or unauthorized");

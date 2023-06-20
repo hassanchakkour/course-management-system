@@ -10,15 +10,11 @@ const MyComponent = () => {
 
   const fetchData = async () => {
     try {
-      let sendData = {
-        courseId: course.course,
-      };
-      const res = await axios.post(
-        "http://localhost:5000/api/modules/course",
-        sendData
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts"
       );
-      console.log(res.data);
-      // setData(res);
+      const data = await response.json();
+      setData(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -30,46 +26,46 @@ const MyComponent = () => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {data.map((item) => (
-        <Droppable droppableId={item.id} key={item.id}>
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={{
-                background: snapshot.isDraggingOver ? "lightblue" : "white",
-                padding: "10px",
-                margin: "10px",
-              }}
-            >
-              <h3>{item.title}</h3>
-              {item.children.map((child, index) => (
-                <Draggable draggableId={child.id} index={index} key={child.id}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        padding: "10px",
-                        margin: "10px",
-                        backgroundColor: snapshot.isDragging
-                          ? "lightgreen"
-                          : "white",
-                        ...provided.draggableProps.style,
-                      }}
-                    >
-                      {child.title}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      ))}
+      <Droppable droppableId="droppable-area">
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {data.map((item, index) => (
+              <Draggable
+                draggableId={item.id.toString()}
+                index={index}
+                key={item.id}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={{
+                      background: snapshot.isDragging ? "lightgreen" : "white",
+                      padding: "10px",
+                      margin: "10px",
+                    }}
+                  >
+                    <h3 {...provided.dragHandleProps}>{item.title}</h3>
+                    <p>{item.body}</p>
+                    <Droppable droppableId={item.id.toString()}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                        >
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 };
