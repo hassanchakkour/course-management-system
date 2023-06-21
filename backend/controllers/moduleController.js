@@ -100,9 +100,10 @@ const updateModule = asyncHandler(async (req, res) => {
 // @route   DELETE /api/modules/:id
 // @access  Private (Teacher only)
 const deleteModule = asyncHandler(async (req, res) => {
-  const module = await Module.findById(req.params.id);
+  const _id = req.body;
+  const module = await Module.find({ _id });
   if (module) {
-    await Module.deleteOne({ _id: req.params.id });
+    await Module.deleteOne({ _id: _id });
     res.status(200).json({ message: "Module deleted" });
   } else {
     res.status(404);

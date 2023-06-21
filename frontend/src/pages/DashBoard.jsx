@@ -87,7 +87,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="mt-20 md:mt-3">
+    <div className="mt-24 md:mt-3">
       <div className="flex flex-col">
         <div className="mx-auto bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-24 rounded-3xl w-11/12 p-8">
           <div className="flex justify-between">
@@ -193,7 +193,7 @@ const DashBoard = () => {
           <Calendar
             className={`${
               currentMode === "Dark" ? "dark:bg-secondary-dark-bg" : "bg-white"
-            } rounded-3xl p-4 mx-auto w-6/12 ${
+            } rounded-3xl p-4 mx-auto max-[850px]:ml-[40%] w-6/12 ${
               currentMode === "Dark" ? "text-white" : "text-gray-700"
             } border`}
             onChange={onChange}

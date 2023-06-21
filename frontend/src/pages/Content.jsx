@@ -23,7 +23,7 @@ const Content = () => {
         <CourseSummary course={course} coursename={course_Name} />
       </div>
       <div className=" flex">
-        <Module course={course} />
+        <Header course={course} />
       </div>
     </div>
   );

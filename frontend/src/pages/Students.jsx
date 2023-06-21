@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 // import { useStateContext } from '../contexts/ContextProvider';
 import axios from 'axios';
+import '../App.css'
 
 
 const Students = () => {
@@ -80,7 +81,7 @@ const Students = () => {
 
   // Render the data grid component
   return (
-    <div margin_right="20px">
+    <div className='QuizForm'>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={rows} columns={columns} pageSize={5} />
       </div>

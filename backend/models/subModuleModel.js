@@ -6,7 +6,7 @@ const submoduleSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Please provide the title of the submodule."],
+      // required: [true, "Please provide the title of the submodule."],
     },
     content: {
       type: String,
@@ -14,13 +14,13 @@ const submoduleSchema = new Schema(
     moduleId: {
       type: SchemaTypes.ObjectId,
       ref: "Module",
-      required: true,
+      // required: true,
     },
     activityId: [
       {
         type: SchemaTypes.ObjectId,
         ref: "Activity",
-        required: true,
+        // required: true,
       },
     ],
   },

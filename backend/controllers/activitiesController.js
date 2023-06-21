@@ -20,6 +20,7 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
+    mediaUrl
   } = req.body;
   // const teacherId = req.user._id;
 
@@ -39,6 +40,7 @@ const postActivity = asyncHandler(async (req, res) => {
     passingGrade,
     note,
     courseId,
+    mediaUrl
  
   });
 
@@ -85,7 +87,8 @@ const getActivitiesCourseId = asyncHandler(async (req, res) => {
 // @route   GET /api/activities/:id
 // @access  Private (Teacher only)
 const getActivity = asyncHandler(async (req, res) => {
-  const activity = await Activity.findOne({ _id: req.params.id }).populate(
+  const _id = req.body;
+  const activity = await Activity.findById(_id).populate(
     "submitted",
     "studentId"
   );
