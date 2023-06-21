@@ -20,7 +20,7 @@ import { LuFileText } from "react-icons/lu";
 const Questions = () => {
   const { currentColor, activityID, activityTitle } = useStateContext();
 
-  //   const activityId = localStorage.getItem("course_id", activityID);
+  const activityId = localStorage.getItem("activity_id", activityID);
 
   //   const course_Title = localStorage.getItem("course_name", activityTitle);
 
@@ -42,7 +42,7 @@ const Questions = () => {
     setInputNbr(e.target.value);
   };
 
-  let sendData = { activityId: "64831840f58d735189094350" };
+  let sendData = { activityId: activityId };
 
   const getQuestionData = async () => {
     const res = await axios.post(

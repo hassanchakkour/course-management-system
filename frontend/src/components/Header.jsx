@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BsFillMicFill } from "react-icons/bs";
 import { AiFillFileText, AiOutlineSubnode } from "react-icons/ai";
 import { RiSurveyFill, RiDeleteBin3Line } from "react-icons/ri";
@@ -19,9 +19,7 @@ const SaveIcons = [
   },
   {
     icon: <AiOutlineSubnode />,
-    onClick: () => {
-      // Handle onClick logic for AiOutlineSubnode
-    },
+    onClick: () => {},
   },
   {
     icon: <FiSave />,
@@ -32,9 +30,15 @@ const SaveIcons = [
 ];
 
 const Module = (course) => {
-  const { courseID, course_name, activeMenu } = useStateContext();
+  const { courseID, course_name, activeMenu, activityID, setActivity_ID } =
+    useStateContext();
+
+  const activityRef = useRef();
+
+  const [activId, setActivId] = useState();
 
   const [module, setModule] = useState();
+  const [submodule, setSubmodule] = useState([]);
   const [activity, setActivity] = useState();
 
   const getModuleData = async () => {
@@ -47,6 +51,12 @@ const Module = (course) => {
     );
     setModule(res.data);
     // console.log("asd", res.data[0].submoduleId[0].activityId[0]);
+    // setActivity(res.data[0].submoduleId[0].activityId[0]);
+    await addmods(module);
+  };
+  const addmods = (ddd) => {
+    setActivity(ddd);
+    // console.log(activity);
   };
 
   const moveSubs = async (result) => {
@@ -84,7 +94,7 @@ const Module = (course) => {
 
   useEffect(() => {
     getModuleData();
-    // getActivityData();
+    getActivityData();
   }, []);
 
   let iconsClass = "";
@@ -128,17 +138,6 @@ const Module = (course) => {
       await getModuleData();
     }
   };
-  const onDrag = (re) => {
-    if (!re.destination) return;
-    const NewMods = module[0].submoduleId;
-    // console.log(NewMods);
-    const items = Array.from(NewMods);
-    // console.log(items);
-    const [reorderedItem] = items.splice(re.source.index, 1);
-    items.splice(re.destination.index, 0, reorderedItem);
-    setModule(module);
-  };
-
   return (
     <>
       <div className="my-[8%]">
@@ -165,7 +164,7 @@ const Module = (course) => {
           </ul>
         </div>
       </div>
-      <DragDropContext onDragEnd={(re) => onDrag(re)}>
+      <DragDropContext onDragEnd={(result) => moveSubs(result)}>
         <Droppable droppableId="IconList">
           {(provided) => (
             <div
@@ -276,6 +275,11 @@ const Module = (course) => {
                                     <div
                                       key={activity._id}
                                       // className="border border-orange-500   text-left"
+                                      ref={activityRef}
+                                      onClick={() => {
+                                        setActivity_ID(activity._id);
+                                        console.log(activId);
+                                      }}
                                       className={
                                         activity.type === "Assignment"
                                           ? "border-2 border-orange-500 mb-2 "
