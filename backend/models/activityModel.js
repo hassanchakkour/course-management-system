@@ -37,6 +37,12 @@ const activitySchema = Schema(
       ref: "Courses",
       required: true,
     },
+    questionId: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Question",
+      },
+    ],
     startDate: {
       type: Date,
       default: "",

@@ -37,6 +37,7 @@ export const theme = {
     minHeight: {
       590: "590px",
     },
+
     backgroundImage: {
       "hero-1": "url('./assets/images/hero/hero1-blue.svg')",
       "hero-2": "url('./assets/images/hero/hero2-green.svg')",
@@ -44,6 +45,7 @@ export const theme = {
       "hero-4": "url('./assets/images/hero/hero4-red.svg')",
       "hero-5": "url('./assets/images/hero/hero5-indigo.svg')",
       "hero-6": "url('./assets/images/hero/hero6-orange.svg')",
+      "logo-zidyia": "url('./assets/images/zidyia-logo.jpeg')",
     },
   },
 };

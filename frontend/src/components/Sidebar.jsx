@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
+import { Tooltip } from "@mui/material";
 
 import { RiDashboardFill } from "react-icons/ri";
 import {
@@ -58,7 +59,7 @@ const Sidebar = () => {
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
   return (
-    <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
+    <div className="h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
       {activeMenu && (
         <>
           <div className="flex justify-between items-center">
@@ -81,6 +82,7 @@ const Sidebar = () => {
           </div>
           <div className="mt-10">
             {links.map((item) => (
+              // <Tooltip title={item.title} placement="right">
               <NavLink
                 to={`/${item.title}`}
                 key={item.title}
@@ -95,8 +97,10 @@ const Sidebar = () => {
                 {item.icon}
                 <span className="capitalize">{item.title}</span>
               </NavLink>
+              // </Tooltip>
             ))}
           </div>
+          {/* <div className="mx-2 bg-logo-zidyia w-20 h-20"></div> */}
         </>
       )}
     </div>
