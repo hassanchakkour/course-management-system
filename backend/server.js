@@ -42,27 +42,27 @@ app.use("/api/submissions", submissionRoutes);
 app.use("/api/badges", badgeRoutes);
 app.use("/api/certificates", certificateRoutes);
 
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(notFound);
 app.use(errorHandler);
 
-//file storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb){
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb){
-    cb(null, file.fieldname+ "_" +Date.now() + path.extname(file.originalname))
-  }
-})
-const upload = multer({
-  storage:storage
-})
+// //file storage
+// const storage = multer.diskStorage({
+  
+//   destination: function (req, file, cb){
+//     console.log(req.file)
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb){
+//     cb(null, file.fieldname+ "_" +Date.now() + path.extname(file.originalname))
+//   }
+// })
+// const upload = multer({
+//   storage:storage
+// })
 // app.post('/api/activity', upload.single('image'), activityRoutes)
-app.post("/api/activities",upload.single("image"),activityRoutes,(req,res) => {
-  console.log(req.file);
-  res.send("single filll")
-})
+
+
 
 app.listen(port, () =>
   console.log(`Server started on PORT ${port}`.yellow.bold)

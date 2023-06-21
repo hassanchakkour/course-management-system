@@ -18,16 +18,18 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
-    mediaUrl,
+   
   } = req.body;
   // const teacherId = req.user._id;
 
+  const mediaUrl= req.file.mediaUrl;
+  
   if (!submoduleId) {
     res.status(400);
     throw new Error("submoduleId is required");
   }
   // const mediaUrl = req.file.path;
-
+  //const MediaUrl= req.files.MediaUrl[0].path;
   
   const activity = await Activity.create({
     title,
@@ -38,9 +40,10 @@ const postActivity = asyncHandler(async (req, res) => {
     passingGrade,
     note,
     courseId,
-    mediaUrl
+    mediaUrl,
  
   });
+
 
   if (activity) {
     const addTosubmodule = await Submodule.findById(submoduleId).populate(
