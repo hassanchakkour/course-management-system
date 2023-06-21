@@ -11,6 +11,8 @@ import {
   FaEnvelope,
 } from "react-icons/fa";
 
+import logo from "../../public/zidyia-logo.png";
+
 // import links from "../constants/links";
 const links = [
   {
@@ -62,13 +64,15 @@ const Sidebar = () => {
     <div className="h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
       {activeMenu && (
         <>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-center items-center">
             <Link
               to="/"
               onClick={handleCloseSideBar}
-              className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
+              className="items-center mt-10 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
             >
-              <FaBookOpen /> <span>LMS</span>
+              <div className=" bg-transparent">
+                <img width={70} height={70} src={logo} alt="logo" />
+              </div>
             </Link>
 
             <button
@@ -100,7 +104,6 @@ const Sidebar = () => {
               // </Tooltip>
             ))}
           </div>
-          {/* <div className="mx-2 bg-logo-zidyia w-20 h-20"></div> */}
         </>
       )}
     </div>
