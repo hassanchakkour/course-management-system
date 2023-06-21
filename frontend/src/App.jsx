@@ -47,7 +47,7 @@ const App = () => {
           <div className={currentMode === "Dark" ? "dark" : ""}>
             <div className="flex relative dark:bg-main-dark-bg">
               {activeMenu ? (
-                <div className="w-24 sm:h-5/6 fixed sidebar bg-secondary-dark-bg rounded-r-3xl sm:mt-14 mt-20">
+                <div className="w-24 h-full fixed sidebar bg-secondary-dark-bg rounded-r-3xl">
                   <Sidebar />
                 </div>
               ) : (
