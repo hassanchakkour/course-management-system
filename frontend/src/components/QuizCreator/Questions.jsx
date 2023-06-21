@@ -84,6 +84,12 @@ const Questions = () => {
     setShortAnswersNbr(shortAnswersTemp);
     setNumericalNbr(numericalTemp);
     setEssayNbrNbr(essayTemp);
+
+    let gradeSum = 0;
+    for (let i = 0; i < res.data.length; i++) {
+      gradeSum += res.data[i].point;
+    }
+    setGradeNbr(gradeSum);
   };
 
   useEffect(() => {
