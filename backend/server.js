@@ -36,7 +36,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/modules", moduleRoutes);
 app.use("/api/submodules", subModulesRoutes);
-app.use("/api/activities", activityRoutes);
+ app.use("/api/activities", activityRoutes);
 app.use("/api/questions", questionsRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/badges", badgeRoutes);
@@ -49,7 +49,7 @@ app.use(errorHandler);
 //file storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb){
-    cb(null, "assets/uploads/");
+    cb(null, "uploads");
   },
   filename: function (req, file, cb){
     cb(null, file.fieldname+ "_" +Date.now() + path.extname(file.originalname))
@@ -57,6 +57,11 @@ const storage = multer.diskStorage({
 })
 const upload = multer({
   storage:storage
+})
+// app.post('/api/activity', upload.single('image'), activityRoutes)
+app.post("/api/activities",upload.single("image"),activityRoutes,(req,res) => {
+  console.log(req.file);
+  res.send("single filll")
 })
 
 app.listen(port, () =>

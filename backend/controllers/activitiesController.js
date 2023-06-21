@@ -1,9 +1,6 @@
 import Activity from "../models/activityModel.js";
 import asyncHandler from "express-async-handler";
 import Submodule from "../models/subModuleModel.js";
-import multer from 'multer'
-
-
 
 
 
@@ -11,6 +8,7 @@ import multer from 'multer'
 // @route   POST /api/activities
 // @access  Private (Teacher only)
 const postActivity = asyncHandler(async (req, res) => {
+
   const {
     title,
     submoduleId,
@@ -20,7 +18,7 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
-    mediaUrl
+    mediaUrl,
   } = req.body;
   // const teacherId = req.user._id;
 
@@ -28,7 +26,7 @@ const postActivity = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("submoduleId is required");
   }
-
+  // const mediaUrl = req.file.path;
 
   
   const activity = await Activity.create({

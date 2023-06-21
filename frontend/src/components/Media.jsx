@@ -1,55 +1,58 @@
-import React, { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import DragDropFiles from "./DragDropFiles";
-// import { Dropzone, FileMosaic } from "@dropzone-ui/react";
-// import ReactDOM from "react-dom";
-
-import "../App.css";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { TextField, Button, Container, Box } from "@mui/material";
+import Typography from '@mui/material/Typography';
 
 const Media = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [file, setFile] = useState(null);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const handleFileDrop = (droppedFiles) => {
-    setFile(droppedFiles[0]);
-  };
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
+    file: Yup.mixed().required("File is required"),
+  });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      file: null,
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      const { title, description, file } = values;
+      const formData = {
+      title:title,
+      description:description,
+      mediaUrl:file,
+      type:'Media',
+      submoduleId:"648314914e78666518b69c5d",
+      
+       teacherId:userInfo._id,
+     
+       courseId:"648d8878a3be048f181521a5",
+  }
+  console.log(formData)
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/activities",
+          formData,
+         
+        );
 
-    const resourceData = {
-      teacherId: userInfo._id,
-      submoduleId: "648314914e78666518b69c5d",
-      submitted: "648797b20da8cd5459f029ff",
-      courseId: "648d8878a3be048f181521a5",
-      title: title,
-      description: JSON.stringify(description),
-      mediaUrl: file,
-      type: "Media",
-    };
+        console.log("Resource created:", response.data);
 
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/activities",
-        resourceData
-      );
-
-      console.log("Resource created:", response.data);
-
-      setTitle("");
-      setDescription("");
-      setFile(null);
-    } catch (error) {
-      console.error("Error creating question:", error);
-    }
-  };
+        formik.resetForm();
+      } catch (error) {
+        console.error("Error creating resource:", error);
+      }
+    },
+  });
 
   const modules = {
     toolbar: [
@@ -82,71 +85,117 @@ const Media = () => {
     "font",
     "align",
   ];
-  
 
   return (
     <div className="QuizForm">
       <Container
-        maxWidth="30%"
+        maxWidth="50%"
         sx={{
-          // border: "1px solid #ccc",
-          // borderRadius: "10px",
-          // padding: "20px",
-          maxHeight: "60vh",
-          overflowY: "auto",
+          // maxHeight: "60vh",
+          // overflowY: "auto",
+          backgroundColor:'rgb:(64, 64, 64)',
+          color: 'gray',
         }}
       >
-        <form onSubmit={handleSubmit}>
-          <Box marginBottom="10px">
-            <h4>Resource Name</h4>
-            <TextField
-              variant="outlined"
-              fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              sx={{ marginBottom: "20px" }}
-            />
-          </Box>
-          <Box marginBottom="16px">
-            <h4>Resource Description</h4>
-            <ReactQuill
-              label="Media Description"
-              value={description}
-              onChange={setDescription}
-              modules={modules}
-              formats={formats}
-              render={() => (
-                <TextField
-                  label="Media"
-                  multiline
-                  rows={6}
-                  variant="outlined"
-                  fullWidth
-                  sx={{
-                    marginBottom: "16px",
-                    maxHeight: "300px",
-                    overflowY: "auto",
-                  }}
-                />
-              )}
-            />
-          </Box>
-         
+        <form onSubmit={formik.handleSubmit}>
+        
+     <Box marginBottom="20px" color="gray">
+  <div style={{ display: 'flex', color: 'gray' }}>
+  <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Media</h4>
+    </div>
+  </div>
+     </Box>
+
+<Box marginBottom="10px">
+  <div style={{ display: 'flex', alignItems: 'center' ,  color: 'whitesmoke',}}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Title</h4>
+    </div>
+    <div style={{ width: '70%' }}>
+      <TextField
+        variant="outlined"
+        id="outlined-error"
+        fullWidth
+        name="title"
       
-          <Box marginBottom="16px">
-          <h4>Upload Resource</h4>
-      <input type="file" onChange={handleFileChange} />
+        value={formik.values.title}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.title && formik.errors.title}
+        helperText={formik.touched.title && formik.errors.title}
+        sx={{
+          marginBottom: '10px',
+          borderRadius: '0px',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          borderColor: 'gray',
+          color: 'whitesmoke',
+          width: '100%',
+        }}
+      />
+    </div>
+  </div>
+</Box>
+
+<Box marginBottom="16px">
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Description</h4>
+    </div>
+    <div style={{ width: '70%' }}>
+      <ReactQuill
+        label="Media Description"
+        value={formik.values.description}
+        id="outlined-error"
+        onChange={(value) => formik.setFieldValue('description', value)}
+        modules={modules}
+        formats={formats}
+        sx={{
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          color: 'whitesmoke',
+          width: '100%',
+        }}
+        render={() => (
+          <TextField
+            label="Media"
+            multiline
+            rows={6}
+            variant="outlined"
+            fullWidth
+            sx={{
+              marginBottom: '16px',
+              maxHeight: '300px',
+              overflowY: 'auto',
+              color: 'whitesmoke',
+            }}
+          />
+        )}
+      />
+    </div>
+  </div>
+</Box>
+
          
-          </Box>
-          
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ borderRadius: "20%" }}
-          >
+<Box marginBottom="16px" sx={{ display: 'flex', alignItems: 'center' }}>
+  <h4 style={{ marginRight: '25px', color: 'whitesmoke'}} >Upload Resource</h4>
+  <input
+    id="outlined-error"
+    type="file"
+    onChange={(event) => {
+      formik.setFieldValue('file', event.currentTarget.files[0]);
+    }}
+    name="file"
+    accept="image/*,video/*,audio/*"
+    sx={{ flexGrow: 1 }}
+  />
+  {formik.touched.file && formik.errors.file && <div>{formik.errors.file}</div>}
+</Box>
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button variant="contained" color="primary" type="submit" sx={{borderRadius: "20%"}}>
             Submit
           </Button>
+          </div>
         </form>
       </Container>
     </div>

@@ -3,9 +3,11 @@ import { TextField, Button, Container,Modal, Box,MenuItem, Select,Radio,FormGrou
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
+import Typography from '@mui/material/Typography';
+
 import Questions from'./Question'
 import axios from 'axios';
-import '../App.css';
+
 
 const Quiz = () => {
   const [title,setTitle] = useState('');
@@ -178,87 +180,157 @@ const Quiz = () => {
           // padding: "px",
           maxHeight: "60vh", // Set the desired height for the scrollable area
           overflowY: "auto", // Enable vertical scrolling
-        }}
-      >
-        <Box my={4}>
-          <h2>Quiz Form</h2>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              label="Quiz Name"
-              variant="outlined"
-              fullWidth
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              margin="normal"
-              sx={{
-                marginBottom: "16px", // Add margin at the bottom
-                borderRadius: "10px", // Set border radius
-                // Add any additional styling properties as needed
-              }}
-            />
+          color: 'gray',
 
-             <FormControl fullWidth sx={{ marginTop: '16px' }}>
-              <FormLabel>Quiz Description</FormLabel>
-              <ReactQuill
-                   value={description}
-                   onChange={(value) => setDescription(value)}
-                   modules={modules}
-                   formats={formats}
-                  render={({ editor }) => (
-                         <TextField
-                        label="Media"
-                         multiline
-                         rows={6}
+        }}
+       
+      >
+        <Box my={6}
+          sx={{
+            marginBottom: "20px", // Add margin at the bottom
+            borderRadius: "40px", // Set border radius
+            color: 'gray',
+
+            // Add any additional styling properties as needed
+          }}
+        >
+         <div style={{ display: 'flex' }}>
+            <div style={{ width: '30%', marginRight: '10px' }}>
+                  <h4 style={{ color: 'whitesmoke' }}>Quiz</h4>
+                </div>
+               </div>
+        
+    <form onSubmit={handleSubmit}>
+
+          <Box marginBottom="20px" color="gray">
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ width: '30%', marginRight: '10px' }}>
+                 <h4 style={{ color: 'whitesmoke' }}>Quiz Name</h4>
+                     </div>
+              <div style={{ width: '100%' }}>
+                 <TextField
+                
                  variant="outlined"
-                        fullWidth
-                 onClick={editor.focus}
-                         sx={{
-        marginBottom: '16px',
-        maxHeight: '500px',
-        overflowY: 'auto',
+                fullWidth
+                value={title}
+              onChange={(event) => setTitle(event.target.value)}
+               margin="normal"
+              sx={{
+              borderRadius: "0px",
+               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                   }}
+                  />
+                </div>
+                    </div>
+                       </Box>
+<Box marginBottom="20px" color="gray">
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Description</h4>
+    </div>
+  <div style={{ width: '100%' }}>
+    <ReactQuill
+      value={description}
+      onChange={(value) => setDescription(value)}
+      modules={modules}
+      formats={formats}
+      render={({ editor }) => (
+        <TextField
+          label="Quiz Description"
+          multiline
+          rows={6}
+          variant="outlined"
+          fullWidth
+          onClick={editor.focus}
+          sx={{
+            borderRadius: "0px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+          }}
+        />
+      )}
+    />
+  </div>
+</div>
+</Box>
+
+<Box marginBottom="20px" color="gray">
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Instructions</h4>
+    </div>
+  <div style={{ width: '100%' }}>
+    <ReactQuill
+      value={instructions}
+      onChange={setInstructions}
+      modules={modules}
+      formats={formats}
+      render={({ editor }) => (
+        <TextField
+          label="Instructions"
+          multiline
+          rows={6}
+          variant="outlined"
+          fullWidth
+          onClick={editor.focus}
+          sx={{
+            marginBottom: '16px',
+            maxHeight: '300px',
+            overflowY: 'auto',
+            borderRadius: '0px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          }}
+        />
+      )}
+    />
+  </div>
+</div>
+</Box>
+
+<Box marginBottom="20px" color="gray">
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Note</h4>
+    </div>
+  <div style={{ width: '100%' }}>
+    <TextField
+      variant="outlined"
+      fullWidth
+      value={note}
+      onChange={(event) => setNote(event.target.value)}
+      margin="normal"
+      sx={{
+        marginBottom: '10px',
+        borderRadius: '0px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
       }}
     />
-  )}
-/>
-              
-              <FormLabel component="legend" sx={{ marginTop: '16px' }}>Instructions</FormLabel>
-              <ReactQuill
-                value={instructions}
-                onChange={setInstructions}
-                modules={modules}
-                formats={formats}
-                render={({ editor }) => (
-                  <TextField
-                    label="Media"
-                    multiline
-                    rows={6}
-                    variant="outlined"
-                    fullWidth
-                    onClick={editor.focus}
-                    sx={{
-                      marginBottom: '16px',
-                      maxHeight: '300px',
-                      overflowY: 'auto',
-                    }}
-                  />
-                )}
-              />
-               <TextField
-              label="Post Note"
-              variant="outlined"
-              fullWidth
-              value={note}
-              onChange={(event) => setNote(event.target.value)}
-              margin="normal"
-            />
-             <TextField
-              label="Passing Grade"
-              variant="outlined"
-              fullWidth
-              value={passingGrade}
-              onChange={(event) => setPassinggrade(event.target.value)}
-              margin="normal"
-            />
+  </div>
+</div>
+</Box>
+
+<Box marginBottom="20px" color="gray">
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Passing Grade</h4>
+    </div>
+  <div style={{ width: '100%',color: 'whitesmoke' }}>
+    <TextField
+      variant="outlined"
+     
+      fullWidth
+      value={passingGrade}
+      onChange={(event) => setPassinggrade(event.target.value)}
+      margin="normal"
+      sx={{
+        marginBottom: '10px',
+        borderRadius: '0px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        color: 'whitesmoke',
+      }}
+    />
+  </div>
+</div>
+</Box>
              {/* <TextField
               label="Number of Attempts"
               variant="outlined"
@@ -267,25 +339,49 @@ const Quiz = () => {
               onChange={(event) => setName(event.target.value)}
               margin="normal"
             /> */}
-             <TextField
-              label="Duration in Minutes"
-              variant="outlined"
-              type="number"
-              fullWidth
-              value={duration}
-              onChange={(event) => setDuration(event.target.value)}
-              margin="normal"
-            />
-           <FormLabel component="legend" sx={{ marginTop: '16px', margin_right:'10px',display: 'inline-block' }}>Load Quiz:
-          
-              <Select
-               labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                 className="mr-5 w-[40%] ml-5"
+                <Box marginBottom="20px" color="gray">
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '30%', marginRight: '10px' }}>
+                          <h4 style={{ color: 'whitesmoke' }}>Duration</h4>
+                             </div>
+                 <div style={{ width: '100%' }}>
+                  <TextField
+                  variant="outlined"
+                    type="number"
+                    fullWidth
+                   value={duration}
+                     onChange={(event) => setDuration(event.target.value)}
+                    margin="normal"
+                          sx={{
+                            marginBottom: '10px',
+                            borderRadius: '0px',
+                            color: 'whitesmoke',
+                            boxShadow: '0 2px 4px rgba(113, 122, 131, 0.11)',
+
+                            }}
+                            />
+                            </div>
+                            </div>
+                            </Box>
+                   <Box>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ width: '30%', marginRight: '10px' }}>
+                            <h4 style={{ color: 'whitesmoke' }}>Load Quiz</h4>
+                             </div>
+                 <Select
+              //  labelId="demo-simple-select-label"
+              //   id="demo-simple-select"
+                 className="mr-5 w-[80%] ml-5"
                  value={selectedQuiz || ""} 
                onChange={handleQuizChange}
                 width="100%"
                  label="Quiz"
+                //  sx={{
+                //   marginBottom: "10px", // Add margin at the bottom
+                //   borderRadius: "0px", // Set border radius
+                //   boxShadow: "1px 4px 4px rgba(0, 0, 0, 0.2)",
+                // }}
+              
                    >
                  {quizzes && quizzes.map(quiz => (
                     <MenuItem key={quiz._id} value={quiz._id}>
@@ -294,13 +390,15 @@ const Quiz = () => {
                    ))}
                    
               </Select>
-              
+               <Button type="button" variant="contained" color="primary" className='right-0'>
+                Create New Quiz
+              </Button>
+              </div>
+            </Box>
             
 
 
-              <Button type="button" variant="contained" color="primary" className='right-0'>
-                Create New Quiz
-              </Button>
+             
               {/* <ModalonClick={handleOpen} 
                         open={open}
                   onClose={handleClose}
@@ -316,7 +414,7 @@ const Quiz = () => {
         </Box>
       </Modal> */}
               
-              </FormLabel>
+             
          
                 <FormGroup component="legend" sx={{ marginTop: '16px' }}>
              <FormControlLabel control={<Switch defaultChecked />} label="Shuffle Questions" />
@@ -325,13 +423,21 @@ const Quiz = () => {
               </FormGroup>
            
 
-            <Switch value="Group Students" inputProps={{ 'aria-label': 'Switch A' }}sx={{ marginTop: '16px', marginBottom:'16px' }} />
-
- </FormControl>
            
- <Button variant="contained" color="primary" type="submit" sx={{ borderRadius: "20%" }}>
-            Submit
-          </Button>
+ 
+           
+ <div style={{ display: 'flex', justifyContent: 'center' }}>
+  <Button
+    variant="contained"
+    color="primary"
+    type="submit"
+    sx={{
+      borderRadius: "20%",
+    }}
+  >
+    Submit
+  </Button>
+</div>
           {/* <Button variant="contained" color="secondary" sx={{ borderRadius: "20%", marginLeft: "10px" }}>
             Cancel
           </Button> */}
