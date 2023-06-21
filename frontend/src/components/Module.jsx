@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsFillMicFill } from "react-icons/bs";
 import { AiFillFileText, AiOutlineSubnode } from "react-icons/ai";
-import { RiSurveyFill } from "react-icons/ri";
+import { RiSurveyFill, RiDeleteBin3Line } from "react-icons/ri";
 import { MdViewModule, MdDocumentScanner } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -9,6 +9,27 @@ import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { useStateContext } from "../contexts/ContextProvider";
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
 import axios from "axios";
+
+const SaveIcons = [
+  {
+    icon: <IoMdAddCircleOutline />,
+    onClick: () => {
+      console.log("asd");
+    },
+  },
+  {
+    icon: <AiOutlineSubnode />,
+    onClick: () => {
+      // Handle onClick logic for AiOutlineSubnode
+    },
+  },
+  {
+    icon: <FiSave />,
+    onClick: () => {
+      // Handle onClick logic for FiSave
+    },
+  },
+];
 
 const Module = (course) => {
   const { courseID, course_name, activeMenu } = useStateContext();
@@ -26,8 +47,13 @@ const Module = (course) => {
       sendData
     );
     setModule(res.data);
-    // console.log("asd", res);
-    setActivity(res.data[0].submoduleId[0].activityId);
+    // console.log("asd", res.data[0].submoduleId[0].activityId[0]);
+    // setActivity(res.data[0].submoduleId[0].activityId[0]);
+    await addmods(module);
+  };
+  const addmods = (ddd) => {
+    setActivity(ddd);
+    // console.log(activity);
   };
 
   const moveSubs = async (result) => {
@@ -76,6 +102,39 @@ const Module = (course) => {
     iconsClass =
       "mx-[80%] max-[850px]:mt-0 max-[850px]:mx-[60%] absolute mt-12";
   }
+  const [openItemId, setOpenItemId] = useState(null);
+  const handleDropdownToggle = (itemId) => {
+    setOpenItemId((prevOpenItemId) =>
+      prevOpenItemId === itemId ? null : itemId
+    );
+  };
+  const [openItemsubId, setOpenItemsubId] = useState(null);
+  const handleDropdownToggleSub = (itemId) => {
+    setOpenItemsubId((prevopenItemsubId) =>
+      prevopenItemsubId === itemId ? null : itemId
+    );
+  };
+  const [openItemactId, setOpenItemactId] = useState(null);
+  const handleDropdownToggleAct = (itemId) => {
+    setOpenItemactId((prevopenItemsubId) =>
+      prevopenItemsubId === itemId ? null : itemId
+    );
+  };
+  const handleRemoveModule = async (id) => {
+    try {
+      let sendData = {
+        _id: id,
+      };
+      const res = await axios.post(
+        "http://localhost:5000/api/modules/delete",
+        sendData
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await getModuleData();
+    }
+  };
   return (
     <>
       <div className="my-[8%]">
@@ -102,27 +161,44 @@ const Module = (course) => {
           </ul>
         </div>
       </div>
-      <div className={iconsClass}>
-        <ul className="flex text-white text-2xl">
-          <li className="mr-10 max-[850px]:mr-8">
-            <IoMdAddCircleOutline
-              onClick={() => {
-                console.log("asd", module);
-              }}
-              className="cursor-pointer"
-            />
-          </li>
-          <li className="mr-10 max-[850px]:mr-8">
-            <AiOutlineSubnode className="cursor-pointer" />
-          </li>
-          <li>
-            <FiSave className="cursor-pointer" />
-          </li>
-        </ul>
-      </div>
-
       <DragDropContext onDragEnd={(result) => moveSubs(result)}>
-        <div className="my-[5%] rounded-3xl text-white flex border-gray-500 border w-full h-[50vh]">
+        <Droppable droppableId="IconList">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className={iconsClass}
+            >
+              <ul className="flex text-white text-2xl">
+                {SaveIcons.map((item, index) => (
+                  <Draggable
+                    key={index}
+                    index={index}
+                    draggableId={`iconL - ${index}`}
+                  >
+                    {(provided) => (
+                      <li
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                        ref={provided.innerRef}
+                        className={`mr-10 ${
+                          index === 0 ? "max-[850px]:mr-8" : ""
+                        }`}
+                      >
+                        {React.cloneElement(item.icon, {
+                          onClick: item.onClick,
+                          className: "cursor-pointer",
+                        })}
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </ul>
+            </div>
+          )}
+        </Droppable>
+        <div className="my-[5%] max-[850px]:flex-col rounded-3xl text-white flex border-gray-500 border w-full ">
           {module &&
             module.map((mods) => {
               // console.log("res", mods.submoduleId);
@@ -136,8 +212,19 @@ const Module = (course) => {
                     >
                       <p className="ml-5 mt-2 flex text-xl mb-2 justify-between">
                         {mods.title}
-                        <BsThreeDots className="text-l mt-1 mr-4" />
+                        <button onClick={() => handleDropdownToggle(mods._id)}>
+                          <BsThreeDots className="text-l mt-1 mr-4" />
+                        </button>
                       </p>
+                      {openItemId === mods._id && (
+                        <p
+                          onClick={() => handleRemoveModule(mods._id)}
+                          className="z-1 cursor-pointer  flex ml-[17%] absolute bg-red-500 p-2 rounded-lg text-sm"
+                        >
+                          <RiDeleteBin3Line className="mt-0.5" />{" "}
+                          <span>Delete</span>
+                        </p>
+                      )}
                       {mods.submoduleId.map((submodule, index) => {
                         // console.log(submodule.activityId);
                         return (
@@ -155,9 +242,30 @@ const Module = (course) => {
                               >
                                 <p className="ml-2 flex justify-center">
                                   {submodule.title}
-                                  <BsThreeDotsVertical className="text-l mt-1" />
+                                  <BsThreeDotsVertical
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      // Handle the click event logic here
+                                      handleDropdownToggleSub(submodule._id);
+                                    }}
+                                    {...provided.draggableProps}
+                                    style={{
+                                      pointerEvents: snapShot.isDragging
+                                        ? "none"
+                                        : "auto",
+                                    }}
+                                    className="text-l mt-1"
+                                  />
                                 </p>
-
+                                {openItemsubId === submodule._id && (
+                                  <p
+                                    // onClick={() => handleRemoveModule(submodule._id)}
+                                    className="z-1 cursor-pointer max-[850px]:ml-[40%]  flex ml-[10%] absolute bg-red-500 p-2 rounded-lg text-sm"
+                                  >
+                                    <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
+                                    <span>Delete</span>
+                                  </p>
+                                )}
                                 {submodule.activityId.map((activity) => {
                                   // console.log(activity.type);
                                   return (
@@ -178,8 +286,32 @@ const Module = (course) => {
                                     >
                                       <p className="ml-5 flex justify-between">
                                         {activity.title}
-                                        <BsThreeDotsVertical className="text-l mt-1 " />
+                                        <BsThreeDotsVertical
+                                          onClick={(event) => {
+                                            event.stopPropagation();
+                                            // Handle the click event logic here
+                                            handleDropdownToggleAct(
+                                              activity._id
+                                            );
+                                          }}
+                                          {...provided.draggableProps}
+                                          style={{
+                                            pointerEvents: snapShot.isDragging
+                                              ? "none"
+                                              : "auto",
+                                          }}
+                                          className="text-l mt-1 "
+                                        />
                                       </p>
+                                      {openItemactId === activity._id && (
+                                        <p
+                                          // onClick={() => handleRemoveModule(submodule._id)}
+                                          className="z-1 cursor-pointer max-[850px]:ml-[62%]  flex ml-[16%] absolute bg-red-500 p-2 rounded-lg text-sm"
+                                        >
+                                          <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
+                                          <span> Delete</span>
+                                        </p>
+                                      )}
                                     </div>
                                   );
                                 })}

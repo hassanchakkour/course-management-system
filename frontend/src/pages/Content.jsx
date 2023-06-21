@@ -24,9 +24,7 @@ const Content = () => {
         <CourseSummary course={course} coursename={course_Name} />
       </div>
       <div className=" flex">
-        <DragDropContext>
-          <Module course={course} />
-        </DragDropContext>
+        <Module course={course} />
       </div>
     </div>
   );
