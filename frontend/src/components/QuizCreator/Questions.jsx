@@ -108,7 +108,7 @@ const Questions = () => {
               >
                 {questionsNbr}
               </span>
-              <p className="uppercase font-bold text-base md:text-lg text-gray-800 dark:text-gray-300">
+              <p className="uppercase font-bold text-base md:text-lg text-gray-800 dark:text-gray-300 md:mt-2">
                 questions
               </p>
             </div>
@@ -167,7 +167,7 @@ const Questions = () => {
               >
                 {gradeNbr}
               </span>
-              <p className="uppercase font-bold text-base md:text-lg text-gray-800 dark:text-gray-300">
+              <p className="uppercase font-bold text-base md:text-lg text-gray-800 dark:text-gray-300 md:mt-2">
                 grade
               </p>
             </div>
