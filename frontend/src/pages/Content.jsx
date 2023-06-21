@@ -22,9 +22,8 @@ const Content = () => {
       <div>
         <CourseSummary course={course} coursename={course_Name} />
       </div>
-      <div className=" flex">
-        <Header course={course} />
-      </div>
+
+      <Header course={course} />
     </div>
   );
 };

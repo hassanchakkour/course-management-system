@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 const CourseSummary = (course) => {
-  const { activeMenu } = useStateContext();
+  const { currentColor, activityID, activityTitle, activeMenu } =
+    useStateContext();
 
   const { userInfo } = useSelector((state) => state.auth);
   const [moduelNbr, setModuleNbr] = useState(0);
@@ -69,10 +70,10 @@ const CourseSummary = (course) => {
 
   if (activeMenu) {
     courseSummaryClass =
-      "text-4xl  ml-[5%] mt-12 font-bold max-[850px]:invisible";
+      "text-4xl  ml-[2%] mt-12 font-bold max-[850px]:invisible";
   } else {
     courseSummaryClass =
-      "text-4xl  ml-[11%] mt-12 font-bold max-[850px]:invisible";
+      "text-4xl  ml-[9%] mt-12 font-bold max-[850px]:invisible";
   }
 
   return (
@@ -83,35 +84,50 @@ const CourseSummary = (course) => {
       </div>
       <div className="flex max-[850px]:hidden">
         <div className="pr-24 ml-16 ">
-          <div className="text-5xl ml-16 overline decoration-[#03C9D7]  pt-2 mb-5 mt-10 font-bold text-center">
+          <div
+            style={{ textDecorationColor: `${currentColor}` }}
+            className="text-5xl ml-16 overline   pt-2 mb-5 mt-10 font-bold text-center"
+          >
             {moduelNbr}
           </div>
           <span className="ml-16 mt-16">MODULE</span>
         </div>
         <div className="border border-gray-600 h-20 mt-[50px]"></div>
         <div className="pr-20 ml-10">
-          <div className="text-5xl ml-16 overline decoration-[#03C9D7] pt-2 mb-5 mt-10 font-bold text-center">
+          <div
+            style={{ textDecorationColor: `${currentColor}` }}
+            className="text-5xl ml-16 overline  pt-2 mb-5 mt-10 font-bold text-center"
+          >
             {topicNbr}
           </div>
           <span className="ml-16 mt-16">TOPIC</span>
         </div>
         <div className="border border-gray-600 h-20 mt-[50px]"></div>
         <div className="pr-20 ml-8">
-          <div className="text-5xl ml-16 overline decoration-[#03C9D7] pt-2 mb-5 mt-10 font-bold text-center">
+          <div
+            style={{ textDecorationColor: `${currentColor}` }}
+            className="text-5xl ml-16 overline  pt-2 mb-5 mt-10 font-bold text-center"
+          >
             {assignmentNbr}
           </div>
           <span className="ml-16 mt-16">ASSIGNMENT</span>
         </div>
         <div className="border border-gray-600 h-20 mt-[50px]"></div>
         <div className="pr-24 ml-10">
-          <div className="text-5xl ml-16 overline decoration-[#03C9D7] pt-2 mb-5 mt-10 font-bold text-center">
+          <div
+            style={{ textDecorationColor: `${currentColor}` }}
+            className="text-5xl ml-16 overline  pt-2 mb-5 mt-10 font-bold text-center"
+          >
             {quizNbr}
           </div>
           <span className="ml-16 mt-16">QUIZ</span>
         </div>
         <div className="border border-gray-600 h-20 mt-[50px]"></div>
         <div className="pr-5 ml-8">
-          <div className="text-5xl ml-16 overline decoration-[#03C9D7] pt-2 mb-5 mt-10 font-bold text-center">
+          <div
+            style={{ textDecorationColor: `${currentColor}` }}
+            className="text-5xl ml-16 overline  pt-2 mb-5 mt-10 font-bold text-center"
+          >
             {onlineNbr}
           </div>
           <span className="ml-16 mt-16">ONLINE SESSION</span>
