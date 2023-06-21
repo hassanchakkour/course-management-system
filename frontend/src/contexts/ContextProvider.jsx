@@ -18,6 +18,8 @@ export const ContextProvider = ({ children }) => {
   const [themeSettings, setThemeSettings] = useState(false);
   const [courseID, setCourseID] = useState("");
   const [courseName, setCourseName] = useState("");
+  const [activityID, setActivityID] = useState("");
+  const [activityTitle, setActivityTitle] = useState("");
 
   useEffect(() => {
     // Update currentBgColor based on currentColor
@@ -53,6 +55,13 @@ export const ContextProvider = ({ children }) => {
     localStorage.setItem("course_name", course_Name);
   };
 
+  const setActivity_ID = (activity_ID, activity_Title) => {
+    setActivityID(activity_ID);
+    setActivityTitle(activity_Title);
+    localStorage.setItem("activity_id", activity_ID);
+    localStorage.setItem("activity_title", activity_Title);
+  };
+
   const handleClick = (clicked) => {
     setIsClicked({ ...initialState, [clicked]: true });
   };
@@ -83,6 +92,11 @@ export const ContextProvider = ({ children }) => {
         themeSettings,
         setThemeSettings,
         setCourse_ID,
+        activityID,
+        activityTitle,
+        setActivityID,
+        setActivityTitle,
+        setActivity_ID,
       }}
     >
       {children}

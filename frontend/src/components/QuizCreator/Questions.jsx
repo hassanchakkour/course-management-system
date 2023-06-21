@@ -18,13 +18,18 @@ import { BsCalculator } from "react-icons/bs";
 import { LuFileText } from "react-icons/lu";
 
 const Questions = () => {
-  const { currentColor, activeMenu, setActiveMenu } = useStateContext();
+  const { currentColor, activityID, activityTitle } = useStateContext();
+
+  //   const activityId = localStorage.getItem("course_id", activityID);
+
+  //   const course_Title = localStorage.getItem("course_name", activityTitle);
+
   const { userInfo } = useSelector((state) => state.auth);
 
   const [questionsNbr, setQuestionsNbr] = useState(0);
 
-  const [multipleChoiceNbr, setmultipleChoiceNbr] = useState(0);
-  const [multipleResponceNbr, setmultipleResponceNbr] = useState(0);
+  const [multipleChoiceNbr, setMultipleChoiceNbr] = useState(0);
+  const [multipleResponceNbr, setMultipleResponceNbr] = useState(0);
   const [trueFalseNbr, setTrueFalseNbr] = useState(0);
   const [shortAnswersNbr, setShortAnswersNbr] = useState(0);
   const [numericalNbr, setNumericalNbr] = useState(0);
@@ -32,7 +37,58 @@ const Questions = () => {
 
   const [gradeNbr, setGradeNbr] = useState(0);
 
-  useEffect(() => {}, []);
+  const [inputNbr, setInputNbr] = useState(1);
+  const handleInputChange = (e) => {
+    setInputNbr(e.target.value);
+  };
+
+  let sendData = { activityId: "64831840f58d735189094350" };
+
+  const getQuestionData = async () => {
+    const res = await axios.post(
+      "http://localhost:5000/api/questions/activity",
+      sendData
+    );
+    setQuestionsNbr(res.data.length);
+
+    let multipleChoiceTemp = 0;
+    let multipleResponceTemp = 0;
+    let trueFalseTemp = 0;
+    let shortAnswersTemp = 0;
+    let numericalTemp = 0;
+    let essayTemp = 0;
+
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].type === "Multiple Choice") {
+        multipleChoiceTemp += 1;
+      }
+      if (res.data[i].type === "Multiple Response") {
+        multipleResponceTemp += 1;
+      }
+      if (res.data[i].type === "True or False") {
+        trueFalseTemp += 1;
+      }
+      if (res.data[i].type === "Short Answers") {
+        shortAnswersTemp += 1;
+      }
+      if (res.data[i].type === "Numerical") {
+        numericalTemp += 1;
+      }
+      if (res.data[i].type === "Essay") {
+        essayTemp += 1;
+      }
+    }
+    setMultipleChoiceNbr(multipleChoiceTemp);
+    setMultipleResponceNbr(multipleResponceTemp);
+    setTrueFalseNbr(trueFalseTemp);
+    setShortAnswersNbr(shortAnswersTemp);
+    setNumericalNbr(numericalTemp);
+    setEssayNbrNbr(essayTemp);
+  };
+
+  useEffect(() => {
+    getQuestionData();
+  }, []);
 
   return (
     <>
@@ -143,7 +199,15 @@ const Questions = () => {
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
                 <div className="flex">
                   <p className="capitalize dark:text-white text-gray-800 text-lg">
-                    question 1
+                    question{" "}
+                    {
+                      <input
+                        type="number"
+                        value={inputNbr}
+                        onChange={handleInputChange}
+                        className="dark:bg-secondary-dark-bg bg-white dark:text-white text-gray-800 w-8"
+                      />
+                    }
                   </p>
                   <div className="flex items-center flex-grow mx-2">
                     <div className="border-b border-gray-500 w-full"></div>
@@ -162,7 +226,7 @@ const Questions = () => {
           <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll p-1 sm:p-2">
             <div className="bg-white mx-auto sm:mt-2 mt-3 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 p-4">
               <p className="capitalize dark:text-white text-gray-800 lg:text-lg md:text-base text-sm">
-                question 1
+                question {inputNbr}
               </p>
               <div className="flex items-center flex-grow my-2">
                 <div className="border-b border-gray-500 w-full"></div>

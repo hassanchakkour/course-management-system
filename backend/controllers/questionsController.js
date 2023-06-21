@@ -1,53 +1,53 @@
-import Question from "../models/questionModel.js";
 import asyncHandler from "express-async-handler";
+import Question from "../models/questionModel.js";
+import Activity from "../models/activityModel.js";
 
 // @desc    Create a new Question
 // @route   POST /api/questions
 // @access  Private (Teacher only)
 const postQuestion = asyncHandler(async (req, res) => {
-  const { activityId, type, content, options,teacherId } = req.body;
-  // const teacherId = req.user.id;
-  // console.log(teacherId)
-  // console.log('===')
-  // console.log(req.user._id)
+  const { activityId, type, content, options, teacherId, point } = req.body;
 
   if (!activityId) {
-      console.log('hello')
+    console.log("hello");
     res.status(400);
     throw new Error("activityId is required");
-  
   }
 
-  try {
-    const question = await Question.create({
-      activityId,
-      type,
-      content,
-      options,
-     
-       teacherId,
-    });
+  const question = await Question.create({
+    activityId,
+    type,
+    content,
+    options,
+    point,
+    teacherId,
+  });
 
-    res.status(201).json(question);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+  if (question) {
+    const addToActivity = await Activity.findById(activityId);
+    addToActivity.questionId.push(question._id);
+    console.log(addToActivity._id);
+
+    await addToActivity.save();
   }
+
+  res.status(201).json(question);
 });
-
 
 // @desc    Get all questions by activity ID
 // @route   GET /api/questions/activity/:activityId
 // @access  Private (Teacher only)
 const getQuestionsByactivityId = asyncHandler(async (req, res) => {
-  const activityId = req.params.activityId;
+  const { activityId } = req.body;
 
   const questions = await Question.find({ activityId });
+  console.log(questions.length);
 
   if (questions.length > 0) {
     res.status(200).json(questions);
   } else {
     res.status(404);
-    throw new Error("No questions found for the specified submodule");
+    throw new Error("No questions found for the specified activity");
   }
 });
 
