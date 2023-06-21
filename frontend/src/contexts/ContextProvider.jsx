@@ -55,11 +55,11 @@ export const ContextProvider = ({ children }) => {
     localStorage.setItem("course_name", course_Name);
   };
 
-  const setActivity_ID = (activity_ID, activity_Title) => {
+  const setActivity_ID = (activity_ID) => {
     setActivityID(activity_ID);
-    setActivityTitle(activity_Title);
+    // setActivityTitle(activity_Title);
     localStorage.setItem("activity_id", activity_ID);
-    localStorage.setItem("activity_title", activity_Title);
+    // localStorage.setItem("activity_title", activity_Title);
   };
 
   const handleClick = (clicked) => {
@@ -93,9 +93,9 @@ export const ContextProvider = ({ children }) => {
         setThemeSettings,
         setCourse_ID,
         activityID,
-        activityTitle,
+        // activityTitle,
         setActivityID,
-        setActivityTitle,
+        // setActivityTitle,
         setActivity_ID,
       }}
     >
