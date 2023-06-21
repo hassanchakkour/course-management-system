@@ -208,17 +208,20 @@ const Quiz = () => {
                  <h4 style={{ color: 'whitesmoke' }}>Quiz Name</h4>
                      </div>
               <div style={{ width: '100%' }}>
-                 <TextField
+                 <input
                 
                  variant="outlined"
                 fullWidth
                 value={title}
               onChange={(event) => setTitle(event.target.value)}
                margin="normal"
-              sx={{
-              borderRadius: "0px",
-               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                 sx={{
+                 borderRadius: "0px",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                  color: 'whitesmoke',
                    }}
+                  
+                 
                   />
                 </div>
                     </div>

@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer'
-const upload = multer({ dest: 'uploads' })
+// const upload = multer({ dest: 'uploads' })
 const router = express.Router();
 
 import {
@@ -23,7 +23,36 @@ router.get(
 
   getActivitiesBySubModuleId
 );
-router.post("/", upload.single("file"), postActivity);
+// router.post("/", postActivity);
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    try {
+   
+      // console.log("Uploading files...");
+      const uploadPath = `backend/uploads/`;
+  
+      cb(null, uploadPath);
+    } catch (error) {
+      return res.status(400).json({ message: "Error parsing form data 1 " });
+      console.error("Error:", error.message);
+    }
+  },
+  filename: (req, file, cb) => {
+    try {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    } catch (error) {
+      return res.status(400).json({ message: "Error parsing form data 2 " });
+      console.error("Error:", error.message);
+    }
+  },
+});
+
+const upload = multer({ storage });
+
+router.post("/",upload.single("mediaUrl"),postActivity,(req,res) => {
+  console.log(req.file);
+  res.send("single filll")
+})
 
 router.post("/single", getActivity);
 router.delete("/:id", deleteActivity);
