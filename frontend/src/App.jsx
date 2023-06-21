@@ -47,14 +47,7 @@ const App = () => {
           <div className={currentMode === "Dark" ? "dark" : ""}>
             <div className="flex relative dark:bg-main-dark-bg">
               {activeMenu ? (
-                <div
-                  // style={{
-                  //   borderTopRightRadius: "5rem",
-                  //   borderBottomRightRadius: "5rem",
-                  // }}
-                  // style={{ height: "90%" }}
-                  className="w-44 sm:h-5/6 fixed sidebar dark:bg-secondary-dark-bg bg-white sm:rounded-r-3xl  sm:mt-14"
-                >
+                <div className="w-24 sm:h-5/6 fixed sidebar bg-secondary-dark-bg rounded-r-3xl sm:mt-14 mt-20">
                   <Sidebar />
                 </div>
               ) : (
@@ -64,7 +57,7 @@ const App = () => {
               )}
               <div
                 className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full ${
-                  activeMenu ? "md:ml-44" : "flex-2"
+                  activeMenu ? "md:ml-24" : "flex-2"
                 }`}
               >
                 <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
