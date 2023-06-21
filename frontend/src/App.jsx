@@ -13,6 +13,7 @@ import { useStateContext } from "./contexts/ContextProvider";
 import Resources from "./pages/Resources";
 import QuizModal from "./pages/QuizModal";
 import QuestionsBank from "./pages/QuestionsBank";
+import Questions from "./components/QuizCreator/Questions";
 
 const App = () => {
   const {
@@ -20,12 +21,14 @@ const App = () => {
     setCurrentMode,
     currentMode,
     activeMenu,
+    setActiveMenu,
     currentColor,
     themeSettings,
     setThemeSettings,
   } = useStateContext();
 
   useEffect(() => {
+    setActiveMenu(false);
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
     if (currentThemeColor && currentThemeMode) {
@@ -46,18 +49,7 @@ const App = () => {
               <div
                 className="fixed right-4 bottom-4"
                 style={{ zIndex: "1000" }}
-              >
-                {/* <Tooltip title="Settings" placement="top" arrow>
-                  <button
-                    type="button"
-                    onClick={() => setThemeSettings(true)}
-                    style={{ background: currentColor, borderRadius: "50%" }}
-                    className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
-                  >
-                    <FiSettings />
-                  </button>
-                </Tooltip> */}
-              </div>
+              ></div>
               {activeMenu ? (
                 <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
                   <Sidebar />
@@ -91,8 +83,9 @@ const App = () => {
                     <Route path="/questionsBank" element={<QuestionsBank />} />
                     <Route path="/resources" element={<Resources />} />
                     <Route path="/quiz" element={<QuizModal />} />
-
                     <Route path="/courseName" element={<Content />} />
+
+                    <Route path="/quizCreator" element={<Questions />} />
                   </Routes>
                 </div>
               </div>
