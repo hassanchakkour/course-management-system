@@ -18,6 +18,7 @@ import { BsCalculator } from "react-icons/bs";
 import { LuFileText, LuPcCase } from "react-icons/lu";
 import { Tooltip } from "@mui/material";
 import ButtonMove from "./ModuleComps/ButtonMove";
+import ButtonMoveSub from "./ModuleComps/ButtonMoveSub";
 const Header = (course) => {
   const {
     courseID,
@@ -40,7 +41,9 @@ const Header = (course) => {
   const [isSubmoduleId, setIsSubmoduleId] = useState("");
   const [isActivityId, setIsActivityId] = useState("");
   const [btnIsOpen, setBtnIsOpen] = useState(false);
+  const [btnIsSubOpen, setBtnIsSubOpen] = useState(false);
   const [activTitle, setActivTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
 
   const handleMoveButtonClick = (data) => {
     const moveActivity = async () => {
@@ -78,6 +81,43 @@ const Header = (course) => {
     };
 
     moveActivity();
+  };
+  const handleMoveSubs = (data) => {
+    // const moveActivity = async () => {
+    //   if (isActivityId != "" && isSubmoduleId != "" && data.subId != "") {
+    //     try {
+    //       let sendData = {
+    //         id: isActivityId,
+    //         oldsubsId: isSubmoduleId,
+    //         newsubsId: data.subId,
+    //       };
+    //       const res = await axios.post(
+    //         "http://localhost:5000/api/activities/update",
+    //         sendData
+    //       );
+    //       console.log(res.data);
+    //       setMessageClass("absolute top-5 ml-[45%] text-green-500");
+    //       setMessage(res.data.message);
+    //       setOpenItemactId("");
+    //       setTimeout(() => {
+    //         setMessage("");
+    //       }, 2000);
+    //     } catch (error) {
+    //       console.log(error);
+    //     } finally {
+    //       await getModuleData();
+    //     }
+    //   } else {
+    //     setMessageClass("absolute top-5 ml-[45%] text-red-500");
+    //     setMessage("Something went wrong Please Try Again!");
+
+    //     setTimeout(() => {
+    //       setMessage("");
+    //     }, 2000);
+    //   }
+    // };
+    console.log(data);
+    // moveActivity();
   };
 
   const getModuleData = async () => {
@@ -427,14 +467,24 @@ const Header = (course) => {
                                   </p>
                                   <p
                                     onClick={() => {
-                                      setBtnIsOpen(true);
-                                      // setActivTitle(submodule.title);
+                                      setBtnIsSubOpen(true);
+                                      setActivTitle(submodule.title);
                                     }}
                                     className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
                                   >
                                     <MdMoveDown className="mt-0.5 mr-2" />{" "}
                                     <span> Move</span>
                                   </p>
+                                  {btnIsSubOpen && (
+                                    <ButtonMoveSub
+                                      setBtnIsSubOpen={setBtnIsSubOpen}
+                                      submoduleTitle={subTitle}
+                                      course={course.course}
+                                      modsId={ismoduleId}
+                                      subId={isSubmoduleId}
+                                      onMoveButtonClick={handleMoveSubs}
+                                    />
+                                  )}
                                 </div>
                               )}
 

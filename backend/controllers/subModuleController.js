@@ -90,8 +90,7 @@ const updateSubmodule = asyncHandler(async (req, res) => {
     );
 
     res.status(200).json({
-      submodule: submodule,
-      message: "updated Successfully",
+      message: "SubModule Updated Successfully !!",
     });
   } else {
     res.status(404);
