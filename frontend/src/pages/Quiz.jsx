@@ -3,7 +3,7 @@ import { TextField, Button, Container,Modal, Box,MenuItem, Select,Radio,FormGrou
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
-import Typography from '@mui/material/Typography';
+
 
 import Questions from'./Question'
 import axios from 'axios';
@@ -202,27 +202,38 @@ const Quiz = () => {
         
     <form onSubmit={handleSubmit}>
 
-          <Box marginBottom="20px" color="gray">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h4 style={{ color: 'whitesmoke' }}>Quiz Name</h4>
-                     </div>
-              <div style={{ width: '100%' }}>
-                 <TextField
-                
-                 variant="outlined"
-                fullWidth
-                value={title}
-              onChange={(event) => setTitle(event.target.value)}
-               margin="normal"
-              sx={{
-              borderRadius: "0px",
-               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                   }}
-                  />
-                </div>
-                    </div>
-                       </Box>
+    <Box marginBottom="20px" color="gray">
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '30%', marginRight: '10px' }}>
+      <h4 style={{ color: 'whitesmoke' }}>Quiz Name</h4>
+    </div>
+    <div style={{ width: '100%' }}>
+      <TextField
+        variant="outlined"
+        fullWidth
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+        margin="normal"
+       
+        InputProps={{
+          style: { color: 'whitesmoke'},
+          classes: {
+            root: 'white-border',
+            focused: 'white-border-focused',
+            notchedOutline: 'white-border',
+          },
+        }}
+        sx={{
+          color: 'whitesmoke',
+        }}
+      />
+    </div>
+  </div>
+</Box>
+
+
+
+
 <Box marginBottom="20px" color="gray">
 <div style={{ display: 'flex', alignItems: 'center' }}>
     <div style={{ width: '30%', marginRight: '10px' }}>

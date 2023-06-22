@@ -40,16 +40,19 @@ const Media = () => {
   console.log(formData)
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/activities",
-          formData,
-         
+          "http://localhost:5000/api/activities",formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
         );
 
         console.log("Resource created:", response.data);
 
         formik.resetForm();
       } catch (error) {
-        console.error("Error creating resource:", error);
+        // console.error("Error creating resource:", error);
+        console.log('Error', error.message);
       }
     },
   });
@@ -89,7 +92,7 @@ const Media = () => {
   return (
     <div className="QuizForm">
       <Container
-        maxWidth="50%"
+        maxWidth="30%"
         sx={{
           // maxHeight: "60vh",
           // overflowY: "auto",
@@ -98,99 +101,105 @@ const Media = () => {
         }}
       >
         <form onSubmit={formik.handleSubmit}>
-        
-     <Box marginBottom="20px" color="gray">
-  <div style={{ display: 'flex', color: 'gray' }}>
-  <div style={{ width: '30%', marginRight: '10px' }}>
-      <h4 style={{ color: 'whitesmoke' }}>Media</h4>
-    </div>
-  </div>
-     </Box>
+        <Box marginBottom="20px" color="gray">
+        <div style={{ display: 'flex' }}>
+            <div style={{ width: '30%', marginRight: '10px' }}>
+                  <h4 style={{ color: 'whitesmoke' }}>Media</h4>
+              
+                </div>
+               </div>
+                   </Box>
 
 <Box marginBottom="10px">
-  <div style={{ display: 'flex', alignItems: 'center' ,  color: 'whitesmoke',}}>
-    <div style={{ width: '30%', marginRight: '10px' }}>
-      <h4 style={{ color: 'whitesmoke' }}>Title</h4>
-    </div>
-    <div style={{ width: '70%' }}>
-      <TextField
-        variant="outlined"
-        id="outlined-error"
-        fullWidth
-        name="title"
-      
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.title && formik.errors.title}
-        helperText={formik.touched.title && formik.errors.title}
-        sx={{
-          marginBottom: '10px',
-          borderRadius: '0px',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-          borderColor: 'gray',
-          color: 'whitesmoke',
-          width: '100%',
-        }}
-      />
-    </div>
+<div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ width: '30%', marginRight: '10px' }}>
+                 <h4 style={{ color: 'whitesmoke' }}>Title</h4>
+                     </div>
+              <div style={{ width: '100%' }}>
+    <TextField
+      variant="outlined"
+      id="outlined-error"
+      fullWidth
+      name="title"
+   
+      value={formik.values.title}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched.title && formik.errors.title}
+      helperText={formik.touched.title && formik.errors.title}
+      sx={{
+        marginBottom: '10px',
+        borderRadius: '0px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        borderColor: 'gray',
+        color: 'whitesmoke',
+        width: '100%',
+      }}
+    />
+  </div>
   </div>
 </Box>
 
 <Box marginBottom="16px">
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div style={{ width: '30%', marginRight: '10px' }}>
-      <h4 style={{ color: 'whitesmoke' }}>Description</h4>
-    </div>
-    <div style={{ width: '70%' }}>
-      <ReactQuill
-        label="Media Description"
-        value={formik.values.description}
-        id="outlined-error"
-        onChange={(value) => formik.setFieldValue('description', value)}
-        modules={modules}
-        formats={formats}
-        sx={{
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-          color: 'whitesmoke',
-          width: '100%',
-        }}
-        render={() => (
-          <TextField
-            label="Media"
-            multiline
-            rows={6}
-            variant="outlined"
-            fullWidth
-            sx={{
-              marginBottom: '16px',
-              maxHeight: '300px',
-              overflowY: 'auto',
-              color: 'whitesmoke',
-            }}
-          />
-        )}
-      />
+<div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ width: '30%', marginRight: '10px' }}>
+                 <h4 style={{ color: 'whitesmoke' }}>Description</h4>
+                     </div>
+              <div style={{ width: '100%' }}>
+    <ReactQuill
+      label="Media Description"
+      value={formik.values.description}
+      id="outlined-error"
+      onChange={(value) => formik.setFieldValue('description', value)}
+      modules={modules}
+      formats={formats}
+      sx={{
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        color: 'whitesmoke',
+        width: '100%',
+      }}
+      render={() => (
+        <TextField
+          label="Media"
+          multiline
+          rows={6}
+          variant="outlined"
+          fullWidth
+          sx={{
+            marginBottom: '16px',
+            maxHeight: '300px',
+            overflowY: 'auto',
+            color: 'whitesmoke',
+          }}
+        />
+      )}
+    />
     </div>
   </div>
 </Box>
 
          
-<Box marginBottom="16px" sx={{ display: 'flex', alignItems: 'center' }}>
-  <h4 style={{ marginRight: '25px', color: 'whitesmoke'}} >Upload Resource</h4>
-  <input
-    id="outlined-error"
-    type="file"
-    onChange={(event) => {
-      formik.setFieldValue('file', event.currentTarget.files[0]);
-    }}
-    name="file"
-    accept="image/*,video/*,audio/*"
-    sx={{ flexGrow: 1 }}
-  />
-  {formik.touched.file && formik.errors.file && <div>{formik.errors.file}</div>}
-</Box>
-
+          <Box marginBottom="16px">
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ width: '30%', marginRight: '10px' }}>
+                 <h4 style={{ color: 'whitesmoke' }}>Quiz Name</h4>
+                     </div>
+              <div style={{ width: '100%' }}>
+            <input
+              id="outlined-error"
+              type="file"
+              onChange={(event) => {
+                formik.setFieldValue("file", event.currentTarget.files[0]);
+              }}
+              name="file"
+              accept="image/*,video/*,audio/*"
+            />
+            {formik.touched.file && formik.errors.file && (
+              <div>{formik.errors.file}</div>
+            )}
+            </div>
+            </div>
+          </Box>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="contained" color="primary" type="submit" sx={{borderRadius: "20%"}}>
             Submit
