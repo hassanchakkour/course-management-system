@@ -104,7 +104,7 @@ const deleteModule = asyncHandler(async (req, res) => {
   const module = await Module.find({ _id });
   if (module) {
     await Module.deleteOne({ _id: _id });
-    res.status(200).json({ message: "Module deleted" });
+    res.status(200).json({ message: "Module deleted Successfully !!" });
   } else {
     res.status(404);
     throw new Error("Module not found or unauthorized");

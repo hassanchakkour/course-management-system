@@ -103,11 +103,22 @@ const updateSubmodule = asyncHandler(async (req, res) => {
 // @route   DELETE /api/submodules/:id
 // @access  Private (Teacher only)
 const deleteSubmodule = asyncHandler(async (req, res) => {
-  const submodule = await Submodule.findById(req.params.id);
+  const _id = req.body;
+  const submodule = await Submodule.findById(_id);
+
+  const module_id = submodule.moduleId;
 
   if (submodule) {
-    await Submodule.deleteOne({ _id: req.params.id });
-    res.status(200).json({ message: "Submodule deleted" });
+    await Submodule.deleteOne({ _id: submodule._id });
+    if (submodule.moduleId) {
+      const module = await Module.findOneAndUpdate(
+        { _id: module_id },
+        { $pull: { submoduleId: { $in: [`${submodule._id}`] } } }
+      );
+      await module.save();
+    }
+
+    res.status(200).json({ message: "Submodule deleted Successfully !!" });
   } else {
     res.status(404);
     throw new Error("Submodule not found or unauthorized");

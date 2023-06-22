@@ -9,6 +9,7 @@ import CourseSummary from "../components/ModuleComps/courseSummary";
 import { useStateContext } from "../contexts/ContextProvider";
 import Module from "../components/Module";
 import Header from "../components/Header";
+import ButtonMove from "../components/ModuleComps/ButtonMove";
 
 const Content = () => {
   const { courseID, course_name, activeMenu } = useStateContext();
