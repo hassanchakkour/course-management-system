@@ -6,7 +6,8 @@ import Activity from "../models/activityModel.js";
 // @route   POST /api/questions
 // @access  Private (Teacher only)
 const postQuestion = asyncHandler(async (req, res) => {
-  const { activityId, type, content, options, teacherId, point } = req.body;
+  const { activityId, title, type, content, options, teacherId, point } =
+    req.body;
 
   if (!activityId) {
     console.log("hello");
@@ -16,6 +17,7 @@ const postQuestion = asyncHandler(async (req, res) => {
 
   const question = await Question.create({
     activityId,
+    title,
     type,
     content,
     options,
@@ -66,7 +68,8 @@ const getQuestion = asyncHandler(async (req, res) => {
 
 // Update a question by ID for a specific TeacherID (user.id)
 const putQuestion = asyncHandler(async (req, res) => {
-  const { activityId, content, options, correctOption } = req.body;
+  const { activityId, content, options, correctOption, type, title, point } =
+    req.body;
 
   const question = await Question.findOne({ _id: req.params.id });
 
@@ -75,6 +78,9 @@ const putQuestion = asyncHandler(async (req, res) => {
   }
 
   Object.assign(question, {
+    title: title || question.title,
+    type: type || question.type,
+    point: point || question.point,
     content: content || question.content,
     options: options || question.options,
     activityId: activityId || question.activityId,

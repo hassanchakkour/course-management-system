@@ -12,6 +12,10 @@ const questionSchema = new Schema(
         "Please specify the associated activity for the question.",
       ],
     },
+    title: {
+      type: String,
+      required: [true, "Please specify the title of question."],
+    },
     type: {
       type: String,
       required: [true, "Please specify the type of question."],
@@ -26,7 +30,7 @@ const questionSchema = new Schema(
     },
     point: {
       type: Number,
-      default:"",
+      default: "",
     },
     options: [String],
     // correctOption: String,

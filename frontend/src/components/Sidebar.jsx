@@ -59,7 +59,7 @@ const Sidebar = () => {
   // text-2xl flex flex-col justify-center align-middle
   const activeLink = "rounded-lg m-2";
   const normalLink =
-    " rounded-lg  text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
+    " rounded-lg text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
   return (
     <div className="pt-5 pb-3 sm:mt-0 mt-5 flex flex-col justify-center align-middle md:overflow-hidden overflow-y-auto md:hover:overflow-auto ">
@@ -79,11 +79,10 @@ const Sidebar = () => {
 
           <div className="mt-5 text-2xl mx-auto">
             {links.map((item) => (
-              <Tooltip title={item.title} placement="right">
-                <div className="dark:hover:bg-[#5BD0B0] hover:transition ease-out duration-700 rounded-lg px-8">
+              <Tooltip key={item.title} title={item.title} placement="right">
+                <div className="hover:bg-[#5BD0B0] hover:transition ease-out duration-700 rounded-lg  px-7">
                   <NavLink
                     to={`/${item.title}`}
-                    key={item.title}
                     onClick={handleCloseSideBar}
                     style={({ isActive }) => ({
                       color: isActive ? currentColor : "",
