@@ -1,30 +1,34 @@
-import React from "react";
-import { BsFillMicFill } from "react-icons/bs";
-import { AiFillFileText, AiOutlineSubnode } from "react-icons/ai";
-import { RiSurveyFill } from "react-icons/ri";
-import { MdViewModule, MdDocumentScanner } from "react-icons/md";
-import { FiSave } from "react-icons/fi";
-import { IoMdAddCircleOutline } from "react-icons/io";
+import React, { useState } from "react";
+
 import CourseSummary from "../components/ModuleComps/courseSummary";
 import { useStateContext } from "../contexts/ContextProvider";
 import Module from "../components/Module";
 import Header from "../components/Header";
-import ButtonMove from "../components/ModuleComps/ButtonMove";
 
 const Content = () => {
   const { courseID, course_name, activeMenu } = useStateContext();
+
+  const [module, setModule] = useState();
 
   const course = localStorage.getItem("course_id", courseID);
 
   const course_Name = localStorage.getItem("course_name", course_name);
 
+  const handleDataFromModules = (dataMod) => {
+    setModule(dataMod);
+  };
+
   return (
     <div className="">
       <div>
-        <CourseSummary course={course} coursename={course_Name} />
+        <CourseSummary
+          module={module}
+          course={course}
+          coursename={course_Name}
+        />
       </div>
 
-      <Header course={course} />
+      <Header onDataFromChild={handleDataFromModules} course={course} />
     </div>
   );
 };

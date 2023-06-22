@@ -79,9 +79,9 @@ const createModule = asyncHandler(async (req, res) => {
 // @access  Private (Teacher only)
 const updateModule = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
-  const teacherId = req.user._id;
+  // const teacherId = req.user._id;
 
-  let module = await Module.findOne({ _id: req.params.id, teacherId });
+  let module = await Module.findOne({ _id: req.params.id });
 
   if (module) {
     module.title = title || module.title;
@@ -89,7 +89,7 @@ const updateModule = asyncHandler(async (req, res) => {
 
     module = await module.save();
 
-    res.status(200).json(module);
+    res.status(200).json({ message: "Module Title Updated Successfully !!" });
   } else {
     res.status(404);
     throw new Error("Module not found or unauthorized");
@@ -100,10 +100,9 @@ const updateModule = asyncHandler(async (req, res) => {
 // @route   DELETE /api/modules/:id
 // @access  Private (Teacher only)
 const deleteModule = asyncHandler(async (req, res) => {
-  const _id = req.body;
-  const module = await Module.find({ _id });
+  // const _id = req.body;
+  const module = await Module.findOneAndDelete({ _id: req.params.id });
   if (module) {
-    await Module.deleteOne({ _id: _id });
     res.status(200).json({ message: "Module deleted Successfully !!" });
   } else {
     res.status(404);

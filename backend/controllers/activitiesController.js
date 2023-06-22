@@ -15,21 +15,20 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
-// <<<<<<< walaa
-    mediaUrl
-   
+    // <<<<<<< walaa
+    mediaUrl,
   } = req.body;
   // const teacherId = req.user._id;
 
   // const mediaUrl= req.file.mediaUrl;
-  
-// =======
-//   } = req.body;
-//   // const teacherId = req.user._id;
 
-//   const mediaUrl = req.file.mediaUrl;
+  // =======
+  //   } = req.body;
+  //   // const teacherId = req.user._id;
 
-// >>>>>>> master
+  //   const mediaUrl = req.file.mediaUrl;
+
+  // >>>>>>> master
   if (!submoduleId) {
     res.status(400);
     throw new Error("submoduleId is required");
@@ -87,10 +86,12 @@ const createActivity = asyncHandler(async (req, res) => {
     const addTosubmodule = await Submodule.findById(submoduleId).populate(
       "activityId"
     );
+    if (addTosubmodule) {
+      addTosubmodule.activityId.push(activity._id);
+      await addTosubmodule.save();
+    }
 
-    addTosubmodule.activityId.push(activity._id);
     // console.log(addTosubmodule);
-    await addTosubmodule.save();
   }
   res.status(201).json(activity);
 });

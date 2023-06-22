@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ButtonMoveSub = ({
-  setBtnIsSubOpen,
-  submoduleTitle,
+const ButtonMove = ({
+  setBtnEditOpen,
+  modulehead,
   course,
   modsId,
-  subId,
   onMoveButtonClick,
 }) => {
   const [modules, setModules] = useState();
-  const [ModsTitle, setModsTitle] = useState("");
-  const [moduleId, setModuleId] = useState("");
+  const [moduleTitle, setModuleTitle] = useState(modulehead);
+  const [message, setMessage] = useState("");
   const getModuleData = async () => {
     let sendData = {
       courseId: course,
@@ -20,12 +19,13 @@ const ButtonMoveSub = ({
       "http://localhost:5000/api/modules/course",
       sendData
     );
-    // console.log(res.data.submoduleId);
     setModules(res.data);
   };
-  const moveSubs = async () => {
-    const data = { moduleId, ModsTitle };
-    onMoveButtonClick(data);
+  const saveChanges = async () => {
+    const data = { moduleTitle, modsId };
+    if (modulehead != moduleTitle) {
+      onMoveButtonClick(data);
+    }
   };
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const ButtonMoveSub = ({
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Move Submodule: {submoduleTitle}
+                Editing Module: {modulehead}
               </h3>
             </div>
             {/*body*/}
@@ -49,54 +49,51 @@ const ButtonMoveSub = ({
               <div className="my-4 mx-10 text-slate-500 text-lg leading-relaxed">
                 {modules &&
                   modules.map((mods) => {
-                    const isActive = mods._id === moduleId;
                     return (
                       <div key={mods._id}>
-                        {" "}
-                        <div>
-                          {modsId != mods._id ? (
-                            <span
-                              key={mods._id}
-                              className={`text-white cursor-pointer p-5 mb-2 block border ${
-                                isActive ? "border-green-500" : ""
-                              }`}
-                              onClick={() => {
-                                setModsTitle(mods.title);
-                                setModuleId(mods._id);
-                                console.log(mods._id);
-                              }}
-                            >
-                              {mods.title}
-                            </span>
-                          ) : (
-                            <span
-                              key={mods._id}
-                              className={`text-white hidden cursor-pointer p-5 mb-2  border ${
-                                isActive ? "border-green-500" : ""
-                              }`}
-                              onClick={() => {
-                                setModsTitle(mods.title);
-                                setModuleId(mods._id);
-                              }}
-                            >
-                              {mods.title}
-                            </span>
-                          )}
-                        </div>
+                        {modsId == mods._id ? (
+                          <span
+                            // key={mods._id}
+                            className={`text-white  cursor-pointer pl-10 pr-20 p-5 mb-2  border 
+                            `}
+                          >
+                            <input
+                              type="text"
+                              value={moduleTitle}
+                              className="bg-transparent border-none focus:outline-none focus:ring-0"
+                              onChange={(e) => setModuleTitle(e.target.value)}
+                            />
+                          </span>
+                        ) : (
+                          <span
+                            key={mods._id}
+                            className={`text-white hidden cursor-pointer p-5 ml-5 mb-2  border 
+                            `}
+                          >
+                            {mods.title}
+                          </span>
+                        )}
                       </div>
                     );
                   })}
               </div>
             </div>
-            {ModsTitle && (
-              <div className="text-white">Moving Submodule to: {ModsTitle}</div>
+            {modulehead && (
+              <div className="text-white text-center">
+                Changing:{" "}
+                <span className="ml-2 text-blue-300 mr-2">{modulehead} </span>
+                to: <span className="ml-2 text-yellow-500">{moduleTitle}</span>
+              </div>
             )}
             {/*footer*/}
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+              <span className="text-red-500 text-sm absolute top-0 mt-20 mr-[250px]">
+                {message}
+              </span>
               <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={(e) => setBtnIsSubOpen(false)}
+                onClick={() => setBtnEditOpen(false)}
               >
                 Cancel
               </button>
@@ -104,11 +101,15 @@ const ButtonMoveSub = ({
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={() => {
-                  setBtnIsSubOpen(false);
-                  moveSubs();
+                  if (modulehead != moduleTitle) {
+                    setBtnEditOpen(false);
+                    saveChanges();
+                  } else {
+                    setMessage("Titles can't be the Same !!");
+                  }
                 }}
               >
-                Move
+                Save
               </button>
             </div>
           </div>
@@ -119,4 +120,4 @@ const ButtonMoveSub = ({
   );
 };
 
-export default ButtonMoveSub;
+export default ButtonMove;
