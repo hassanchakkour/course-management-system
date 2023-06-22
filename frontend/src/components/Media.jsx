@@ -7,6 +7,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { TextField, Button, Container, Box } from "@mui/material";
 import Typography from '@mui/material/Typography';
+import { MdOutlinePermMedia } from "react-icons/md";
+import { ErrorMessage } from 'formik';
+
 
 const Media = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -88,11 +91,15 @@ const Media = () => {
     "font",
     "align",
   ];
+  
+  const remainingCharacters = formik.values.description.replace(/(<([^>]+)>)/gi, '').trim().length;
+  const rest = 3000 - remainingCharacters;
+
 
   return (
-    <div className="QuizForm">
+   
       <Container
-        maxWidth="30%"
+        maxWidth="50%"
         sx={{
           // maxHeight: "60vh",
           // overflowY: "auto",
@@ -103,77 +110,90 @@ const Media = () => {
         <form onSubmit={formik.handleSubmit}>
         <Box marginBottom="20px" color="gray">
         <div style={{ display: 'flex' }}>
-            <div style={{ width: '30%', marginRight: '10px' }}>
-                  <h4 style={{ color: 'whitesmoke' }}>Media</h4>
-              
-                </div>
+        <div style={{ width: '30%', marginRight: '10px', display: 'flex', alignItems: 'center' }}>
+  <MdOutlinePermMedia style={{ marginRight: '5px' }} />
+  <h4 style={{ color: 'whitesmoke', margin: 0 }}>
+    Media
+  </h4>
+</div>
                </div>
                    </Box>
 
-<Box marginBottom="10px">
-<div style={{ display: 'flex', alignItems: 'center' }}>
+           <Box marginBottom="20px">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h4 style={{ color: 'whitesmoke' }}>Title</h4>
+                 <h5 style={{ color: 'gray' }}>Title</h5>
                      </div>
               <div style={{ width: '100%' }}>
-    <TextField
-      variant="outlined"
-      id="outlined-error"
-      fullWidth
-      name="title"
+              <TextField
+              variant="outlined"
+                 id="outlined-error"
+                 fullWidth
+                name="title"
    
-      value={formik.values.title}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={formik.touched.title && formik.errors.title}
-      helperText={formik.touched.title && formik.errors.title}
-      sx={{
-        marginBottom: '10px',
-        borderRadius: '0px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-        borderColor: 'gray',
-        color: 'whitesmoke',
-        width: '100%',
-      }}
-    />
-  </div>
-  </div>
-</Box>
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                 onBlur={formik.handleBlur}
+                error={formik.touched.title && formik.errors.title}
+                helperText={formik.touched.title && formik.errors.title}
+                sx={{
+                marginBottom: '10px',
+                borderRadius: '20px',
+                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                 borderColor: 'gray',
+                 color: 'whitesmoke',
+                 width: '100%',
+                    }}
+      
+                 InputProps={{
+                 style: { color: 'whitesmoke'},
+                  classes: {
+                  root: 'white-border',
+                 focused: 'white-border-focused',
+                    notchedOutline: 'white-border',
+                  },
+                    }}
+                   />
+    
+                  </div>
+                  </div>
+                 </Box>
 
-<Box marginBottom="16px">
+<Box marginBottom="20px">
 <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h4 style={{ color: 'whitesmoke' }}>Description</h4>
+                 <h5 style={{ color: 'gray' }}>Description</h5>
                      </div>
               <div style={{ width: '100%' }}>
-    <ReactQuill
-      label="Media Description"
-      value={formik.values.description}
-      id="outlined-error"
-      onChange={(value) => formik.setFieldValue('description', value)}
-      modules={modules}
-      formats={formats}
-      sx={{
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-        color: 'whitesmoke',
-        width: '100%',
-      }}
-      render={() => (
-        <TextField
-          label="Media"
-          multiline
-          rows={6}
-          variant="outlined"
-          fullWidth
-          sx={{
-            marginBottom: '16px',
-            maxHeight: '300px',
-            overflowY: 'auto',
-            color: 'whitesmoke',
-          }}
-        />
-      )}
-    />
+              <ReactQuill
+                label="Media Description"
+                value={formik.values.description}
+               
+                onChange={(value) => formik.setFieldValue('description', value)}
+                modules={modules}
+                formats={formats}
+                sx={{
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                  color: 'whitesmoke',
+                  width: '100%',
+                  height:'50%',
+                }}
+                render={() => (
+                  <TextField
+                  label="Media"
+                  multiline
+                  id="outlined-error"
+                  rows={6}
+                  variant="outlined"
+                  fullWidth
+                  sx={{ marginBottom: '16px', maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
+                />
+                )}
+              />
+               {/* <ErrorMessage name="description" component="div" style={{ color: 'red' }} /> */}
+              <p style={{ textAlign: 'right' }}>
+               {remainingCharacters}/{rest}
+              </p>
     </div>
   </div>
 </Box>
@@ -182,17 +202,19 @@ const Media = () => {
           <Box marginBottom="16px">
           <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h4 style={{ color: 'whitesmoke' }}>Quiz Name</h4>
+                 <h5 style={{ color: 'gray' }}>Quiz Name</h5>
                      </div>
               <div style={{ width: '100%' }}>
             <input
               id="outlined-error"
               type="file"
+              label="Upload Media"
               onChange={(event) => {
                 formik.setFieldValue("file", event.currentTarget.files[0]);
               }}
               name="file"
               accept="image/*,video/*,audio/*"
+              
             />
             {formik.touched.file && formik.errors.file && (
               <div>{formik.errors.file}</div>
@@ -207,7 +229,7 @@ const Media = () => {
           </div>
         </form>
       </Container>
-    </div>
+  
   );
 };
 
