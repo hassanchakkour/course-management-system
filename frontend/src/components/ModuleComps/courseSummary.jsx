@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 
 import { useStateContext } from "../../contexts/ContextProvider";
 
-const CourseSummary = (course) => {
+const CourseSummary = ({ course, module }) => {
+  console.log("sssssssssss", module);
   const { currentColor, activityID, activityTitle, activeMenu } =
     useStateContext();
 
@@ -17,26 +18,50 @@ const CourseSummary = (course) => {
   const [onlineNbr, setOnlineNbr] = useState(0);
 
   const getModuleData = async () => {
-    let sendData = {
-      courseId: course.course,
-    };
-    const res = await axios.post(
-      "http://localhost:5000/api/modules/course",
-      sendData
-    );
-    setModuleNbr(res.data.length);
-    var temp = 0;
+    // let sendData = {
+    //   courseId: course,
+    // };
+    // const res = await axios.post(
+    //   "http://localhost:5000/api/modules/course",
+    //   sendData
+    // );
+    // setModuleNbr(res.data.length);
+    if (module) {
+      var temp = 0;
+      setModuleNbr(module.length);
+      for (let i = 0; i < module.length; i++) {
+        temp += module[i].submoduleId.length;
+        console.log("this-===---=", module[i].submoduleId[0].activityId.length);
+      }
 
-    for (let i = 0; i < res.data.length; i++) {
-      temp += res.data[i].submoduleId.length;
+      setTopicNbr(temp);
+
+      var assignmentTemp = 0;
+      let quizTemp = 0;
+      let onlineTemp = 0;
+      for (let i = 0; i < module.length; i++) {
+        if (module[i].type === "Quiz") {
+          quizTemp += 1;
+        }
+        if (module[i].type === "Assignment") {
+          assignmentTemp += 1;
+        }
+        if (module[i].type === "online session") {
+          onlineTemp += 1;
+        }
+      }
+      setAssignmentNbr(assignmentTemp);
+      setQuizNbr(quizTemp);
+      setOnlineNbr(onlineTemp);
     }
 
-    setTopicNbr(temp);
+    // setModuleNbr(module);
+    // console.log(module.length);
   };
 
   const getActivityData = async () => {
     let sendData = {
-      courseId: course.course,
+      courseId: course,
     };
     const res = await axios.post(
       "http://localhost:5000/api/activities/course",
@@ -64,16 +89,14 @@ const CourseSummary = (course) => {
   useEffect(() => {
     getModuleData();
     getActivityData();
-  }, []);
+  }, [module]);
 
   let courseSummaryClass = "";
 
   if (activeMenu) {
-    courseSummaryClass =
-      "text-4xl  ml-[6%] mt-12 font-bold max-[850px]:invisible";
+    courseSummaryClass = "text-4xl  ml-[6%] mt-12 font-bold max-[850px]:hidden";
   } else {
-    courseSummaryClass =
-      "text-4xl  ml-[9%] mt-12 font-bold max-[850px]:invisible";
+    courseSummaryClass = "text-4xl  ml-[9%] mt-12 font-bold max-[850px]:hidden";
   }
 
   return (

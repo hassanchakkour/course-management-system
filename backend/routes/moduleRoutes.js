@@ -19,7 +19,7 @@ router.post("/course", getModulesbyCourseId);
 router.put("/:id", updateModule);
 
 // Delete a module by ID
-router.post("/delete", deleteModule);
+router.post("/delete/:id", deleteModule);
 
 // Get a specific module by ID
 router.get("/:id", getModuleById);

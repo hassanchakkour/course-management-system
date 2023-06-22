@@ -19,7 +19,7 @@ import { LuFileText, LuPcCase } from "react-icons/lu";
 import { Tooltip } from "@mui/material";
 import ButtonMove from "./ModuleComps/ButtonMove";
 import ButtonMoveSub from "./ModuleComps/ButtonMoveSub";
-const Header = (course) => {
+const Header = ({ course, onDataFromChild }) => {
   const {
     courseID,
     course_name,
@@ -44,7 +44,6 @@ const Header = (course) => {
   const [btnIsSubOpen, setBtnIsSubOpen] = useState(false);
   const [activTitle, setActivTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
-
   const handleMoveButtonClick = (data) => {
     const moveActivity = async () => {
       if (isActivityId != "" && isSubmoduleId != "" && data.subId != "") {
@@ -83,61 +82,66 @@ const Header = (course) => {
     moveActivity();
   };
   const handleMoveSubs = (data) => {
-    // const moveActivity = async () => {
-    //   if (isActivityId != "" && isSubmoduleId != "" && data.subId != "") {
-    //     try {
-    //       let sendData = {
-    //         id: isActivityId,
-    //         oldsubsId: isSubmoduleId,
-    //         newsubsId: data.subId,
-    //       };
-    //       const res = await axios.post(
-    //         "http://localhost:5000/api/activities/update",
-    //         sendData
-    //       );
-    //       console.log(res.data);
-    //       setMessageClass("absolute top-5 ml-[45%] text-green-500");
-    //       setMessage(res.data.message);
-    //       setOpenItemactId("");
-    //       setTimeout(() => {
-    //         setMessage("");
-    //       }, 2000);
-    //     } catch (error) {
-    //       console.log(error);
-    //     } finally {
-    //       await getModuleData();
-    //     }
-    //   } else {
-    //     setMessageClass("absolute top-5 ml-[45%] text-red-500");
-    //     setMessage("Something went wrong Please Try Again!");
+    console.log("sub", isSubmoduleId);
+    console.log("mod", ismoduleId);
+    console.log("newmod", data.moduleId);
+    const moveSubmodules = async () => {
+      if (isSubmoduleId != "" && data.moduleId != "") {
+        try {
+          let sendData = {
+            id: isSubmoduleId,
+            newmodsId: data.moduleId,
+            oldmodsId: ismoduleId,
+          };
+          const res = await axios.post(
+            "http://localhost:5000/api/submodules/update",
+            sendData
+          );
+          console.log(res.data);
+          setMessageClass("absolute top-5 ml-[45%] text-green-500");
+          setMessage(res.data.message);
+          setOpenItemactId("");
+          setTimeout(() => {
+            setMessage("");
+          }, 10000);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          await getModuleData();
+          setOpenItemsubId("");
+        }
+      } else {
+        setMessageClass("absolute top-5 ml-[45%] text-red-500");
+        setMessage("Something went wrong Please Try Again!");
 
-    //     setTimeout(() => {
-    //       setMessage("");
-    //     }, 2000);
-    //   }
-    // };
-    console.log(data);
-    // moveActivity();
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      }
+    };
+
+    moveSubmodules();
   };
 
   const getModuleData = async () => {
     let sendData = {
-      courseId: course.course,
+      courseId: course,
     };
     const res = await axios.post(
       "http://localhost:5000/api/modules/course",
       sendData
     );
     setModule(res.data);
+    // const dataMod = res.data;
+    await onDataFromChild(res.data);
   };
   const handleRemoveModule = async (id) => {
     try {
-      let sendData = {
-        _id: id,
-      };
+      // let sendData = {
+      //   _id: id,
+      // };
       const res = await axios.post(
-        "http://localhost:5000/api/modules/delete",
-        sendData
+        `http://localhost:5000/api/modules/delete/${id}`
       );
       setMessageClass("absolute top-5 ml-[45%] text-red-500");
       setMessage(res.data.message);
@@ -203,7 +207,7 @@ const Header = (course) => {
   const CreateNewModule = async () => {
     try {
       let sendData = {
-        courseId: course.course,
+        courseId: course,
         title: "Module",
       };
       const res = await axios.post(
@@ -267,7 +271,7 @@ const Header = (course) => {
           teacherId: userInfo._id,
           type: type,
           submoduleId: isSubmoduleId,
-          courseId: course.course,
+          courseId: course,
         };
         const res = await axios.post(
           "http://localhost:5000/api/activities/create",
@@ -341,7 +345,7 @@ const Header = (course) => {
         {/* Question Container */}
         <div className="flex justify-between h-full m-3 mt-10 md:px-3 xl:mx-12 md:mx-2">
           {/* First Container */}
-          <div className="h-[60vh] border-solid border-2 border-gray-400 rounded-3xl w-full md:mr-5 mr-2 relative">
+          <div className=" border-solid border-2 border-gray-400 rounded-3xl w-full md:mr-5 mr-2 relative">
             {/* Icons Top Bar Clickable */}
             <div className="flex justify-end dark:text-white text-gray-800">
               <Tooltip title="Create New Module" placement="top">
@@ -360,13 +364,13 @@ const Header = (course) => {
                   />
                 </span>
               </Tooltip>
-              <FiSave className="m-6 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
+              <FiSave className="m-6 invisible mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
             </div>
             <div className={messageClass}>{message}</div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
 
-              <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-2/3 p-3">
+              <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/4 p-3">
                 <Tooltip title="Assignment" placement="right">
                   <span>
                     <LuPcCase
@@ -399,178 +403,186 @@ const Header = (course) => {
 
               {/* Sub Container 1 */}
 
-              <div className="bg-white flex flex-wrap ml-14 sm:ml-16 lg:ml-14 text-white  dark:bg-[#20232A] rounded-lg  w-6/6 ">
+              <div className="bg-white flex flex-wrap min-h-[50vh]   max-[850px]:ml-5 ml-14 sm:ml-16 lg:ml-14 text-white  dark:bg-[#20232A] rounded-lg  w-6/6 ">
                 {/* insert mods here  */}
                 {module &&
                   module.map((mods) => {
-                    // console.log("res", mods.submoduleId);
+                    const isActive = mods._id === ismoduleId;
                     return (
-                      <div
-                        key={mods._id}
-                        onClick={() => {
-                          setIsmoduleId(mods._id);
-                        }}
-                        className="ml-10 mb-5 bg-gradient-to-b from-[#242830] to-[#33373E]  p-5 rounded-3xl text-xl  w-[400px]"
-                      >
-                        <div className=" mt-2 flex text-xl mb-2 justify-between">
-                          <p> {mods.title}</p>
-                          <div className="flex items-center flex-grow mx-2">
-                            <div className="border-b border-gray-500 w-full"></div>
-                          </div>
-                          <button
-                            onClick={() => handleDropdownToggle(mods._id)}
-                          >
-                            <BsThreeDots className="text-l mt-1 " />
-                          </button>
-                        </div>
-
-                        {openItemId === mods._id && (
-                          <p
-                            onClick={() => handleRemoveModule(mods._id)}
-                            className="z-1 cursor-pointer  flex ml-[17%] absolute bg-red-500 hover:opacity-75 p-2 rounded-lg text-sm"
-                          >
-                            <RiDeleteBin3Line className="mt-0.5" />{" "}
-                            <span>Delete</span>
-                          </p>
-                        )}
-                        {mods.submoduleId.map((submodule, index) => {
-                          // console.log(submodule.activityId);
-                          return (
-                            <div
-                              key={submodule._id}
-                              onClick={() => setIsSubmoduleId(submodule._id)}
-                              className="border mb-2 bg-[#33373E] border-gray-500 text-2xl ml-2 mr-2 text-center"
+                      <div key={mods._id}>
+                        <div
+                          onClick={() => {
+                            setIsmoduleId(mods._id);
+                          }}
+                          className={`ml-10 mb-5 bg-gradient-to-b from-[#242830] to-[#33373E]  p-5 rounded-3xl text-xl  w-[400px] 
+                        ${isActive ? "border-green-500 border" : ""}`}
+                        >
+                          <div className=" mt-2 flex text-xl mb-2 justify-between">
+                            <p> {mods.title}</p>
+                            <div className="flex items-center flex-grow mx-2">
+                              <div className="border-b border-gray-500 w-full"></div>
+                            </div>
+                            <button
+                              onClick={() => handleDropdownToggle(mods._id)}
                             >
-                              <p className="ml-2 font-bold text-xl flex justify-center">
-                                <span className="text-center ">
-                                  {submodule.title}
-                                </span>
-                                <BsThreeDotsVertical
-                                  className="text-2xl mb-1 cursor-pointer right-0 mt-1"
-                                  onClick={(event) => {
-                                    event.stopPropagation();
-                                    // Handle the click event logic here
-                                    handleDropdownToggleSub(submodule._id);
-                                  }}
-                                />
-                              </p>
-                              {openItemsubId === submodule._id && (
-                                <div className="absolute   ml-[13%]">
-                                  <p
-                                    onClick={() =>
-                                      handleRemoveSubModule(submodule._id)
-                                    }
-                                    className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-t-2xl  flex hover:opacity-80  bg-red-500 p-2  text-sm"
-                                  >
-                                    <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
-                                    <span> Delete</span>
-                                  </p>
-                                  <p
-                                    onClick={() => {
-                                      setBtnIsSubOpen(true);
-                                      setActivTitle(submodule.title);
-                                    }}
-                                    className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
-                                  >
-                                    <MdMoveDown className="mt-0.5 mr-2" />{" "}
-                                    <span> Move</span>
-                                  </p>
-                                  {btnIsSubOpen && (
-                                    <ButtonMoveSub
-                                      setBtnIsSubOpen={setBtnIsSubOpen}
-                                      submoduleTitle={subTitle}
-                                      course={course.course}
-                                      modsId={ismoduleId}
-                                      subId={isSubmoduleId}
-                                      onMoveButtonClick={handleMoveSubs}
-                                    />
-                                  )}
-                                </div>
-                              )}
+                              <BsThreeDots className="text-l mt-1 " />
+                            </button>
+                          </div>
 
-                              {submodule.activityId.map((activity) => {
-                                return (
-                                  <div
-                                    key={activity._id}
-                                    onClick={() =>
-                                      setIsActivityId(activity._id)
-                                    }
-                                    className={
-                                      activity.type === "Assignment"
-                                        ? "border  border-orange-500 mb-1 "
-                                        : activity.type === "Quiz"
-                                        ? "border   border-purple-500 mb-1"
-                                        : activity.type === "online session"
-                                        ? "border  border-blue-400 mb-1"
-                                        : activity.type === "Recorded Session"
-                                        ? "border  border-blue-400 mb-1"
-                                        : "border  border-gray-400 "
-                                    }
-                                  >
+                          {openItemId === mods._id && (
+                            <p
+                              onClick={() => handleRemoveModule(mods._id)}
+                              className="z-1 cursor-pointer  flex ml-[17%] absolute bg-red-500 hover:opacity-75 p-2 rounded-lg text-sm"
+                            >
+                              <RiDeleteBin3Line className="mt-0.5" />{" "}
+                              <span>Delete</span>
+                            </p>
+                          )}
+                          {mods.submoduleId.map((submodule, index) => {
+                            // console.log(submodule.activityId);
+                            const isActive = submodule._id === isSubmoduleId;
+                            return (
+                              <div
+                                key={submodule._id}
+                                onClick={() => setIsSubmoduleId(submodule._id)}
+                                className={`border mb-2 bg-[#33373E] border-gray-500 text-2xl ml-2 mr-2 text-center ${
+                                  isActive ? "border-green-500" : ""
+                                }`}
+                              >
+                                <p className="ml-2 font-bold text-xl flex justify-center">
+                                  <span className="text-center ">
+                                    {submodule.title}
+                                  </span>
+                                  <BsThreeDotsVertical
+                                    className="text-2xl mb-1 cursor-pointer right-0 mt-1"
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      // Handle the click event logic here
+                                      handleDropdownToggleSub(submodule._id);
+                                    }}
+                                  />
+                                </p>
+                                {openItemsubId === submodule._id && (
+                                  <div className="absolute   ml-[13%]">
                                     <p
-                                      className={
-                                        activity.type === "Assignment"
-                                          ? "ml-5 flex justify-between text-orange-500 "
-                                          : activity.type === "Quiz"
-                                          ? "ml-5 flex justify-between text-purple-500"
-                                          : activity.type === "online session"
-                                          ? "ml-5 flex justify-between text-blue-400"
-                                          : activity.type === "Recorded Session"
-                                          ? "ml-5 flex justify-between text-blue-400"
-                                          : "ml-5 flex justify-between text-gray-400"
+                                      onClick={() =>
+                                        handleRemoveSubModule(submodule._id)
                                       }
+                                      className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-t-2xl  flex hover:opacity-80  bg-red-500 p-2  text-sm"
                                     >
-                                      {activity.title}
-                                      <BsThreeDotsVertical
-                                        onClick={(event) => {
-                                          event.stopPropagation();
-                                          // Handle the click event logic here
-                                          handleDropdownToggleAct(activity._id);
-                                        }}
-                                        className="text-l cursor-pointer text-white mt-1 "
-                                      />
+                                      <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
+                                      <span> Delete</span>
                                     </p>
-                                    {openItemactId === activity._id && (
-                                      <div className="absolute  ml-[16%]">
-                                        <p
-                                          onClick={() =>
-                                            handleRemoveActivity(activity._id)
-                                          }
-                                          className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-t-2xl  flex hover:opacity-80  bg-red-500 p-2  text-sm"
-                                        >
-                                          <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
-                                          <span> Delete</span>
-                                        </p>
-                                        <p
-                                          onClick={() => {
-                                            setBtnIsOpen(true);
-                                            setActivTitle(activity.title);
-                                          }}
-                                          className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
-                                        >
-                                          <MdMoveDown className="mt-0.5 mr-2" />{" "}
-                                          <span> Move</span>
-                                        </p>
-                                        {btnIsOpen && (
-                                          <ButtonMove
-                                            setBtnIsOpen={setBtnIsOpen}
-                                            activityTitle={activTitle}
-                                            course={course.course}
-                                            subsId={isSubmoduleId}
-                                            activeId={isActivityId}
-                                            onMoveButtonClick={
-                                              handleMoveButtonClick
-                                            }
-                                          />
-                                        )}
-                                      </div>
+                                    <p
+                                      onClick={() => {
+                                        setBtnIsSubOpen(true);
+                                        setActivTitle(submodule.title);
+                                      }}
+                                      className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
+                                    >
+                                      <MdMoveDown className="mt-0.5 mr-2" />{" "}
+                                      <span> Move</span>
+                                    </p>
+                                    {btnIsSubOpen && (
+                                      <ButtonMoveSub
+                                        setBtnIsSubOpen={setBtnIsSubOpen}
+                                        submoduleTitle={subTitle}
+                                        course={course}
+                                        modsId={ismoduleId}
+                                        subId={isSubmoduleId}
+                                        onMoveButtonClick={handleMoveSubs}
+                                      />
                                     )}
                                   </div>
-                                );
-                              })}
-                            </div>
-                          );
-                        })}
+                                )}
+
+                                {submodule.activityId.map((activity) => {
+                                  return (
+                                    <div
+                                      key={activity._id}
+                                      onClick={() =>
+                                        setIsActivityId(activity._id)
+                                      }
+                                      className={
+                                        activity.type === "Assignment"
+                                          ? "border  border-orange-500 mb-1 "
+                                          : activity.type === "Quiz"
+                                          ? "border   border-purple-500 mb-1"
+                                          : activity.type === "online session"
+                                          ? "border  border-blue-400 mb-1"
+                                          : activity.type === "Recorded Session"
+                                          ? "border  border-blue-400 mb-1"
+                                          : "border  border-gray-400 "
+                                      }
+                                    >
+                                      <p
+                                        className={
+                                          activity.type === "Assignment"
+                                            ? "ml-5 flex justify-between text-orange-500 "
+                                            : activity.type === "Quiz"
+                                            ? "ml-5 flex justify-between text-purple-500"
+                                            : activity.type === "online session"
+                                            ? "ml-5 flex justify-between text-blue-400"
+                                            : activity.type ===
+                                              "Recorded Session"
+                                            ? "ml-5 flex justify-between text-blue-400"
+                                            : "ml-5 flex justify-between text-gray-400"
+                                        }
+                                      >
+                                        {activity.title}
+                                        <BsThreeDotsVertical
+                                          onClick={(event) => {
+                                            event.stopPropagation();
+                                            // Handle the click event logic here
+                                            handleDropdownToggleAct(
+                                              activity._id
+                                            );
+                                          }}
+                                          className="text-l cursor-pointer text-white mt-1 "
+                                        />
+                                      </p>
+                                      {openItemactId === activity._id && (
+                                        <div className="absolute  ml-[16%]">
+                                          <p
+                                            onClick={() =>
+                                              handleRemoveActivity(activity._id)
+                                            }
+                                            className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-t-2xl  flex hover:opacity-80  bg-red-500 p-2  text-sm"
+                                          >
+                                            <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
+                                            <span> Delete</span>
+                                          </p>
+                                          <p
+                                            onClick={() => {
+                                              setBtnIsOpen(true);
+                                              setActivTitle(activity.title);
+                                            }}
+                                            className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
+                                          >
+                                            <MdMoveDown className="mt-0.5 mr-2" />{" "}
+                                            <span> Move</span>
+                                          </p>
+                                          {btnIsOpen && (
+                                            <ButtonMove
+                                              setBtnIsOpen={setBtnIsOpen}
+                                              activityTitle={activTitle}
+                                              course={course}
+                                              subsId={isSubmoduleId}
+                                              activeId={isActivityId}
+                                              onMoveButtonClick={
+                                                handleMoveButtonClick
+                                              }
+                                            />
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })}

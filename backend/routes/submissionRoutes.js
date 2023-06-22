@@ -5,17 +5,15 @@ import {
   createSubmission,
   getSubmissions,
   getSubmissionsByActivity,
- 
- 
   putSubmission,
 } from "../controllers/submissionsController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
-router.post("/", protect, createSubmission);
-router.get('/:activityId',protect,getSubmissionsByActivity);
+router.post("/", createSubmission);
+router.get("/:activityId", getSubmissionsByActivity);
 
-router.get("/", protect, getSubmissions);
+router.get("/", getSubmissions);
 // router.delete("/:id", protect, deleteSubmission);
-router.put("/:id", protect, putSubmission);
+router.put("/:id", putSubmission);
 
 export default router;
