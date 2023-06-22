@@ -17,7 +17,6 @@ const Content = () => {
   const handleDataFromModules = (dataMod) => {
     setModule(dataMod);
   };
-  console.log("asdww1", module);
 
   return (
     <div className="">

@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 const CourseSummary = ({ course, module }) => {
-  console.log("sssssssssss", module);
   const { currentColor, activityID, activityTitle, activeMenu } =
     useStateContext();
 
@@ -18,20 +17,11 @@ const CourseSummary = ({ course, module }) => {
   const [onlineNbr, setOnlineNbr] = useState(0);
 
   const getModuleData = async () => {
-    // let sendData = {
-    //   courseId: course,
-    // };
-    // const res = await axios.post(
-    //   "http://localhost:5000/api/modules/course",
-    //   sendData
-    // );
-    // setModuleNbr(res.data.length);
     if (module) {
       var temp = 0;
       setModuleNbr(module.length);
       for (let i = 0; i < module.length; i++) {
         temp += module[i].submoduleId.length;
-        console.log("this-===---=", module[i].submoduleId[0].activityId.length);
       }
 
       setTopicNbr(temp);
@@ -54,9 +44,6 @@ const CourseSummary = ({ course, module }) => {
       setQuizNbr(quizTemp);
       setOnlineNbr(onlineTemp);
     }
-
-    // setModuleNbr(module);
-    // console.log(module.length);
   };
 
   const getActivityData = async () => {

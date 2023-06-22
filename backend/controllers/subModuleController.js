@@ -79,21 +79,24 @@ const updateSubmodule = asyncHandler(async (req, res) => {
     submodule.content = content || submodule.content;
     submodule.moduleId = newmodsId || submodule.moduleId;
 
-    const removeFromModules = await Module.findOneAndUpdate(
-      { _id: oldmodsId },
-      { $pull: { submoduleId: { $in: [`${submodule._id}`] } } }
-    );
+    if (newmodsId && oldmodsId) {
+      const removeFromModules = await Module.findOneAndUpdate(
+        { _id: oldmodsId },
+        { $pull: { submoduleId: { $in: [`${submodule._id}`] } } }
+      );
 
-    const addTonewModules = await Module.findOneAndUpdate(
-      { _id: newmodsId },
-      { $push: { submoduleId: { $each: [`${submodule._id}`] } } }
-    );
+      const addTonewModules = await Module.findOneAndUpdate(
+        { _id: newmodsId },
+        { $push: { submoduleId: { $each: [`${submodule._id}`] } } }
+      );
+    }
 
+    await submodule.save();
     res.status(200).json({
       message: "SubModule Updated Successfully !!",
-      submodule: submodule,
-      removeFromModules: removeFromModules,
-      addTonewModules: addTonewModules,
+      // submodule: submodule,
+      // removeFromModules: removeFromModules,
+      // addTonewModules: addTonewModules,
     });
   } else {
     res.status(404);
