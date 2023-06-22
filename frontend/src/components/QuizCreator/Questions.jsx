@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { Tooltip } from "@mui/material";
 import axios from "axios";
 
 import { MdAddCircle } from "react-icons/md";
@@ -10,19 +11,53 @@ import { FiSave } from "react-icons/fi";
 
 import { BsThreeDots } from "react-icons/bs";
 
-import { RiCheckDoubleFill } from "react-icons/ri";
-import { RiCheckboxMultipleFill } from "react-icons/ri";
 import { TfiList } from "react-icons/tfi";
+import { RiCheckboxMultipleFill } from "react-icons/ri";
+import { RiCheckDoubleFill } from "react-icons/ri";
 import { BiCommentMinus } from "react-icons/bi";
 import { BsCalculator } from "react-icons/bs";
 import { LuFileText } from "react-icons/lu";
 
+import { MdDelete } from "react-icons/md";
+
 const Questions = () => {
-  const { currentColor, activityID, activityTitle } = useStateContext();
+  const { currentColor, activityID } = useStateContext();
+
+  const links = [
+    {
+      title: "Multiple Choice",
+      icon: <TfiList />,
+      color: "#8e5dfd",
+    },
+    {
+      title: "Multiple Response",
+      icon: <RiCheckboxMultipleFill />,
+      color: "#5d69fd",
+    },
+    {
+      title: "True or False",
+      icon: <RiCheckDoubleFill />,
+      color: "#3da4fc",
+    },
+    {
+      title: "Short Answers",
+      icon: <BiCommentMinus />,
+      color: "#2c8063",
+    },
+    {
+      title: "Numerical",
+      icon: <BsCalculator />,
+      color: "#d07e4b",
+    },
+    {
+      title: "Essay",
+      icon: <LuFileText />,
+      color: "#d04b4b",
+    },
+  ];
+  console.log(links.icon);
 
   const activityId = localStorage.getItem("activity_id", activityID);
-
-  //   const course_Title = localStorage.getItem("course_name", activityTitle);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -36,13 +71,14 @@ const Questions = () => {
   const [essayNbr, setEssayNbrNbr] = useState(0);
 
   const [gradeNbr, setGradeNbr] = useState(0);
+  const [data, setData] = useState([]);
 
-  const [inputNbr, setInputNbr] = useState(1);
+  const [questionTitle, setQuestionTitle] = useState("Question");
   const handleInputChange = (e) => {
-    setInputNbr(e.target.value);
+    setQuestionTitle(e.target.value);
   };
 
-  let sendData = { activityId: activityId };
+  let sendData = { activityId: "64831840f58d735189094350" };
 
   const getQuestionData = async () => {
     const res = await axios.post(
@@ -90,11 +126,27 @@ const Questions = () => {
       gradeSum += res.data[i].point;
     }
     setGradeNbr(gradeSum);
+    setData(res.data);
+  };
+
+  const handleRemoveQuestion = async (id) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/questions/delete/${id}`
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await getQuestionData();
+    }
   };
 
   useEffect(() => {
     getQuestionData();
   }, []);
+
+  const iconQuestionStyle =
+    "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
 
   return (
     <>
@@ -194,24 +246,33 @@ const Questions = () => {
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
               <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-2/3 w-1/12 p-3">
-                <RiCheckDoubleFill className="mb-5 mx-auto" />
-                <RiCheckboxMultipleFill className="mb-5 mx-auto" />
-                <TfiList className="mb-5 mx-auto" />
-                <BiCommentMinus className="mb-5 mx-auto" />
-                <BsCalculator className="mb-5 mx-auto" />
-                <LuFileText className=" mx-auto" />
+                {links.map((item) => (
+                  <Tooltip
+                    key={item.title}
+                    title={item.title}
+                    placement="right"
+                  >
+                    <div className="mx-auto my-auto">
+                      <NavLink
+                        to={"/questionsBank"}
+                        style={{ color: item.color }}
+                      >
+                        {item.icon}
+                      </NavLink>
+                    </div>
+                  </Tooltip>
+                ))}
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
                 <div className="flex">
-                  <p className="capitalize dark:text-white text-gray-800 text-lg">
-                    question{" "}
+                  <p className="text-lg">
                     {
                       <input
-                        type="number"
-                        value={inputNbr}
+                        type="text"
+                        value={questionTitle}
                         onChange={handleInputChange}
-                        className="dark:bg-secondary-dark-bg bg-white dark:text-white text-gray-800 w-8"
+                        className="dark:bg-secondary-dark-bg bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:ring-2 focus:ring-[#5BD0B0] focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
@@ -221,23 +282,66 @@ const Questions = () => {
                   <BsThreeDots className="md:text-xl mt-1 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
                 </div>
                 <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3">
-                  <p className="capitalize self-center dark:text-white text-gray-800 text-lg opacity-30">
-                    drag and drop quiz type
+                  <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
+                    please select the type of your question
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          {/* Second Container */}
+          {/* Question Bank */}
           <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll p-1 sm:p-2">
-            <div className="bg-white mx-auto sm:mt-2 mt-3 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 p-4">
-              <p className="capitalize dark:text-white text-gray-800 lg:text-lg md:text-base text-sm">
-                question {inputNbr}
-              </p>
-              <div className="flex items-center flex-grow my-2">
-                <div className="border-b border-gray-500 w-full"></div>
-              </div>
-            </div>
+            {/* Question Container */}
+            {data &&
+              data.map((question) => (
+                <div
+                  key={question._id}
+                  className="bg-white mx-auto sm:mt-2 mt-3 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2"
+                >
+                  <div className="flex justify-around">
+                    {question.type === "Multiple Choice" ? (
+                      <TfiList className={iconQuestionStyle} />
+                    ) : null}
+                    {question.type === "Multiple Response" ? (
+                      <RiCheckboxMultipleFill className={iconQuestionStyle} />
+                    ) : null}
+                    {question.type === "True or False" ? (
+                      <RiCheckDoubleFill className={iconQuestionStyle} />
+                    ) : null}
+                    {question.type === "Short Answers" ? (
+                      <BiCommentMinus className={iconQuestionStyle} />
+                    ) : null}
+                    {question.type === "Numerical" ? (
+                      <BsCalculator className={iconQuestionStyle} />
+                    ) : null}
+                    {question.type === "Essay" ? (
+                      <LuFileText className={iconQuestionStyle} />
+                    ) : null}
+
+                    <p className="lg:-mt-1 capitalize text-center dark:text-white text-gray-800 lg:text-lg text-xs ">
+                      {question.title}
+                    </p>
+                    <MdDelete
+                      className="md:text-xl cursor-pointer dark:hover:text-red-400 hover:text-red-400 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                      onClick={() => {
+                        handleRemoveQuestion(question._id);
+                        // console.log(question._id);
+                      }}
+                    />
+                  </div>
+                  <div className="flex items-center flex-grow my-2">
+                    <div className="border-b border-gray-500 w-full"></div>
+                  </div>
+                  <p
+                    style={{ color: `${currentColor}` }}
+                    className="lg:text-lg text-xs"
+                  >
+                    {question.point}
+                    {" points"}
+                  </p>
+                </div>
+              ))}
+            {/* End Of Question Container */}
           </div>
         </div>
       </div>

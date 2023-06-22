@@ -16,8 +16,8 @@ router.post(
 
   getQuestionsByactivityId
 );
-router.get("/:id", protect, isTeacher, getQuestion);
-router.delete("/:id", protect, isTeacher, deleteQuestion);
-router.put("/:id", protect, isTeacher, putQuestion);
+router.get("/:id", getQuestion);
+router.delete("/delete/:id", deleteQuestion);
+router.put("/:id", putQuestion);
 
 export default router;

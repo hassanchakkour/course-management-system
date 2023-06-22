@@ -6,6 +6,14 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+/* h1{color:#8e5dfd}
+h1{color:#5d69fd,}
+h1{color:#3da4fc}
+h1{color:#2c8063}
+h1{color:#d07e4b}
+h1{color:#d04b4b}
+h1{color:#db56a3} */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
