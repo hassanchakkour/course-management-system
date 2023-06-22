@@ -1,5 +1,6 @@
 @import url("https://cdn.syncfusion.com/ej2/material.css");
 
+
 .sidebar {
   box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
 }
@@ -11,6 +12,13 @@
   .sidebar {
     z-index: 10000000;
   }
+}
+
+.custom-data-grid .MuiDataGrid-cell {
+  color: white;
+}
+.custom-data-grid .custom-header {
+  color: white;
 }
 
 .e-dlg-center-center,

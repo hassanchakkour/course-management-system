@@ -48,44 +48,55 @@ const Students = () => {
   const getActivitiesByStudent = (studentId) => {
     return activities.filter((activity) => activity.studentId === studentId);
   };
-
-  // Generate columns for the data grid
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 },
-    // Dynamically generate columns for each activity
+    { field: 'name', headerName: 'Name', width: 150 , headerClassName: 'custom-header',},
     ...activities.map((activity) => ({
       field: `activity_${activity._id}`,
-      headerName: ` ${activity.title}`,
-      width: 150,
+      headerName: `${activity.title}`,
+      width: 200,
+      headerClassName: 'custom-header',
       valueGetter: (params) => {
         const studentActivities = getActivitiesByStudent(params.row.id);
-        const targetActivity = studentActivities.find((a) => a.id === activity.id);
-        return targetActivity ? targetActivity.value : '';
+        const targetActivity = studentActivities.find((a) => a.title === activity.title);
+        return targetActivity ? targetActivity.grade : activity.passingGrade;
       },
+      
     })),
+    {
+    
+      headerName: 'Total',
+      width: 100,
+      headerClassName: 'custom-header',
+      valueGetter: (params) => {
+        const studentActivities = getActivitiesByStudent(params.row.id);
+        const total = studentActivities.reduce((sum, activity) => sum + activity.passingGrade, 0);
+        return total;
+      },
+    },
+    
   ];
 
-  // Generate rows for the data grid
   const rows = users
-    .filter((user) => user.role === 'student') // Filter only students
-    .map((user) => ({
-      id: user.id,
-      name: user.firstName,
-      // Generate activity columns dynamically
-      ...getActivitiesByStudent(user.id).reduce((acc, activity) => {
-        acc[`activity_${activity.id}`] = activity.value;
-        return acc;
-      }, {}),
-    }));
+    .filter((user) => user.role === 'student')
+    .map((user) => {
+      const studentActivities = getActivitiesByStudent(user._id);
+      const row = {
+        id: user._id,
+        name: user.firstName + ' ' + user.lastName,
+      };
+      studentActivities.forEach((activity) => {
+        row[`activity_${activity._id}`] = activity.passingGrade;
+      });
+      return row;
+    });
 
   // Render the data grid component
   return (
     <div className='QuizForm'>
-      <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} pageSize={5} />
-      </div>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSize={5} className="custom-data-grid" />
     </div>
+  </div>
   );
 };
 

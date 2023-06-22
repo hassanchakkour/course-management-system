@@ -18,11 +18,12 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
+    mediaUrl
    
   } = req.body;
   // const teacherId = req.user._id;
 
-  const mediaUrl= req.file.mediaUrl;
+  // const mediaUrl= req.file.mediaUrl;
   
   if (!submoduleId) {
     res.status(400);
