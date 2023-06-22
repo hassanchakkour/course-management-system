@@ -2,13 +2,10 @@ import Activity from "../models/activityModel.js";
 import asyncHandler from "express-async-handler";
 import Submodule from "../models/subModuleModel.js";
 
-
-
 // @desc    Create a new activity
 // @route   POST /api/activities
 // @access  Private (Teacher only)
 const postActivity = asyncHandler(async (req, res) => {
-
   const {
     title,
     submoduleId,
@@ -18,19 +15,18 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
-   
   } = req.body;
   // const teacherId = req.user._id;
 
-  const mediaUrl= req.file.mediaUrl;
-  
+  const mediaUrl = req.file.mediaUrl;
+
   if (!submoduleId) {
     res.status(400);
     throw new Error("submoduleId is required");
   }
   // const mediaUrl = req.file.path;
   //const MediaUrl= req.files.MediaUrl[0].path;
-  
+
   const activity = await Activity.create({
     title,
     teacherId,
@@ -41,9 +37,41 @@ const postActivity = asyncHandler(async (req, res) => {
     note,
     courseId,
     mediaUrl,
- 
   });
 
+  if (activity) {
+    const addTosubmodule = await Submodule.findById(submoduleId).populate(
+      "activityId"
+    );
+
+    addTosubmodule.activityId.push(activity._id);
+    // console.log(addTosubmodule);
+    await addTosubmodule.save();
+  }
+  res.status(201).json(activity);
+});
+
+const createActivity = asyncHandler(async (req, res) => {
+  const {
+    title,
+    submoduleId,
+    type,
+    duration,
+    passingGrade,
+    note,
+    teacherId,
+    courseId,
+  } = req.body;
+  const activity = await Activity.create({
+    title,
+    teacherId,
+    type,
+    submoduleId,
+    duration,
+    passingGrade,
+    note,
+    courseId,
+  });
 
   if (activity) {
     const addTosubmodule = await Submodule.findById(submoduleId).populate(
@@ -105,10 +133,23 @@ const getActivity = asyncHandler(async (req, res) => {
 // @route   DELETE /api/activities/:id
 // @access  Private (Teacher only)
 const deleteActivity = asyncHandler(async (req, res) => {
-  const activity = await Activity.findOneAndDelete({ _id: req.params.id });
+  const _id = req.body;
+  const activity = await Activity.findById(_id);
+
+  console.log(activity);
+  if (activity) {
+    await Activity.deleteOne({ _id: activity._id });
+    if (activity.submoduleId) {
+      const subs = await Submodule.findOneAndUpdate(
+        { _id: activity.submoduleId },
+        { $pull: { activityId: { $in: [`${activity._id}`] } } }
+      );
+      await subs.save();
+    }
+  }
 
   if (activity) {
-    res.status(200).json({ message: "Activity deleted" });
+    res.status(200).json({ message: "Activity deleted Successfully !!" });
   } else {
     res.status(404).json({ message: "Activity not found or unauthorized" });
   }
@@ -183,6 +224,38 @@ const getAllActivities = asyncHandler(async (req, res) => {
   }
 });
 
+const updateActivity = asyncHandler(async (req, res) => {
+  const { title, content, id, newsubsId, oldsubsId } = req.body;
+  // const teacherId = req.user._id;
+
+  let activity = await Activity.findOne({
+    _id: id,
+  });
+
+  if (activity) {
+    activity.title = title || activity.title;
+    activity.content = content || activity.content;
+    activity.submoduleId = newsubsId || activity.moduleId;
+
+    const removeFromOldSub = await Submodule.findOneAndUpdate(
+      { _id: oldsubsId },
+      { $pull: { activityId: { $in: [`${activity._id}`] } } }
+    );
+
+    const addToNewSub = await Submodule.findOneAndUpdate(
+      { _id: newsubsId },
+      { $push: { activityId: { $each: [`${activity._id}`] } } }
+    );
+
+    res.status(200).json({
+      message: "Activity Updated Successfully !!",
+    });
+  } else {
+    res.status(404);
+    throw new Error("Submodule not found or unauthorized");
+  }
+});
+
 export {
   postActivity,
   getActivity,
@@ -192,4 +265,6 @@ export {
   getActivitiesByStudentId,
   getAllActivities,
   getActivitiesCourseId,
+  createActivity,
+  updateActivity,
 };

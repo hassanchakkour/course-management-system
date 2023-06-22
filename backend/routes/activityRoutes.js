@@ -1,5 +1,5 @@
 import express from "express";
-import multer from 'multer'
+import multer from "multer";
 // const upload = multer({ dest: 'uploads' })
 const router = express.Router();
 
@@ -13,11 +13,16 @@ import {
   getActivitiesByStudentId,
   getAllActivities,
   getActivitiesCourseId,
+  createActivity,
+  updateActivity,
 } from "../controllers/activitiesController.js";
 // import { protect, isTeacher } from "../middleware/authMiddleware.js";
 // const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
 // router.post("/",postActivity);
 // router.post("/",upload.single('file'), postActivity);
+router.post("/create", createActivity);
+router.post("/delete", deleteActivity);
+router.post("/update", updateActivity);
 router.get(
   "/submodule/:submoduleId",
 
@@ -27,10 +32,9 @@ router.get(
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
-   
       // console.log("Uploading files...");
       const uploadPath = `backend/uploads/`;
-  
+
       cb(null, uploadPath);
     } catch (error) {
       return res.status(400).json({ message: "Error parsing form data 1 " });
@@ -49,13 +53,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/",upload.single("mediaUrl"),postActivity,(req,res) => {
+router.post("/", upload.single("mediaUrl"), postActivity, (req, res) => {
   console.log(req.file);
-  res.send("single filll")
-})
+  res.send("single filll");
+});
 
 router.post("/single", getActivity);
-router.delete("/:id", deleteActivity);
+
 router.put("/:id", putActivity);
 
 // router.post("/teacher", getActivitiesTeacherId);
