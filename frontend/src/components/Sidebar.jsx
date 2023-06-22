@@ -79,11 +79,10 @@ const Sidebar = () => {
 
           <div className="mt-5 text-2xl mx-auto">
             {links.map((item) => (
-              <Tooltip title={item.title} placement="right">
-                <div className="dark:hover:bg-[#5BD0B0] hover:transition ease-out duration-700 rounded-lg px-8">
+              <Tooltip key={item.title} title={item.title} placement="right">
+                <div className="dark:hover:bg-[#5BD0B0] hover:transition ease-out duration-700 rounded-lg  px-7">
                   <NavLink
                     to={`/${item.title}`}
-                    key={item.title}
                     onClick={handleCloseSideBar}
                     style={({ isActive }) => ({
                       color: isActive ? currentColor : "",
