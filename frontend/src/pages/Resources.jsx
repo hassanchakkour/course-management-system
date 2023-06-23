@@ -21,7 +21,7 @@ const Resources = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 700,
-    bgcolor: '#20232A',
+    bgcolor:  '#1F2937',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
