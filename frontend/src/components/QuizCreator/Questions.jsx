@@ -25,6 +25,10 @@ import { MdDelete } from "react-icons/md";
 const Questions = () => {
   const { currentColor, activityID } = useStateContext();
   const [showModal, setShowModal] = useState(false);
+  const [showQuestion, setShowQuestion] = useState(false);
+
+  const [successMessage, setSuccessMessage] = useState("");
+
   // walaa
   const [showTrueFalse, setShowTrueFalse] = useState(false);
 
@@ -60,9 +64,9 @@ const Questions = () => {
       color: "#d04b4b",
     },
   ];
-  console.log(links.icon);
 
   const activityId = localStorage.getItem("activity_id", activityID);
+  console.log(activityId);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -84,15 +88,15 @@ const Questions = () => {
   const [questionTitle, setQuestionTitle] = useState("Question");
 
   const inputElement = useRef();
-  const focusInput = () => {
-    inputElement.current.focus();
-  };
+  // const focusInput = () => {
+  //   inputElement.current.focus();
+  // };
 
   const handleInputChange = (e) => {
     setQuestionTitle(e.target.value);
   };
 
-  let sendData = { activityId: "64831840f58d735189094350" };
+  let sendData = { activityId: activityId };
 
   const getQuestionData = async () => {
     const res = await axios.post(
@@ -143,6 +147,13 @@ const Questions = () => {
     setData(res.data);
   };
 
+  // const getSpecificQuestion = async() => {
+  //   const res = await axios.post(
+  //     "http://localhost:5000/api/questions/activity",
+  //     sendData
+  //   );
+  // }
+
   const handleRemoveQuestion = async (id) => {
     try {
       const res = await axios.delete(
@@ -163,26 +174,43 @@ const Questions = () => {
     "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
   console.log(iconType);
 
-  const addMultipleChoice = async (data) => {
+  const addMultipleChoice = (data) => {
     console.log("This is from child", data);
-    if (
-      data.title != "" &&
-      data.content != "" &&
-      data.point != "" &&
-      data.options != "" &&
-      data.correctOption != ""
-    ) {
+    let questionOption = [];
+
+    for (let i = 0; i < data.options.length; i++) {
+      questionOption.push(data.options[i].content);
+    }
+
+    console.log(data.title);
+    console.log(data.questionContent);
+    console.log(data.point);
+    console.log(data.correctOption);
+
+    const submit = async () => {
+      let sendData = {
+        activityId: activityId,
+        questionContent: data.questionContent,
+        type: "Multiple Choice",
+        point: data.point,
+        title: data.title,
+        correctOption: data.correctOption,
+        options: questionOption,
+      };
       try {
-        const res = await axios.post("http://localhost:5000/api/questions/", {
-          sendData,
-          data,
-        });
+        const res = await axios.post(
+          "http://localhost:5000/api/questions",
+          sendData
+        );
+        console.log(res.data);
+        setSuccessMessage("Question Created Successfully");
       } catch (error) {
         console.log(error);
       } finally {
-        getQuestionData();
+        await getQuestionData();
       }
-    }
+    };
+    submit();
   };
 
   return (
@@ -273,6 +301,9 @@ const Questions = () => {
         {/* Question Container */}
         <div className="flex justify-between h-full m-3 mt-10 md:px-3 xl:mx-12 md:mx-2">
           {/* First Container */}
+          {successMessage && (
+            <div className="text-green-500">{successMessage}</div>
+          )}
           <div className="h-[60vh] border-solid border-2 border-gray-400 rounded-3xl w-3/4 md:mr-5 mr-2 relative">
             {/* Icons Top Bar Clickable */}
             <div className="flex justify-end dark:text-white text-gray-800">
@@ -283,7 +314,7 @@ const Questions = () => {
               <MdOutlineModeEdit
                 onClick={() => {
                   setDisabledInput(false);
-                  focusInput();
+                  inputElement.current.focus();
                 }}
                 className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
               />
@@ -355,10 +386,13 @@ const Questions = () => {
                   <BsThreeDots className="md:text-xl mt-1 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
                 </div>
                 {showDiv && (
+                  // Container To Display The Questions
                   <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3">
-                    <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
-                      please select the type of your question
-                    </p>
+                    {!showQuestion && (
+                      <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
+                        please select the type of your question
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -371,6 +405,9 @@ const Questions = () => {
               data.map((question) => (
                 <div
                   key={question._id}
+                  onClick={() => {
+                    setShowQuestion(true);
+                  }}
                   className="bg-white mx-auto sm:mt-2 mt-3 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2"
                 >
                   <div className="flex justify-around">

@@ -29,6 +29,7 @@ const Header = ({ course, onDataFromChild }) => {
     activityID,
     activeMenu,
     activityTitle,
+    setActivity_ID,
   } = useStateContext();
 
   const activityId = localStorage.getItem("activity_id", activityID);
@@ -603,9 +604,10 @@ const Header = ({ course, onDataFromChild }) => {
                                   return (
                                     <div
                                       key={activity._id}
-                                      onClick={() =>
-                                        setIsActivityId(activity._id)
-                                      }
+                                      onClick={() => {
+                                        setIsActivityId(activity._id);
+                                        setActivity_ID(activity._id);
+                                      }}
                                       className={
                                         activity.type === "Assignment"
                                           ? "border  border-orange-500 mb-1 "
