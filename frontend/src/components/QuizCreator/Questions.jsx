@@ -65,6 +65,7 @@ const Questions = () => {
   ];
 
   const activityId = localStorage.getItem("activity_id", activityID);
+  console.log(activityId);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -94,7 +95,7 @@ const Questions = () => {
     setQuestionTitle(e.target.value);
   };
 
-  let sendData = { activityId: "6494d78ec036f6f7618a4dd8" };
+  let sendData = { activityId: activityId };
 
   const getQuestionData = async () => {
     const res = await axios.post(
@@ -187,7 +188,7 @@ const Questions = () => {
 
     const submit = async () => {
       let sendData = {
-        activityId: "6494d78ec036f6f7618a4dd8",
+        activityId: activityId,
         questionContent: data.questionContent,
         type: "Multiple Choice",
         point: data.point,
