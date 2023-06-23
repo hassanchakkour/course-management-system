@@ -15,6 +15,7 @@ import QuizModal from "./pages/QuizModal";
 import QuestionsBank from "./pages/QuestionsBank";
 import Questions from "./components/QuizCreator/Questions";
 import MultipleChoice from "./components/QuestionsModals/MultipleChoice";
+import TrueOrFalse from "./components/QuestionsModals/TrueOrFalse";
 
 const App = () => {
   const {
@@ -84,6 +85,7 @@ const App = () => {
 
                     <Route path="/quizCreator" element={<Questions />} />
                     <Route path="/messages" element={<MultipleChoice />} />
+                    <Route path="/question1" element={<TrueOrFalse />} />
                   </Routes>
                 </div>
               </div>

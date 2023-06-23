@@ -9,6 +9,7 @@ import { TextField, Button, Container, Box } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import { MdOutlinePermMedia } from "react-icons/md";
 import { ErrorMessage } from 'formik';
+import Editor from "./Editor";
 
 
 const Media = () => {
@@ -146,41 +147,46 @@ const Media = () => {
                  </Box>
 
                 <Box marginBottom="20px">
+                  
                      <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
                  <h5 style={{ color: 'gray' }}>Description</h5>
                      </div>
               <div style={{ width: '100%' }}>
                 
-              <ReactQuill
-           label="Media Description"
-           value={formik.values.description}
-           onChange={formik.handleChange}
-           onBlur={formik.handleBlur}
+              <div className="border rounded-md border-gray-300 p-2">
+        <ReactQuill
+          value={formik.values.description}
+          onChange={(value) => formik.setFieldValue('description', value)}
+          onBlur={formik.handleBlur}
           modules={modules}
-           formats={formats}
-            className="block mb-1 text-white"
-             style={{
+          formats={formats}
+          className="block mb-1 text-white"
+          style={{
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-              color: 'whitesmoke',
-             width: '51w0%',
-               height: '50%',
-  }}
-  render={() => (
-    <textarea
-    value={formik.values.description}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-      className="block mb-1 text-white bg-black rounded-md border-gray-300 px-3 py-2 resize-none"
-      label="Media"
-      rows={6}
-      variant="outlined"
-      fullWidth
-      style={{ marginBottom: '16px', maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
-    />
-  )}
-  
-/>
+            color: 'whitesmoke',
+          }}
+          render={() => (
+            <textarea
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="block mb-1 text-white bg-black rounded-md border-gray-300 px-3 py-2 resize-none"
+              label="Media"
+              rows={6}
+              variant="outlined"
+              fullWidth
+              style={{
+                marginBottom: '16px',
+                maxHeight: '600px',
+                overflowY: 'auto',
+                color: 'whitesmoke',
+              }}
+            />
+          )}
+        />
+      </div>
+
 
 {/* <ErrorMessage name="description" component="div" style={{ color: 'red' }} /> */}
 <p className="text-right">
@@ -188,9 +194,13 @@ const Media = () => {
 </p>
 
 
+
     </div>
   </div>
 </Box>
+{/* <div className="container mx-auto p-4 border-white">
+      <Editor />
+    </div> */}
 
          
           <Box marginBottom="16px">
@@ -203,7 +213,7 @@ const Media = () => {
               id="outlined-error"
               type="file"
                label="Upload Media"
-               className=" text-white py-2 px-4 rounded-full hover:bg-blue-600"
+               class="mt-2 block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60"
               onChange={(event) => {
                 formik.setFieldValue("file", event.currentTarget.files[0]);
               }}
@@ -219,6 +229,7 @@ const Media = () => {
             </div>
             </div>
           </Box>
+          
           <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <button type="submit"  
                  variant="contained" 
