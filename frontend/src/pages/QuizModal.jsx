@@ -21,17 +21,20 @@ function QuizModal() {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      width: '60%',
-      bgcolor: '#20232A',
+      width: '700px',
+      bgcolor: '#1F2937',
       border: '2px solid #000',
       boxShadow: 24,
       p: 4,
+      
+     
     };
   return (
     <div>
       <Button onClick={handleOpen}>Quiz</Button>
      
       <Modal
+      className={`w-full bg-gray-800 `}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

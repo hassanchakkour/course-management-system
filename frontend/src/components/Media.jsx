@@ -103,97 +103,91 @@ const Media = () => {
         sx={{
           // maxHeight: "60vh",
           // overflowY: "auto",
-          backgroundColor:'rgb:(64, 64, 64)',
+          backgroundColor: '#1F2937',
           color: 'gray',
         }}
       >
         <form onSubmit={formik.handleSubmit}>
-        <Box marginBottom="20px" color="gray">
+        <Box marginBottom="30px" color="gray">
         <div style={{ display: 'flex' }}>
         <div style={{ width: '30%', marginRight: '10px', display: 'flex', alignItems: 'center' }}>
   <MdOutlinePermMedia style={{ marginRight: '5px' }} />
-  <h4 style={{ color: 'whitesmoke', margin: 0 }}>
-    Media
-  </h4>
+  <h1 class="text-1xl text-white font-bold m-0">
+  Media
+</h1>
 </div>
                </div>
                    </Box>
 
            <Box marginBottom="20px">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h5 style={{ color: 'gray' }}>Title</h5>
-                     </div>
-              <div style={{ width: '100%' }}>
-              <TextField
-              variant="outlined"
-                 id="outlined-error"
-                 fullWidth
-                name="title"
-   
-                value={formik.values.title}
-                onChange={formik.handleChange}
-                 onBlur={formik.handleBlur}
-                error={formik.touched.title && formik.errors.title}
-                helperText={formik.touched.title && formik.errors.title}
-                sx={{
-                marginBottom: '10px',
-                borderRadius: '20px',
-                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                 borderColor: 'gray',
-                 color: 'whitesmoke',
-                 width: '100%',
-                    }}
-      
-                 InputProps={{
-                 style: { color: 'whitesmoke'},
-                  classes: {
-                  root: 'white-border',
-                 focused: 'white-border-focused',
-                    notchedOutline: 'white-border',
-                  },
-                    }}
-                   />
+           <div className="flex items-center">
+  <div style={{ width: '30%', marginRight: '10px' }}>
+    <h5 className="text-gray-500">Title</h5>
+  </div>
+  <div style={{ width: '100%' }}>
+    <input
+      className={`w-full bg-gray-800 text-white border border-gray-500 rounded-full px-3 py-2 ${formik.touched.title && formik.errors.title ? 'border-red-500' : ''}`}
+      variant="outlined"
+      id="outlined-error"
+      fullWidth
+      name="title"
+      value={formik.values.title}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.title && formik.errors.title && (
+      <p className="text-red-500">{formik.errors.title}</p>
+    )}
+  </div>
+</div>
+
     
-                  </div>
-                  </div>
+                 
                  </Box>
 
-<Box marginBottom="20px">
-<div style={{ display: 'flex', alignItems: 'center' }}>
+                <Box marginBottom="20px">
+                     <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
                  <h5 style={{ color: 'gray' }}>Description</h5>
                      </div>
               <div style={{ width: '100%' }}>
+                
               <ReactQuill
-                label="Media Description"
-                value={formik.values.description}
-               
-                onChange={(value) => formik.setFieldValue('description', value)}
-                modules={modules}
-                formats={formats}
-                sx={{
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                  color: 'whitesmoke',
-                  width: '100%',
-                  height:'50%',
-                }}
-                render={() => (
-                  <TextField
-                  label="Media"
-                  multiline
-                  id="outlined-error"
-                  rows={6}
-                  variant="outlined"
-                  fullWidth
-                  sx={{ marginBottom: '16px', maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
-                />
-                )}
-              />
-               {/* <ErrorMessage name="description" component="div" style={{ color: 'red' }} /> */}
-              <p style={{ textAlign: 'right' }}>
-               {remainingCharacters}/{rest}
-              </p>
+           label="Media Description"
+           value={formik.values.description}
+           onChange={formik.handleChange}
+           onBlur={formik.handleBlur}
+          modules={modules}
+           formats={formats}
+            className="block mb-1 text-white"
+             style={{
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+              color: 'whitesmoke',
+             width: '51w0%',
+               height: '50%',
+  }}
+  render={() => (
+    <textarea
+    value={formik.values.description}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+      className="block mb-1 text-white bg-black rounded-md border-gray-300 px-3 py-2 resize-none"
+      label="Media"
+      rows={6}
+      variant="outlined"
+      fullWidth
+      style={{ marginBottom: '16px', maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
+    />
+  )}
+  
+/>
+
+{/* <ErrorMessage name="description" component="div" style={{ color: 'red' }} /> */}
+<p className="text-right">
+  {remainingCharacters}/{rest}
+</p>
+
+
     </div>
   </div>
 </Box>
@@ -208,25 +202,30 @@ const Media = () => {
             <input
               id="outlined-error"
               type="file"
-              label="Upload Media"
+               label="Upload Media"
+               className=" text-white py-2 px-4 rounded-full hover:bg-blue-600"
               onChange={(event) => {
                 formik.setFieldValue("file", event.currentTarget.files[0]);
               }}
               name="file"
               accept="image/*,video/*,audio/*"
+             
+              placeholder="Upload Media"
               
             />
-            {formik.touched.file && formik.errors.file && (
-              <div>{formik.errors.file}</div>
+          {formik.touched.file && formik.errors.file && (
+      <p className="text-red-500">{formik.errors.file}</p>
             )}
             </div>
             </div>
           </Box>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" color="primary" type="submit" sx={{borderRadius: "20%"}}>
-            Submit
-          </Button>
-          </div>
+                <button type="submit"  
+                 variant="contained" 
+                 className="bg-blue-500 text-white py-2 px-4 rounded-full">
+              Submit
+                 </button>
+               </div>
         </form>
       </Container>
   

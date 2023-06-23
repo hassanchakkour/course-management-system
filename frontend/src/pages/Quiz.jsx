@@ -19,9 +19,11 @@ const Quiz = () => {
   const [instructions, setInstructions] = useState('');
   const [passingGrade, setPassinggrade] = useState();
   const [duration, setDuration] = useState();
-
   const [note,setNote]=useState('')
   const { userInfo } = useSelector((state) => state.auth)
+
+  const [quizzes, setQuizzes] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState("");
 
   // const [open, setOpen] = useState(false);
 
@@ -89,14 +91,14 @@ const Quiz = () => {
       setTitle("");
       setDescription("");
       setPassinggrade("");
-     
+      setDuration('')
+      setInstructions('')
       setNote("");
     } catch (error) {
       console.error("Error creating Quiz:", error);
     }
   };
-  const [quizzes, setQuizzes] = useState([]);
-  const [selectedQuiz, setSelectedQuiz] = useState("");
+
 
   useEffect(() => {
     // Fetch quizzes from the API
@@ -172,7 +174,7 @@ const Quiz = () => {
   };
 
   const remainingCharacters1 =  description.replace(/(<([^>]+)>)/gi, '').trim().length;
-  const rest1=3000-remainingCharacters;
+  const rest1=3000-remainingCharacters1;
 
 
  
@@ -196,13 +198,14 @@ const Quiz = () => {
    
       <Container
         maxWidth="20%"
+        className="bg-gray-800"
         sx={{
           // border: "1px solid #ccc",
-          borderRadius: "10px",
+          // borderRadius: "10px",
           // padding: "px",
           maxHeight: "60vh", // Set the desired height for the scrollable area
           overflowY: "auto", // Enable vertical scrolling
-          color: 'gray',
+          // color: 'gray',
 
         }}
        
@@ -216,43 +219,34 @@ const Quiz = () => {
             // Add any additional styling properties as needed
           }}
         >
-         <div style={{ display: 'flex' }}>
-         <div style={{ width: '30%', marginRight: '10px', display: 'flex', alignItems: 'center' }}>
-         <div style={{ width: '30%', marginRight: '10px', display: 'flex', alignItems: 'center' }}>
-  <MdQuiz style={{ marginRight: '5px' }} />
-  <h4 style={{ color: 'whitesmoke', margin: 0 }}>
-    Quiz
-  </h4>
+        <div style={{ display: 'flex' }}>
+  <div style={{ width: '30%', marginRight: '10px',marginBottom:'30px', display: 'flex', alignItems: 'center' }}>
+    <MdQuiz style={{ marginRight: '5px' }} />
+    <h1 class="text-2xl text-white font-bold m-0">
+  Quiz
+</h1>
+  </div>
+
 </div>
-</div>
-               </div>
+               
         
     <form onSubmit={handleSubmit}>
 
     <Box marginBottom="20px" color="gray">
   <div style={{ display: 'flex', alignItems: 'center' }}>
     <div style={{ width: '30%', marginRight: '10px' }}>
-      <h5 style={{ color: 'gray' }}>Quiz</h5>
+      <h5 style={{ color: 'white' }}>Quiz</h5>
     </div>
     <div style={{ width: '100%' }}>
-      <TextField
+      <input
+      className={`w-full bg-gray-800 text-white border border-gray-500 rounded-full px-3 py-2  'border-red-500' : ''}`}
         variant="outlined"
         fullWidth
         value={title}
         onChange={(event) => setTitle(event.target.value)}
         margin="normal"
+       required
        
-        InputProps={{
-          style: { color: 'whitesmoke'},
-          classes: {
-            root: 'white-border',
-            focused: 'white-border-focused',
-            notchedOutline: 'white-border',
-          },
-        }}
-        sx={{
-          color: 'whitesmoke',
-        }}
       />
      
     </div>
@@ -265,17 +259,19 @@ const Quiz = () => {
 <Box marginBottom="20px" color="gray">
 <div style={{ display: 'flex', alignItems: 'center' }}>
     <div style={{ width: '30%', marginRight: '10px' }}>
-      <h5 style={{ color: 'gray' }}>Description</h5>
+      <h5 style={{ color: 'white' }}>Description</h5>
     </div>
-  <div style={{ width: '100%' }}>
+  <div style={{ width: '100%', borderRadius:'20px' }}>
     <ReactQuill
+     className={` bg-gray-800 text-white border border-gray-500  `}
       value={description}
       style={{ color: 'whitesmoke' }}
-      
+      required
       modules={modules}
       formats={formats}
       render={({ editor }) => (
         <TextField
+        required
           label="Quiz Description"
           multiline
           rows={6}
@@ -299,29 +295,26 @@ const Quiz = () => {
             <Box marginBottom="20px" color="gray">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                  <div style={{ width: '30%', marginRight: '10px' }}>
-                    <h5 style={{ color: 'gray' }}>Instructions</h5>
+                    <h5 style={{ color: 'white' }}>Instructions</h5>
                       </div>
                   <div style={{ width: '100%' }}>
                  <ReactQuill
+                 className={` bg-gray-800 text-white border border-gray-500  `}
                       value={instructions}
                       onChange={setInstructions}
+                      required
                         modules={modules}
                         formats={formats}
                          render={({ editor }) => (
                                   <TextField
+                                  
                                label="Instructions"
                                    multiline
                                     rows={6}
                                  variant="outlined"
                                  fullWidth
                                   onClick={editor.focus}
-                                 sx={{
-                                   marginBottom: '16px',
-                                   maxHeight: '300px',
-                                   overflowY: 'auto',
-                                   borderRadius: '0px',
-                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                                    }}
+                                
                                     />
                                      )}
                                      />
@@ -331,31 +324,21 @@ const Quiz = () => {
                                     </Box>
 
                          <Box marginBottom="20px" color="gray">
-<div style={{ display: 'flex', alignItems: 'center' }}>
-    <div style={{ width: '30%', marginRight: '10px' }}>
-      <h5 style={{ color: 'gray' }}>Note</h5>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                           <div style={{ width: '30%', marginRight: '10px' }}>
+                      <h5 style={{ color: 'white' }}>Note</h5>
     </div>
   <div style={{ width: '100%' }}>
-    <TextField
+    <input
+    className={`w-full bg-gray-800 text-white border border-gray-500 rounded-full px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
+      required
       fullWidth
       value={note}
       onChange={(event) => setNote(event.target.value)}
       margin="normal"
       
-      InputProps={{
-        style: { color: 'whitesmoke'},
-        classes: {
-          root: 'white-border',
-          focused: 'white-border-focused',
-          notchedOutline: 'white-border',
-        },
-      }}
-      sx={{
-        marginBottom: '10px',
-        borderRadius: '0px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-      }}
+     
     />
   </div>
 </div>
@@ -364,31 +347,19 @@ const Quiz = () => {
 <Box marginBottom="20px" color="gray">
 <div style={{ display: 'flex', alignItems: 'center' }}>
     <div style={{ width: '30%', marginRight: '10px' }}>
-      <h5 style={{ color: 'gray' }}>Passing Grade</h5>
+      <h5 style={{ color: 'white' }}>Passing Grade</h5>
     </div>
   <div style={{ width: '100%',color: 'whitesmoke' }}>
-    <TextField
+    <input
+    className={`w-full bg-gray-800 text-white border border-gray-500 rounded-full px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
-     
+     required
       fullWidth
       value={passingGrade}
       onChange={(event) => setPassinggrade(event.target.value)}
       margin="normal"
       
-      InputProps={{
-        style: { color: 'whitesmoke'},
-        classes: {
-          root: 'white-border',
-          focused: 'white-border-focused',
-          notchedOutline: 'white-border',
-        },
-      }}
-      sx={{
-        marginBottom: '10px',
-        borderRadius: '0px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-        color: 'whitesmoke',
-      }}
+   
     />
   </div>
 </div>
@@ -404,70 +375,53 @@ const Quiz = () => {
                 <Box marginBottom="20px" color="gray">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div style={{ width: '30%', marginRight: '10px' }}>
-                          <h5 style={{ color: 'gray' }}>Duration</h5>
+                          <h5 style={{ color: 'white' }}>Duration</h5>
                              </div>
                  <div style={{ width: '100%' }}>
-                  <TextField
+                  <input
+                  className={`w-full bg-gray-800 border border-gray-500  text-white rounded-full px-3 py-2 'border-red-500' : ''}`}
                   variant="outlined"
                     type="number"
+                    required
                     fullWidth
                    value={duration}
                      onChange={(event) => setDuration(event.target.value)}
                     margin="normal"
-                          sx={{
-                            marginBottom: '10px',
-                            borderRadius: '0px',
-                            color: 'whitesmoke',
-                            boxShadow: '0 2px 4px rgba(113, 122, 131, 0.11)',
-
-                            }}
-                            
-                             InputProps={{
-                             style: { color: 'whitesmoke'},
-                             classes: {
-                              root: 'white-border',
-                               focused: 'white-border-focused',
-                               notchedOutline: 'white-border',
-                               },
-                               }}
+                        
                             />
                             </div>
                             </div>
                             </Box>
-                   <Box>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ width: '30%', marginRight: '10px' }}>
-                            <h5 style={{ color: 'gray' }}>Load Quiz</h5>
+                            <Box  marginBottom="20px" >
+                         <div style={{ display: 'flex', alignItems: 'center' }}>
+                         <div style={{ width: '30%', marginRight: '10px' }}>
+                           <h5 style={{ color: 'white' }}>Load Quiz</h5>
                              </div>
-                           <Select
-                                //  labelId="demo-simple-select-label"
-                               //   id="demo-simple-select"
-                            className="mr-5 w-[80%] ml-5"
-                            value={selectedQuiz || ""} 
-                            onChange={handleQuizChange}
-                                width="100%"
-                              label="Quiz"
-                 
-                //  sx={{
-                //   marginBottom: "10px", // Add margin at the bottom
-                //   borderRadius: "0px", // Set border radius
-                //   boxShadow: "1px 4px 4px rgba(0, 0, 0, 0.2)",
-                // }}
-              
-                   >
-                 {quizzes && quizzes.map(quiz => (
-                    <MenuItem key={quiz._id} value={quiz._id} >
-                    {quiz.title}
-                    </MenuItem>
-                   ))}
-                   
-              </Select>
-               <Button type="button" variant="contained" color="primary" className='right-0'>
-                Create New Quiz
-              </Button>
-              </div>
-            </Box>
-            
+                                 <Select
+                           className="mr-5 w-[73%]  bg-gray-800 border border-gray-800 rounded-full ml-2"
+     
+                           value={selectedQuiz || ""}
+                           onChange={handleQuizChange}
+                                    sx={{
+                             marginBottom: "10px",
+        borderRadius: "20px",
+        boxShadow: "1px 4px 4px rgba(0, 0, 0, 0.2)",
+        height: "40px",
+        border: "1px solid white",
+      }}
+    >
+       {quizzes && quizzes.map(quiz => (
+      <MenuItem key={quiz._id} value={quiz._id}>
+        {quiz.title}
+      </MenuItem>
+    ))}
+    </Select>
+    
+    <button type="button" className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">
+      Create
+    </button>
+  </div>
+</Box>
 
 
              
@@ -498,18 +452,12 @@ const Quiz = () => {
            
  
            
- <div style={{ display: 'flex', justifyContent: 'center' }}>
-  <Button
-    variant="contained"
-    color="primary"
-    type="submit"
-    sx={{
-      borderRadius: "20%",
-    }}
-  >
-    Submit
-  </Button>
-</div>
+             
+              <div className="flex justify-center mt-20">
+                  <button type='submit'
+                  className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">
+                   Submit </button>
+                      </div>
           {/* <Button variant="contained" color="secondary" sx={{ borderRadius: "20%", marginLeft: "10px" }}>
             Cancel
           </Button> */}
