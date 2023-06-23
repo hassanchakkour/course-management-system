@@ -8,6 +8,7 @@ import { Tooltip } from "@mui/material";
 const MultipleChoice = ({ setShowModal, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [questionContent, setContentContent] = useState("");
   const [point, setPoint] = useState(0);
   const [options, setOptions] = useState([]);
   const [correctOption, setCorrectOption] = useState("");
@@ -16,7 +17,8 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
 
   const handleAddOption = () => {
     const option = {
-      id: new Date().getTime(), // Unique identifier for each option
+      // Unique identifier for each option
+      id: new Date().getTime(),
       content: content,
     };
 
@@ -34,18 +36,14 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
-    const data = { title, content, point, options, correctOption };
-
-    if (
-      !title ||
-      !content ||
-      !point ||
-      options.some((option) => option === "") ||
-      !correctOption
-    ) {
-      setErrorMessage(true);
-      return;
-    }
+    const type = "Multiple Choice";
+    const data = {
+      title,
+      questionContent,
+      point,
+      options,
+      correctOption,
+    };
     onSubmit(data);
   };
 
@@ -95,7 +93,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   </span>
                 </div>
                 <button
-                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-3"
+                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-2"
                   onClick={() => setShowModal(false)}
                 >
                   <MdCancel />
@@ -112,6 +110,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                 <div className="mb-3 pt-0">
                   <input
                     type="text"
+                    required
                     id="titleInput"
                     placeholder="Add Title"
                     onChange={(e) => setTitle(e.target.value)}
@@ -127,7 +126,8 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                 <div className="mb-2 pt-0">
                   <textarea
                     id="descriptionInput"
-                    onChange={(e) => setContent(e.target.value)}
+                    required
+                    onChange={(e) => setContentContent(e.target.value)}
                     placeholder="Enter description"
                     className="px-3 py-3 mt-1 placeholder-slate-400 text-white  relative bg-transparent rounded text-sm border-1 border-white shadow outline-none focus:outline-none  w-full"
                   ></textarea>
@@ -142,6 +142,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   <input
                     type="number"
                     id="pointInput"
+                    required
                     onChange={(e) => setPoint(e.target.value)}
                     min="0"
                     placeholder="Add Number Of Points"
@@ -151,23 +152,25 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                 <div className="relative">
                   <input
                     type="text"
+                    required
                     onChange={(e) => setContent(e.target.value)}
                     value={content}
                     placeholder="Enter option"
                     className="w-full px-3 mb-3 mt-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none pr-10"
                   />
+
                   {showAddOption && (
                     <div className="flex flex-wrap mt-2">
-                      {options.map((option) => (
+                      {options.map((option, index) => (
                         <div
-                          key={option.id}
+                          key={index}
                           className="flex p-2 w-auto h-8 border-1 border-gray-200 rounded-lg mr-2"
                         >
                           <p className="text-xs mr-1 text-[lightseagreen]">
                             {option.content}
                           </p>
                           <TbSquareRoundedMinus
-                            className="text-red-500 font-semibold text-lg cursor-pointer  ml-1"
+                            className="text-red-500 font-semibold text-lg cursor-pointer  ml-1 -mt-0.5"
                             onClick={() => handleRemoveOption(option.id)}
                           />
                         </div>
@@ -183,7 +186,6 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     </button>
                   </Tooltip>
                 </div>
-
                 <label
                   htmlFor="correctOptionInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
@@ -194,6 +196,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   <select
                     id="correctOptionInput"
                     onChange={(e) => setCorrectOption(e.target.value)}
+                    required
                     value={correctOption}
                     className={`px-2 py-3 placeholder-slate-400 text-white relative rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full select-style`}
                     style={selectStyle}
@@ -202,7 +205,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     {options.map((option) => (
                       <option
                         key={option.id}
-                        value={option.id}
+                        value={option.content}
                         className={`select-style ${
                           hoveredOption === option.id ? "hovered" : ""
                         }`}
@@ -221,13 +224,31 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   </p>
                 )}
 
-                <button
-                  className="bg-emerald-500 mt-3 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                  type="button"
-                  onClick={handleData}
-                >
-                  Add Question
-                </button>
+                <div className="flex flex-col">
+                  <button
+                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => {
+                      if (
+                        !title ||
+                        !questionContent ||
+                        !point ||
+                        options.some((option) => option === "") ||
+                        !correctOption
+                      ) {
+                        setErrorMessage(true);
+                        setTimeout(() => {
+                          setErrorMessage(false);
+                        }, 3000);
+                      } else {
+                        handleData();
+                        setShowModal(false);
+                      }
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
           </div>
