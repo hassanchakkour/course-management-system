@@ -20,7 +20,7 @@ const questionSchema = new Schema(
       type: String,
       required: [true, "Please specify the type of question."],
     },
-    content: {
+    questionContent: {
       type: String,
       required: [true, "Please provide the content of the question."],
     },
