@@ -87,7 +87,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="mt-24 md:mt-3">
+    <div className="mt-24 lg:-ml-2 md:mt-3">
       <div className="flex flex-col">
         <div className="mx-auto bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-24 rounded-3xl w-11/12 p-8">
           <div className="flex justify-between">

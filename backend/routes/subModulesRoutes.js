@@ -14,10 +14,11 @@ router.route("/").post(createSubmodule);
 router
   .route("/:id")
   .put(protect, isTeacher, updateSubmodule)
-  .delete(protect, isTeacher, deleteSubmodule)
+  // .delete(protect, isTeacher, deleteSubmodule)
   .get(protect, isTeacher, getSubmoduleById);
 
 router.post("/update", updateSubmodule);
+router.post("/delete", deleteSubmodule);
 
 router
   .route("/module/:moduleId")

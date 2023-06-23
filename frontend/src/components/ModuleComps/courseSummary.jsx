@@ -70,7 +70,7 @@ const CourseSummary = (course) => {
 
   if (activeMenu) {
     courseSummaryClass =
-      "text-4xl  ml-[2%] mt-12 font-bold max-[850px]:invisible";
+      "text-4xl  ml-[6%] mt-12 font-bold max-[850px]:invisible";
   } else {
     courseSummaryClass =
       "text-4xl  ml-[9%] mt-12 font-bold max-[850px]:invisible";

@@ -4,6 +4,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
 import { RiDashboardFill } from "react-icons/ri";
+
 import {
   FaCalendar,
   FaChalkboardTeacher,
@@ -56,12 +57,12 @@ const Sidebar = () => {
   // }, []);
 
   // text-2xl flex flex-col justify-center align-middle
-  const activeLink = `rounded-lg m-2 text-[${currentColor}]`;
+  const activeLink = "rounded-lg m-2";
   const normalLink =
     " rounded-lg  text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
   return (
-    <div className="pt-5 sm:mt-0 mt-5 flex flex-col justify-center align-middle md:overflow-hidden overflow-auto md:hover:overflow-auto ">
+    <div className="pt-5 pb-3 sm:mt-0 mt-5 flex flex-col justify-center align-middle md:overflow-hidden overflow-y-auto md:hover:overflow-auto ">
       {activeMenu && (
         <>
           <div>
@@ -76,23 +77,25 @@ const Sidebar = () => {
             </Link>
           </div>
 
-          <div className="mt-10 text-2xl mx-auto">
+          <div className="mt-5 text-2xl mx-auto">
             {links.map((item) => (
-              // <Tooltip title={item.title} placement="right">
-              <NavLink
-                to={`/${item.title}`}
-                key={item.title}
-                onClick={handleCloseSideBar}
-                style={({ isActive }) => ({
-                  backgroundColor: isActive ? currentColor : "",
-                })}
-                className={({ isActive }) =>
-                  isActive ? activeLink : normalLink
-                }
-              >
-                {item.icon}
-              </NavLink>
-              // </Tooltip>
+              <Tooltip title={item.title} placement="right">
+                <div className="dark:hover:bg-[#5BD0B0] hover:transition ease-out duration-700 rounded-lg px-8">
+                  <NavLink
+                    to={`/${item.title}`}
+                    key={item.title}
+                    onClick={handleCloseSideBar}
+                    style={({ isActive }) => ({
+                      color: isActive ? currentColor : "",
+                    })}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    {item.icon}
+                  </NavLink>
+                </div>
+              </Tooltip>
             ))}
           </div>
         </>
