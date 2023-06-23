@@ -14,6 +14,7 @@ import Resources from "./pages/Resources";
 import QuizModal from "./pages/QuizModal";
 import QuestionsBank from "./pages/QuestionsBank";
 import Questions from "./components/QuizCreator/Questions";
+import MultipleChoice from "./components/QuestionsModals/MultipleChoice";
 
 const App = () => {
   const {
@@ -82,6 +83,7 @@ const App = () => {
                     <Route path="/courseName" element={<Content />} />
 
                     <Route path="/quizCreator" element={<Questions />} />
+                    <Route path="/messages" element={<MultipleChoice />} />
                   </Routes>
                 </div>
               </div>
