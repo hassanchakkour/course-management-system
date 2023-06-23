@@ -360,8 +360,12 @@ const Questions = () => {
                     setShowModal={setShowModal}
                     onSubmit={addMultipleChoice}
                   />
-                  
-
+                )}
+                {showTrueFalse && (
+                  <TrueOrFalse
+                  setShowTrueFalse={setShowTrueFalse}
+                    // onSubmit={addMultipleChoice}
+                  />
                 )}
                 
               </div>

@@ -1,24 +1,24 @@
-import React from "react";
+
 import { useState } from "react";
 import { MdLibraryAdd } from "react-icons/md";
 import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
-const TrueOrFalse= ({setShowTrueFalse,submit}) => {
+const TrueOrFalse = ({ setShowModal, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [contentOptions, setContentOptions] = useState("");
+  const [questionContent, setContentContent] = useState("");
   const [point, setPoint] = useState(0);
   const [options, setOptions] = useState([]);
   const [correctOption, setCorrectOption] = useState("");
-//   const [showTrueFalse,setShowTrueFalse]= useState(false)
- 
+
   const [showAddOption, setShowAddOption] = useState(false);
 
   const handleAddOption = () => {
     const option = {
-      id: new Date().getTime(), // Unique identifier for each option
+      // Unique identifier for each option
+      id: new Date().getTime(),
       content: content,
     };
 
@@ -36,19 +36,15 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
-    const data = { title, contentOptions, point, options, correctOption };
-
+    const type = "Multiple Choice";
+    const data = {
+      title,
+      questionContent,
+      point,
+      options,
+      correctOption,
+    };
     onSubmit(data);
-    if (
-      !title ||
-      !contentOptions ||
-      !point ||
-      options.some((option) => option === "") ||
-      !correctOption
-    ) {
-      setErrorMessage(true);
-      return;
-    }
   };
 
   // CSS styles
@@ -56,37 +52,40 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
     backgroundColor: "#33373E",
     color: "lightseagreen",
   };
-
-  const optionStyle = {
-    backgroundColor: "darkgray",
-    color: "white",
+  const handleOptionChange = (e) => {
+    setCorrectOption(e.target.value);
   };
 
-  const optionHoverStyle = {
-    backgroundColor: "#33373E",
-  };
+  // const optionStyle = {
+  //   backgroundColor: "darkgray",
+  //   color: "white",
+  // };
 
-  // Define a state to keep track of the hovered option
-  const [hoveredOption, setHoveredOption] = useState(null);
+  // const optionHoverStyle = {
+  //   backgroundColor: "#33373E",
+  // };
 
-  // Handle mouse enter event to update the hovered option
-  const handleMouseEnter = (optionId) => {
-    setHoveredOption(optionId);
-  };
+  // // Define a state to keep track of the hovered option
+  // const [hoveredOption, setHoveredOption] = useState(null);
 
-  // Handle mouse leave event to clear the hovered option
-  const handleMouseLeave = () => {
-    setHoveredOption(null);
-  };
+  // // Handle mouse enter event to update the hovered option
+  // const handleMouseEnter = (optionId) => {
+  //   setHoveredOption(optionId);
+  // };
+
+  // // Handle mouse leave event to clear the hovered option
+  // const handleMouseLeave = () => {
+  //   setHoveredOption(null);
+  // };
 
   return (
     <>
       <>
         <div className="justify-center items-center flex overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
           <div className="relative h-4/5 md:mt-0 mt-12 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
-            {/content/}
+            {/*content*/}
             <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
-              {/header/}
+              {/*header*/}
               <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                 <div className="flex">
                   <h3 className="text-3xl text-gray-300 font-semibold">
@@ -97,13 +96,13 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
                   </span>
                 </div>
                 <button
-                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-3"
-                  onClick={() => setShowTrueFalse(false)}
+                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-2"
+                  onClick={() => setShowModal(false)}
                 >
                   <MdCancel />
                 </button>
               </div>
-              {/body/}
+              {/*body*/}
               <div className="relative p-6 flex-auto">
                 <label
                   htmlFor="titleInput"
@@ -131,7 +130,7 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
                   <textarea
                     id="descriptionInput"
                     required
-                    onChange={(e) => setContentOptions(e.target.value)}
+                    onChange={(e) => setContentContent(e.target.value)}
                     placeholder="Enter description"
                     className="px-3 py-3 mt-1 placeholder-slate-400 text-white  relative bg-transparent rounded text-sm border-1 border-white shadow outline-none focus:outline-none  w-full"
                   ></textarea>
@@ -153,43 +152,7 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
                     className="px-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none  w-full"
                   />
                 </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    required
-                    onChange={(e) => setContent(e.target.value)}
-                    value={content}
-                    placeholder="Enter option"
-                    className="w-full px-3 mb-3 mt-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none pr-10"
-                  />
-                  {showAddOption && (
-                    <div className="flex flex-wrap mt-2">
-                      {options.map((option) => (
-                        <div
-                          key={option.id}
-                          className="flex p-2 w-auto h-8 border-1 border-gray-200 rounded-lg mr-2"
-                        >
-                          <p className="text-xs mr-1 text-[lightseagreen]">
-                            {option.content}
-                          </p>
-                          <TbSquareRoundedMinus
-                            className="text-red-500 font-semibold text-lg cursor-pointer  ml-1"
-                            onClick={() => handleRemoveOption(option.id)}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <Tooltip title="Add Option" arrow>
-                    <button
-                      className="absolute right-0 top-3 text-white font-bold text-2xl px-6 py-3 rounded dark:hover:text-emerald-400 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      onClick={handleAddOption}
-                    >
-                      <MdLibraryAdd className="-mr-5" />
-                    </button>
-                  </Tooltip>
-                </div>
-
+              
                 <label
                   htmlFor="correctOptionInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
@@ -197,22 +160,37 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
                   Correct Option
                 </label>
                 <div className="mb-3 pt-1">
-                  <select
-                    id="correctOptionInput"
-                    onChange={(e) => setCorrectOption(e.target.value)}
-                    required
-                    value={correctOption}
-                    className={`px-2 py-3 placeholder-slate-400 text-white relative rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full select-style`}
-                    style={selectStyle}
-                  >
-                    <option value="">Select True Or false</option>
-                    
-                      <option>
-                      <option value="0">True</option>
-                       <option value="1">False</option>
-                      </option>
-                   
-                  </select>
+                
+         
+                 <div className="mb-3 pt-1" style={{ display: 'flex' }}>
+                     <div style={{ marginRight: '10px' }}>
+                               <input
+                               className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent rounded text-sm "
+                              
+                             type="radio"
+                            id="correctOptionTrue"
+                             value="true"
+                             checked={correctOption === 'true'}
+                          onChange={handleOptionChange}
+                              />
+          <label htmlFor="correctOptionTrue" className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent rounded text-sm ">
+            True
+          </label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="correctOptionFalse"
+            value="false"
+            checked={correctOption === 'false'}
+            onChange={handleOptionChange}
+          />
+          <label htmlFor="correctOptionFalse" className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent rounded text-sm ">
+            False
+          </label>
+        
+                </div>
+                </div>
                 </div>
                 {errorMessage && (
                   <p className="text-red-500 md:text-lg text-base  mt-2">
@@ -220,13 +198,31 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
                   </p>
                 )}
 
-                <button
-                  className="bg-emerald-500 mt-3 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                  type="button"
-                  onClick={handleData}
-                >
-                  Add Question
-                </button>
+                <div className="flex flex-col">
+                  <button
+                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => {
+                      if (
+                        !title ||
+                        !questionContent ||
+                        !point ||
+                        options.some((option) => option === "") ||
+                        !correctOption
+                      ) {
+                        setErrorMessage(true);
+                        setTimeout(() => {
+                          setErrorMessage(false);
+                        }, 3000);
+                      } else {
+                        handleData();
+                        setShowModal(false);
+                      }
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -237,4 +233,4 @@ const TrueOrFalse= ({setShowTrueFalse,submit}) => {
   );
 };
 
-export default TrueOrFalse;
+export default  TrueOrFalse
