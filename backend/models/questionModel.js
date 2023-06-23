@@ -33,7 +33,7 @@ const questionSchema = new Schema(
       default: "",
     },
     options: [String],
-    // correctOption: String,
+    correctOption: String,
   },
 
   {

@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Tooltip } from "@mui/material";
 import axios from "axios";
+import MultipleChoice from "../QuestionsModals/MultipleChoice";
 
 import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -22,6 +23,9 @@ import { MdDelete } from "react-icons/md";
 
 const Questions = () => {
   const { currentColor, activityID } = useStateContext();
+  const [showModal, setShowModal] = useState(false);
+  // walaa
+  const [showTrueFalse, setShowTrueFalse] = useState(false);
 
   const links = [
     {
@@ -72,8 +76,17 @@ const Questions = () => {
 
   const [gradeNbr, setGradeNbr] = useState(0);
   const [data, setData] = useState([]);
+  const [iconType, setIconType] = useState("");
 
+  const [showDiv, setShowDiv] = useState(false);
+  const [disabledInput, setDisabledInput] = useState(true);
   const [questionTitle, setQuestionTitle] = useState("Question");
+
+  const inputElement = useRef();
+  const focusInput = () => {
+    inputElement.current.focus();
+  };
+
   const handleInputChange = (e) => {
     setQuestionTitle(e.target.value);
   };
@@ -147,6 +160,29 @@ const Questions = () => {
 
   const iconQuestionStyle =
     "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
+  console.log(iconType);
+
+  const addMultipleChoice = async (data) => {
+    console.log("This is from child", data);
+    if (
+      data.title != "" &&
+      data.content != "" &&
+      data.point != "" &&
+      data.options != "" &&
+      data.correctOption != ""
+    ) {
+      try {
+        const res = await axios.post("http://localhost:5000/api/questions/", {
+          sendData,
+          data,
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        getQuestionData();
+      }
+    }
+  };
 
   return (
     <>
@@ -239,9 +275,21 @@ const Questions = () => {
           <div className="h-[60vh] border-solid border-2 border-gray-400 rounded-3xl w-3/4 md:mr-5 mr-2 relative">
             {/* Icons Top Bar Clickable */}
             <div className="flex justify-end dark:text-white text-gray-800">
-              <MdAddCircle className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
-              <MdOutlineModeEdit className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl " />
-              <FiSave className="m-6 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
+              <MdAddCircle
+                className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                onClick={() => setShowDiv(true)}
+              />
+              <MdOutlineModeEdit
+                onClick={() => {
+                  setDisabledInput(false);
+                  focusInput();
+                }}
+                className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
+              />
+              <FiSave
+                onClick={() => setDisabledInput(true)}
+                className="m-6 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+              />
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
@@ -254,14 +302,33 @@ const Questions = () => {
                   >
                     <div className="mx-auto my-auto">
                       <NavLink
-                        to={"/questionsBank"}
+                        // to={"/questionsBank"}
                         style={{ color: item.color }}
+                        onClick={() => {
+                          setIconType(item.title);
+                          {
+                            item.title == "Multiple Choice"
+                              ? setShowModal(true)
+                              : setShowModal(false);
+                          }
+                          {
+                            item.title == "True or False"
+                              ? setShowTrueFalse(true)
+                              : setShowTrueFalse(false);
+                          }
+                        }}
                       >
                         {item.icon}
                       </NavLink>
                     </div>
                   </Tooltip>
                 ))}
+                {showModal && (
+                  <MultipleChoice
+                    setShowModal={setShowModal}
+                    onSubmit={addMultipleChoice}
+                  />
+                )}
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
@@ -270,6 +337,8 @@ const Questions = () => {
                     {
                       <input
                         type="text"
+                        disabled={disabledInput}
+                        ref={inputElement}
                         value={questionTitle}
                         onChange={handleInputChange}
                         className="dark:bg-secondary-dark-bg bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:ring-2 focus:ring-[#5BD0B0] focus:border-transparent p-1 rounded-lg"
@@ -281,11 +350,13 @@ const Questions = () => {
                   </div>
                   <BsThreeDots className="md:text-xl mt-1 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
                 </div>
-                <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3">
-                  <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
-                    please select the type of your question
-                  </p>
-                </div>
+                {showDiv && (
+                  <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3">
+                    <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
+                      please select the type of your question
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
