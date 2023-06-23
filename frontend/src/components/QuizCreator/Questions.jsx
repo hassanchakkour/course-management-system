@@ -203,6 +203,7 @@ const Questions = () => {
         );
         console.log(res.data);
         setSuccessMessage("Question Created Successfully");
+        setTimeout(() => setSuccessMessage(""), 2000);
       } catch (error) {
         console.log(error);
       } finally {
@@ -300,12 +301,16 @@ const Questions = () => {
         {/* Question Container */}
         <div className="flex justify-between h-full m-3 mt-10 md:px-3 xl:mx-12 md:mx-2">
           {/* First Container */}
-          {successMessage && (
-            <div className="text-green-500">{successMessage}</div>
-          )}
+
           <div className="h-[60vh] border-solid border-2 border-gray-400 rounded-3xl w-3/4 md:mr-5 mr-2 relative">
             {/* Icons Top Bar Clickable */}
             <div className="flex justify-end dark:text-white text-gray-800">
+              {successMessage && (
+                <div className="text-green-500 text-lg mt-5">
+                  {successMessage}
+                </div>
+              )}
+
               <MdAddCircle
                 className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
                 onClick={() => setShowDiv(true)}
