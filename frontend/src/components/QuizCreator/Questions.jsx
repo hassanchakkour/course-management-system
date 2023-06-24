@@ -5,6 +5,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { Tooltip } from "@mui/material";
 import axios from "axios";
 import MultipleChoice from "../QuestionsModals/MultipleChoice";
+import TrueOrFalse from "../QuestionsModals/TrueOrFalse";
 
 import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -360,6 +361,13 @@ const Questions = () => {
                     onSubmit={addMultipleChoice}
                   />
                 )}
+                {showTrueFalse && (
+                  <TrueOrFalse
+                  setShowTrueFalse={setShowTrueFalse}
+                    // onSubmit={addMultipleChoice}
+                  />
+                )}
+                
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">

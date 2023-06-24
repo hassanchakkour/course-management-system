@@ -119,34 +119,31 @@ const Media = () => {
                </div>
                    </Box>
 
-           <Box marginBottom="20px">
-           <div className="flex items-center">
-  <div style={{ width: '30%', marginRight: '10px' }}>
-    <h5 className="text-gray-500">Title</h5>
-  </div>
-  <div style={{ width: '100%' }}>
-    <input
-      className={`w-full bg-gray-800 text-white border border-gray-500 rounded-full px-3 py-2 ${formik.touched.title && formik.errors.title ? 'border-red-500' : ''}`}
-      variant="outlined"
-      id="outlined-error"
-      fullWidth
-      name="title"
-      value={formik.values.title}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-    />
-    {formik.touched.title && formik.errors.title && (
-      <p className="text-red-500">{formik.errors.title}</p>
-    )}
-  </div>
-</div>
-
-    
-                 
-                 </Box>
+                   <Box marginBottom="20px">
+        <div className="flex items-center">
+          <div style={{ width: '30%', marginRight: '10px' }}>
+            <h5 className="text-gray-500">Title</h5>
+          </div>
+          <div style={{ width: '100%',marginTop:'0px' }}>
+            <input
+              className={`w-full bg-gray-800 text-white border border-gray-500 rounded-lg px-3 py-2 ${formik.touched.title && formik.errors.title ? 'border-red-500' : ''}`}
+              variant="outlined"
+              id="outlined-error"
+              fullWidth
+              name="title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.title && formik.errors.title && (
+              <p className="text-red-500">{formik.errors.title}</p>
+            )}
+          </div>
+        </div>
+      </Box>
 
                 <Box marginBottom="20px">
-                     <div style={{ display: 'flex', alignItems: 'center' }}>
+                     <div style={{ display: 'flex', alignItems: 'flex-start'  }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
                  <h5 style={{ color: 'gray' }}>Description</h5>
                      </div>
@@ -176,7 +173,7 @@ const Media = () => {
       rows={6}
       variant="outlined"
       fullWidth
-      style={{ marginBottom: '16px', maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
+      style={{  maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
     />
   )}
   
@@ -203,7 +200,7 @@ const Media = () => {
               id="outlined-error"
               type="file"
                label="Upload Media"
-               className=" text-white py-2 px-4 rounded-full hover:bg-blue-600"
+               class="mt-2 block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" 
               onChange={(event) => {
                 formik.setFieldValue("file", event.currentTarget.files[0]);
               }}
