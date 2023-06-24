@@ -158,14 +158,14 @@ const Quiz = () => {
     console.log(typeof(event.target.value))
    
   };
-  // const handleTextChange = (value) => {
-  //   if (value.replace(/(<([^>]+)>)/gi, '').trim().length <= 3000) {
-  //     setInstructions(value);
-  //   }
-  // };
+  const handleTextChange = (value) => {
+    if (value.replace(/(<([^>]+)>)/gi, '').trim().length <= 3000) {
+      setInstructions(value);
+    }
+  };
 
-  // const remainingCharacters =  instructions.replace(/(<([^>]+)>)/gi, '').trim().length;
-  // const rest=3000-remainingCharacters;
+  const remainingCharacters =  instructions.replace(/(<([^>]+)>)/gi, '').trim().length;
+  const rest=3000-remainingCharacters;
 
   // const handleTextChange1 = (value) => {
   //   if (value.replace(/(<([^>]+)>)/gi, '').trim().length <= 3000) {
@@ -197,13 +197,14 @@ const Quiz = () => {
   return (
    
       <Container
-        maxWidth="20%"
+        maxWidth="100%"
         className="bg-gray-800"
         sx={{
           // border: "1px solid #ccc",
           // borderRadius: "10px",
           // padding: "px",
-          maxHeight: "60vh", // Set the desired height for the scrollable area
+          maxHeight: "60vh",
+           // Set the desired height for the scrollable area
           overflowY: "auto", // Enable vertical scrolling
           // color: 'gray',
 
@@ -291,6 +292,7 @@ const Quiz = () => {
                       onChange={setInstructions}
                       required
                         modules={modules}
+                        height="300px"
                         formats={formats}
                          render={({ editor }) => (
                                   <TextField
@@ -300,12 +302,13 @@ const Quiz = () => {
                                     rows={6}
                                  variant="outlined"
                                  fullWidth
+                                 height="400px"
                                   onClick={editor.focus}
                                 
                                     />
                                      )}
                                      />
-                                      {/* <p style={{ textAlign: 'right' }}>{remainingCharacters}/{rest}</p> */}
+                                      <p style={{ textAlign: 'right' }}>{remainingCharacters}/{rest}</p> 
                                     </div>
                                     </div>
                                     </Box>

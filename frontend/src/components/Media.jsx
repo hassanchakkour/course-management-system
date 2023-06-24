@@ -99,7 +99,7 @@ const Media = () => {
   return (
    
       <Container
-        maxWidth="50%"
+        maxWidth="100%"
         sx={{
           // maxHeight: "60vh",
           // overflowY: "auto",
@@ -162,22 +162,23 @@ const Media = () => {
               color: 'whitesmoke',
              width: '51w0%',
                height: '50%',
-  }}
-  render={() => (
-    <textarea
-    value={formik.values.description}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-      className="block mb-1 text-white bg-black rounded-md border-gray-300 px-3 py-2 resize-none"
-      label="Media"
-      rows={6}
-      variant="outlined"
-      fullWidth
-      style={{  maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
-    />
-  )}
-  
-/>
+               maxWidth:'100%'
+                     }}
+                     render={() => (
+                  <textarea
+                value={formik.values.description}
+                  onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                     className="block mb-1 text-white bg-black rounded-md border-gray-300 px-3 py-2 resize-none"
+                    label="Media"
+                     rows={6}
+                    variant="outlined"
+                    height="50%"
+                       fullWidth
+                      style={{  maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
+                        />
+                        )}
+                          />
 
 {/* <ErrorMessage name="description" component="div" style={{ color: 'red' }} /> */}
 <p className="text-right">

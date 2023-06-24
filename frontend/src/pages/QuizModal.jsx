@@ -22,6 +22,7 @@ function QuizModal() {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       width: '700px',
+      maxWidth:'100%',
       bgcolor: '#1F2937',
       border: '2px solid #000',
       boxShadow: 24,
