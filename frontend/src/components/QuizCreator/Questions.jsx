@@ -33,7 +33,7 @@ const Questions = () => {
 
   // walaa
   const [showTrueFalse, setShowTrueFalse] = useState(false);
-  const [showMutlipleResponse, setShowMutlipleResponse]=useState(false);
+  const [showMutlipleResponse, setShowMutlipleResponse] = useState(false);
 
   const [questionId, setQuestionId] = useState("");
 
@@ -194,6 +194,7 @@ const Questions = () => {
       console.log(error);
     } finally {
       await getQuestionData();
+      setShowQuestion(false);
     }
   };
 
@@ -425,17 +426,16 @@ const Questions = () => {
                 )}
                 {showTrueFalse && (
                   <TrueOrFalse
-                  setShowTrueFalse={setShowTrueFalse}
+                    setShowTrueFalse={setShowTrueFalse}
                     // onSubmit={addMultipleChoice}
                   />
                 )}
-                  {showMutlipleResponse && (
+                {showMutlipleResponse && (
                   <MultipleResponse
-                  setShowMutlipleResponse={setShowMutlipleResponse}
+                    setShowMutlipleResponse={setShowMutlipleResponse}
                     // onSubmit={addMultipleChoice}
                   />
                 )}
-                
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
