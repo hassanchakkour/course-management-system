@@ -1,11 +1,11 @@
-
+import React from "react";
 import { useState } from "react";
 import { MdLibraryAdd } from "react-icons/md";
 import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
-const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
+const MultipleResponse = ({ setShowMutlipleResponse }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [questionContent, setContentContent] = useState("");
@@ -36,15 +36,15 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
-    const type = "Multiple Choice";
+    const type = "Multiple Response";
     const data = {
       title,
       questionContent,
       point,
-    
+      options,
       correctOption,
     };
-    onSubmit(data);
+    // onSubmit(data);
   };
 
   // CSS styles
@@ -52,58 +52,49 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
     backgroundColor: "#33373E",
     color: "lightseagreen",
   };
-  const handleOptionChange = (e) => {
-    setCorrectOption(e.target.value);
+
+  const optionStyle = {
+    backgroundColor: "darkgray",
+    color: "white",
   };
 
-  // const optionStyle = {
-  //   backgroundColor: "darkgray",
-  //   color: "white",
-  // };git
+  const optionHoverStyle = {
+    backgroundColor: "#33373E",
+  };
 
-  // const optionHoverStyle = {
-  //   backgroundColor: "#33373E",
-  // };
+  // Define a state to keep track of the hovered option
+  const [hoveredOption, setHoveredOption] = useState(null);
 
-  // // Define a state to keep track of the hovered option
-  // const [hoveredOption, setHoveredOption] = useState(null);
+  // Handle mouse enter event to update the hovered option
+  const handleMouseEnter = (optionId) => {
+    setHoveredOption(optionId);
+  };
 
-  // // Handle mouse enter event to update the hovered option
-  // const handleMouseEnter = (optionId) => {
-  //   setHoveredOption(optionId);
-  // };
-
-  // // Handle mouse leave event to clear the hovered option
-  // const handleMouseLeave = () => {
-  //   setHoveredOption(null);
-  // };
+  // Handle mouse leave event to clear the hovered option
+  const handleMouseLeave = () => {
+    setHoveredOption(null);
+  };
 
   return (
     <>
       <>
         <div className="justify-center items-center flex overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
-          <div className="relative h-4/5 md:mt-0 mt-12 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
-            {/*content*/}
+          <div className="relative h-4/5 md:mt-0 mt-12 lg:mt-16 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
+            {/content/}
             <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
-              {/*header*/}
+              {/header/}
               <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                 <div className="flex">
                   <h3 className="text-3xl text-gray-300 font-semibold">
                     Question:
                   </h3>
                   <span className="text-white text-2xl ml-3 mt-1 capitalize">
-                    True Or False
+                    multiple Response
                   </span>
                 </div>
-                <button
-                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-2"
-                  onClick={() =>  setShowTrueFalse(false)}
-                >
-                  <MdCancel />
-                </button>
               </div>
-              {/*body*/}
-              <div className="relative p-6 flex-auto">
+              {/body/}
+              <div className="relative p-6 -mt-5 flex-auto">
                 <label
                   htmlFor="titleInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
@@ -152,7 +143,51 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
                     className="px-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none  w-full"
                   />
                 </div>
-              
+
+                <label
+                  htmlFor="optionInput"
+                  className="my-4 text-slate-400 text-lg leading-relaxed"
+                >
+                  Options
+                </label>
+                <div className="relative -mt-2">
+                  <input
+                    type="text"
+                    required
+                    id="optionInput"
+                    onChange={(e) => setContent(e.target.value)}
+                    value={content}
+                    placeholder="Enter option"
+                    className="w-full px-3 mb-3 mt-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none pr-10"
+                  />
+
+                  {showAddOption && (
+                    <div className="flex flex-wrap mt-2">
+                      {options.map((option, index) => (
+                        <div
+                          key={index}
+                          className="flex p-2 w-auto h-8 border-1 border-gray-200 rounded-lg mr-2"
+                        >
+                          <p className="text-xs mr-1 text-[lightseagreen]">
+                            {option.content}
+                          </p>
+                          <TbSquareRoundedMinus
+                            className="text-red-500 font-semibold text-lg cursor-pointer  ml-1 -mt-0.5"
+                            onClick={() => handleRemoveOption(option.id)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <Tooltip title="Add Option" arrow>
+                    <button
+                      className="absolute right-0 top-3 text-white font-bold text-2xl px-6 py-3 rounded dark:hover:text-emerald-400 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      onClick={handleAddOption}
+                    >
+                      <MdLibraryAdd className="-mr-5" />
+                    </button>
+                  </Tooltip>
+                </div>
                 <label
                   htmlFor="correctOptionInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
@@ -160,47 +195,51 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
                   Correct Option
                 </label>
                 <div className="mb-3 pt-1">
-                
-         
-                 <div className="mb-3 pt-1" style={{ display: 'flex' }}>
-                     <div style={{ marginRight: '10px' }}>
-                               <input
-                               className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent rounded text-sm "
-                              
-                             type="radio"
-                            id="correctOptionTrue"
-                             value="true"
-                             checked={correctOption === 'true'}
-                          onChange={handleOptionChange}
-                              />
-          <label htmlFor="correctOptionTrue" className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent rounded text-sm ">
-            True
-          </label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="correctOptionFalse"
-            value="false"
-            checked={correctOption === 'false'}
-            onChange={handleOptionChange}
-          />
-          <label htmlFor="correctOptionFalse" className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent rounded text-sm ">
-            False
-          </label>
-        
+                  <select
+                    id="correctOptionInput"
+                    onChange={(e) => setCorrectOption(e.target.value)}
+                    required
+                    value={correctOption}
+                    className={`px-2 py-3 placeholder-slate-400 text-white relative rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full select-style`}
+                    style={selectStyle}
+                  >
+                    <option value="">Select an option</option>
+                    {options.map((option) => (
+                      <option
+                        key={option.id}
+                        value={option.content}
+                        className={`select-style ${
+                          hoveredOption === option.id ? "hovered" : ""
+                        }`}
+                        style={optionStyle}
+                        onMouseEnter={() => handleMouseEnter(option.id)}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {option.content}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                </div>
-                </div>
+              </div>
+              {/* footer */}
+              <div className="flex items-center flex-grow -mt-5 ">
+                <div className="border-b border-solid border-slate-200  w-full"></div>
+              </div>
+              <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
                 {errorMessage && (
-                  <p className="text-red-500 md:text-lg text-base  mt-2">
+                  <p className="text-red-500 md:text-lg text-base  mt-5 mr-2">
                     Please fill all the fields
                   </p>
                 )}
-
-                <div className="flex flex-col">
+                <div>
                   <button
-                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
+                    onClick={() => setShowMutlipleResponse(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
                     type="button"
                     onClick={() => {
                       if (
@@ -213,10 +252,10 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
                         setErrorMessage(true);
                         setTimeout(() => {
                           setErrorMessage(false);
-                        }, 3000);
+                        }, 2000);
                       } else {
                         handleData();
-                        setShowModal(false);
+                        setShowMutlipleResponse(false);
                       }
                     }}
                   >
@@ -233,4 +272,4 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
   );
 };
 
-export default  TrueOrFalse
+export default MultipleResponse;

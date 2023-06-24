@@ -6,6 +6,7 @@ import { Tooltip } from "@mui/material";
 import axios from "axios";
 import MultipleChoice from "../QuestionsModals/MultipleChoice";
 import TrueOrFalse from "../QuestionsModals/TrueOrFalse";
+import MultipleResponse from "../QuestionsModals/MultipleResponse";
 
 import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -31,6 +32,7 @@ const Questions = () => {
 
   // walaa
   const [showTrueFalse, setShowTrueFalse] = useState(false);
+  const [showMutlipleResponse, setShowMutlipleResponse]=useState(false);
 
   const links = [
     {
@@ -348,6 +350,11 @@ const Questions = () => {
                               ? setShowTrueFalse(true)
                               : setShowTrueFalse(false);
                           }
+                          {
+                            item.title == "Multiple Response"
+                              ? setShowMutlipleResponse(true)
+                              : setShowMutlipleResponse(false);
+                          }
                         }}
                       >
                         {item.icon}
@@ -364,6 +371,12 @@ const Questions = () => {
                 {showTrueFalse && (
                   <TrueOrFalse
                   setShowTrueFalse={setShowTrueFalse}
+                    // onSubmit={addMultipleChoice}
+                  />
+                )}
+                  {showMutlipleResponse && (
+                  <MultipleResponse
+                  setShowMutlipleResponse={setShowMutlipleResponse}
                     // onSubmit={addMultipleChoice}
                   />
                 )}
