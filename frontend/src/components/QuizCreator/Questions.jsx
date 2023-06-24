@@ -19,6 +19,7 @@ import { BiCommentMinus } from "react-icons/bi";
 import { BsCalculator } from "react-icons/bs";
 import { LuFileText } from "react-icons/lu";
 
+import { BsQuestionOctagonFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 
 const Questions = () => {
@@ -30,6 +31,8 @@ const Questions = () => {
 
   // walaa
   const [showTrueFalse, setShowTrueFalse] = useState(false);
+
+  const [questionId, setQuestionId] = useState("");
 
   const links = [
     {
@@ -65,7 +68,7 @@ const Questions = () => {
   ];
 
   const activityId = localStorage.getItem("activity_id", activityID);
-  console.log(activityId);
+  console.log("activityId: ", activityId);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -76,23 +79,32 @@ const Questions = () => {
   const [trueFalseNbr, setTrueFalseNbr] = useState(0);
   const [shortAnswersNbr, setShortAnswersNbr] = useState(0);
   const [numericalNbr, setNumericalNbr] = useState(0);
-  const [essayNbr, setEssayNbrNbr] = useState(0);
+  const [essayNbr, setEssayNbr] = useState(0);
 
   const [gradeNbr, setGradeNbr] = useState(0);
   const [data, setData] = useState([]);
+  const [singleData, setSingleData] = useState([]);
   const [iconType, setIconType] = useState("");
 
-  const [showDiv, setShowDiv] = useState(false);
   const [disabledInput, setDisabledInput] = useState(true);
-  const [questionTitle, setQuestionTitle] = useState("Question");
+  const [disabledInputText, setDisabledInputText] = useState(true);
+  const [disabledInputNum, setDisabledInputNum] = useState(true);
+  const [questionTitle, setQuestionTitle] = useState("");
+  const [questionPoints, setQuestionPoints] = useState("");
+
+  const [showOptions, setShowOptions] = useState(false);
 
   const inputElement = useRef();
-  // const focusInput = () => {
-  //   inputElement.current.focus();
-  // };
+  const inputPoints = useRef();
 
   const handleInputChange = (e) => {
     setQuestionTitle(e.target.value);
+    singleData.title = questionTitle;
+  };
+
+  const handlePointsChange = (e) => {
+    setQuestionPoints(e.target.value);
+    singleData.point = questionPoints;
   };
 
   let sendData = { activityId: activityId };
@@ -136,7 +148,7 @@ const Questions = () => {
     setTrueFalseNbr(trueFalseTemp);
     setShortAnswersNbr(shortAnswersTemp);
     setNumericalNbr(numericalTemp);
-    setEssayNbrNbr(essayTemp);
+    setEssayNbr(essayTemp);
 
     let gradeSum = 0;
     for (let i = 0; i < res.data.length; i++) {
@@ -146,12 +158,29 @@ const Questions = () => {
     setData(res.data);
   };
 
-  // const getSpecificQuestion = async() => {
-  //   const res = await axios.post(
-  //     "http://localhost:5000/api/questions/activity",
-  //     sendData
-  //   );
-  // }
+  const getSpecificQuestion = async (id) => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/questions/${id}`);
+      setSingleData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(singleData.point);
+  const updateSpecificQuestion = async (id) => {
+    try {
+      const res = await axios.put(`http://localhost:5000/api/questions/${id}`, {
+        point: questionPoints,
+        title: questionTitle,
+      });
+      const singleUpdatedQuestion = res.data;
+      console.log(singleUpdatedQuestion);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getQuestionData();
+    }
+  };
 
   const handleRemoveQuestion = async (id) => {
     try {
@@ -167,6 +196,8 @@ const Questions = () => {
 
   useEffect(() => {
     getQuestionData();
+    // setDisabledInput(false);
+    // setDisabledInputNum(false);
   }, []);
 
   const iconQuestionStyle =
@@ -203,7 +234,7 @@ const Questions = () => {
         );
         console.log(res.data);
         setSuccessMessage("Question Created Successfully");
-        setTimeout(() => setSuccessMessage(""), 2000);
+        setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
         console.log(error);
       } finally {
@@ -311,21 +342,40 @@ const Questions = () => {
                 </div>
               )}
 
-              <MdAddCircle
-                className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
-                onClick={() => setShowDiv(true)}
-              />
-              <MdOutlineModeEdit
-                onClick={() => {
-                  setDisabledInput(false);
-                  inputElement.current.focus();
-                }}
-                className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
-              />
-              <FiSave
-                onClick={() => setDisabledInput(true)}
-                className="m-6 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
-              />
+              <Tooltip title={"Show Options"} placement="left">
+                <div>
+                  <MdAddCircle
+                    onClick={() => setShowOptions(true)}
+                    className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
+                  />
+                </div>
+              </Tooltip>
+
+              <Tooltip title={"Edit Points"} placement="top">
+                <div>
+                  <MdOutlineModeEdit
+                    onClick={() => {
+                      inputPoints.current.focus();
+                      setDisabledInputNum(false);
+                    }}
+                    onMouseEnter={() => {}}
+                    className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
+                  />
+                </div>
+              </Tooltip>
+              <Tooltip title={"Save Changes"} placement="top">
+                <div>
+                  <FiSave
+                    onClick={() => {
+                      // setDisabledInputNum(true);
+                      // setDisabledInputText(true);
+
+                      updateSpecificQuestion(questionId);
+                    }}
+                    className="m-6 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                  />
+                </div>
+              </Tooltip>
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
@@ -373,87 +423,158 @@ const Questions = () => {
                     {
                       <input
                         type="text"
-                        disabled={disabledInput}
+                        disabled={disabledInputText}
                         ref={inputElement}
-                        value={questionTitle}
+                        // value={singleData.title}
+                        value={`${
+                          disabledInputText
+                            ? singleData.title || "Question"
+                            : questionTitle
+                        }`}
                         onChange={handleInputChange}
-                        className="dark:bg-secondary-dark-bg bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:ring-2 focus:ring-[#5BD0B0] focus:border-transparent p-1 rounded-lg"
+                        className="dark:bg-transparent  text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
-                  <div className="flex items-center flex-grow mx-2">
+                  <div className="flex  items-center flex-grow mx-2">
                     <div className="border-b border-gray-500 w-full"></div>
                   </div>
-                  <BsThreeDots className="md:text-xl mt-1 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl" />
+                  <Tooltip title={"Edit Title"} placement="right">
+                    <div>
+                      <BsThreeDots
+                        onClick={() => {
+                          setDisabledInputText(false);
+                          inputElement.current.focus();
+                          setQuestionTitle(singleData.title);
+                        }}
+                        className="md:text-xl mt-2 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                      />
+                    </div>
+                  </Tooltip>
                 </div>
-                {showDiv && (
-                  // Container To Display The Questions
-                  <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3">
-                    {!showQuestion && (
-                      <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
-                        please select the type of your question
-                      </p>
+
+                {/* // Container To Display The Questions */}
+                <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 overflow-y-scroll ">
+                  {!showQuestion && (
+                    <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
+                      please select the type of your question
+                    </p>
+                  )}
+                  {showQuestion && singleData && (
+                    <div className="flex p-4 mt-6 my-auto flex-col justify-start align-middle border-0 rounded-md shadow-lg bg-gradient-to-b from-[#242830] to-[#33373E] outline-none max-w-lg h-5/6 w-11/12">
+                      {/* Title and Point Container */}
+                      <div className="flex justify-between  capitalize text-sm text-white">
+                        <p
+                          style={{ color: `${currentColor}` }}
+                          className="text-sm  font-semibold uppercase "
+                        >
+                          {singleData.type}
+                        </p>
+                        <div>
+                          <input
+                            type="number"
+                            disabled={disabledInputNum}
+                            ref={inputPoints}
+                            value={`${
+                              disabledInputNum
+                                ? singleData.point
+                                : questionPoints
+                            }`}
+                            // value={singleData.point}
+                            onChange={handlePointsChange}
+                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-10 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                          />
+                          <span className="-ml-1">points</span>
+                        </div>
+                      </div>
+                      <div className="flex mt-6">
+                        <BsQuestionOctagonFill />
+                        <p className="ml-2 text-sm">
+                          {singleData.questionContent}
+                          {"."}
+                        </p>
+                      </div>
+                      <div className="flex items-center flex-grow -mt-3">
+                        <div className="border-b border-gray-500 w-full"></div>
+                      </div>
+                      <div className="flex mb-2 -mt-5">
+                        <p className="text-green-400">Answer: </p>
+                        <span className="ml-2 text-white">
+                          {singleData.correctOption}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {showOptions &&
+                    singleData(
+                      <div className="flex p-4 mt-6 my-auto flex-col justify-start align-middle border-0 rounded-md shadow-lg bg-gradient-to-b from-[#242830] to-[#33373E] outline-none max-w-lg h-5/6 w-11/12"></div>
                     )}
-                  </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
           {/* Question Bank */}
-          <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll p-1 sm:p-2">
+          <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll scrollbar-hide p-1 sm:p-2">
             {/* Question Container */}
             {data &&
-              data.map((question) => (
-                <div
-                  key={question._id}
-                  onClick={() => {
-                    setShowQuestion(true);
-                  }}
-                  className="bg-white mx-auto sm:mt-2 mt-3 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2"
-                >
-                  <div className="flex justify-around">
-                    {question.type === "Multiple Choice" ? (
-                      <TfiList className={iconQuestionStyle} />
-                    ) : null}
-                    {question.type === "Multiple Response" ? (
-                      <RiCheckboxMultipleFill className={iconQuestionStyle} />
-                    ) : null}
-                    {question.type === "True or False" ? (
-                      <RiCheckDoubleFill className={iconQuestionStyle} />
-                    ) : null}
-                    {question.type === "Short Answers" ? (
-                      <BiCommentMinus className={iconQuestionStyle} />
-                    ) : null}
-                    {question.type === "Numerical" ? (
-                      <BsCalculator className={iconQuestionStyle} />
-                    ) : null}
-                    {question.type === "Essay" ? (
-                      <LuFileText className={iconQuestionStyle} />
-                    ) : null}
-
-                    <p className="lg:-mt-1 capitalize text-center dark:text-white text-gray-800 lg:text-lg text-xs ">
-                      {question.title}
-                    </p>
-                    <MdDelete
-                      className="md:text-xl cursor-pointer dark:hover:text-red-400 hover:text-red-400 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
-                      onClick={() => {
-                        handleRemoveQuestion(question._id);
-                        // console.log(question._id);
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center flex-grow my-2">
-                    <div className="border-b border-gray-500 w-full"></div>
-                  </div>
-                  <p
-                    style={{ color: `${currentColor}` }}
-                    className="lg:text-lg text-xs"
+              data.map((question) => {
+                const isActive = question._id == questionId;
+                return (
+                  <div
+                    key={question._id}
+                    onClick={() => {
+                      setShowQuestion(true);
+                      getSpecificQuestion(question._id);
+                      setQuestionId(question._id);
+                    }}
+                    className={`bg-white cursor-pointer mx-auto sm:mt-2 mt-3 border ${
+                      isActive ? "border-green-500" : ""
+                    } dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2`}
                   >
-                    {question.point}
-                    {" points"}
-                  </p>
-                </div>
-              ))}
+                    <div className="flex justify-around">
+                      {question.type === "Multiple Choice" ? (
+                        <TfiList className={iconQuestionStyle} />
+                      ) : null}
+                      {question.type === "Multiple Response" ? (
+                        <RiCheckboxMultipleFill className={iconQuestionStyle} />
+                      ) : null}
+                      {question.type === "True or False" ? (
+                        <RiCheckDoubleFill className={iconQuestionStyle} />
+                      ) : null}
+                      {question.type === "Short Answers" ? (
+                        <BiCommentMinus className={iconQuestionStyle} />
+                      ) : null}
+                      {question.type === "Numerical" ? (
+                        <BsCalculator className={iconQuestionStyle} />
+                      ) : null}
+                      {question.type === "Essay" ? (
+                        <LuFileText className={iconQuestionStyle} />
+                      ) : null}
+
+                      <p className="lg:-mt-1 capitalize text-center dark:text-white text-gray-800 lg:text-lg text-xs ">
+                        {question.title}
+                      </p>
+                      <MdDelete
+                        className="md:text-xl cursor-pointer dark:hover:text-red-400 hover:text-red-400 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                        onClick={() => {
+                          handleRemoveQuestion(question._id);
+                          // console.log(question._id);
+                        }}
+                      />
+                    </div>
+                    <div className="flex items-center flex-grow my-2">
+                      <div className="border-b border-gray-500 w-full"></div>
+                    </div>
+                    <p
+                      style={{ color: `${currentColor}` }}
+                      className="lg:text-lg text-xs"
+                    >
+                      {question.point}
+                      {" points"}
+                    </p>
+                  </div>
+                );
+              })}
             {/* End Of Question Container */}
           </div>
         </div>
