@@ -226,11 +226,6 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                 <div className="border-b border-solid border-slate-200  w-full"></div>
               </div>
               <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
-                {errorMessage && (
-                  <p className="text-red-500 md:text-lg text-base  mt-5 mr-2">
-                    Please fill all the fields
-                  </p>
-                )}
                 <div>
                   <button
                     className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
@@ -239,7 +234,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     Cancel
                   </button>
                   <button
-                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
+                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold capitalize text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
                     type="button"
                     onClick={() => {
                       if (
@@ -262,6 +257,11 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     Submit
                   </button>
                 </div>
+                {errorMessage && (
+                  <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 mr-2">
+                    Please fill all the fields
+                  </p>
+                )}
               </div>
             </div>
           </div>
