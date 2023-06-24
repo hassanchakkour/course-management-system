@@ -513,11 +513,11 @@ const Questions = () => {
                           {"."}
                         </p>
                       </div>
-                      <div className="flex items-center flex-grow ">
+                      <div className="flex items-center mt-2 flex-grow ">
                         <div className="border-b border-gray-500 w-full"></div>
                       </div>
 
-                      <div className="flex -mt-2">
+                      <div className="flex">
                         <p className="md-text-lg text-base">Options: </p>
                         {questionOptions &&
                           questionOptions.map((option, index) => {
@@ -530,7 +530,7 @@ const Questions = () => {
                             );
                           })}
                       </div>
-                      <div className="flex mt-2 mb-2 ">
+                      <div className="flex mt-2 ">
                         <p className=" md-text-lg text-base">Answer: </p>
                         <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
                           {singleData.correctOption}

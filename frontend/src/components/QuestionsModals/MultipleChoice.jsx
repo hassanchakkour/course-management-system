@@ -8,12 +8,13 @@ import { Tooltip } from "@mui/material";
 const MultipleChoice = ({ setShowModal, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [questionContent, setContentContent] = useState("");
+  const [questionContent, setQuestionContent] = useState("");
   const [point, setPoint] = useState(0);
   const [options, setOptions] = useState([]);
   const [correctOption, setCorrectOption] = useState("");
 
   const [showAddOption, setShowAddOption] = useState(false);
+  const [errorOptionMessage, setErrorOptionMessage] = useState(false);
 
   const handleAddOption = () => {
     const option = {
@@ -21,6 +22,15 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
       id: new Date().getTime(),
       content: content,
     };
+
+    if (option.content == "") {
+      setErrorOptionMessage(true);
+      setShowAddOption(false);
+      setTimeout(() => {
+        setErrorOptionMessage(false);
+      }, 2000);
+      return;
+    }
 
     const updatedOptions = [...options, option];
     setOptions(updatedOptions);
@@ -121,7 +131,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   <textarea
                     id="descriptionInput"
                     required
-                    onChange={(e) => setContentContent(e.target.value)}
+                    onChange={(e) => setQuestionContent(e.target.value)}
                     placeholder="Enter description"
                     className="px-3 py-3 mt-1 placeholder-slate-400 text-white  relative bg-transparent rounded text-sm border-1 border-white shadow outline-none focus:outline-none  w-full"
                   ></textarea>
@@ -160,6 +170,11 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     placeholder="Enter option"
                     className="w-full px-3 mb-3 mt-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none pr-10"
                   />
+                  {errorOptionMessage && (
+                    <p className="capitalize text-red-500 text-base">
+                      Please enter the option before add
+                    </p>
+                  )}
 
                   {showAddOption && (
                     <div className="flex flex-wrap mt-2">
@@ -179,12 +194,12 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                       ))}
                     </div>
                   )}
-                  <Tooltip title="Add Option" arrow>
+                  <Tooltip title="Add Option" arrow placement="left">
                     <button
-                      className="absolute right-0 top-3 text-white font-bold text-2xl px-6 py-3 rounded dark:hover:text-emerald-400 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="absolute top-6 right-3 flex justify-center align-middle text-white font-bold text-2xl  rounded  shadow hover:shadow-xl outline-none focus:outline-none  ease-linear transition-all duration-150"
                       onClick={handleAddOption}
                     >
-                      <MdLibraryAdd className="-mr-5" />
+                      <MdLibraryAdd className="dark:hover:text-emerald-400" />
                     </button>
                   </Tooltip>
                 </div>
