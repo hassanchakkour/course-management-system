@@ -79,7 +79,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
     <>
       <>
         <div className="justify-center items-center flex overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
-          <div className="relative h-4/5 md:mt-0 mt-12 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
+          <div className="relative h-4/5 md:mt-0 mt-12 lg:mt-16 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
             {/*content*/}
             <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
               {/*header*/}
@@ -92,15 +92,9 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     multiple choice
                   </span>
                 </div>
-                <button
-                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-2"
-                  onClick={() => setShowModal(false)}
-                >
-                  <MdCancel />
-                </button>
               </div>
               {/*body*/}
-              <div className="relative p-6 flex-auto">
+              <div className="relative p-6 -mt-5 flex-auto">
                 <label
                   htmlFor="titleInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
@@ -149,10 +143,18 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     className="px-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none  w-full"
                   />
                 </div>
-                <div className="relative">
+
+                <label
+                  htmlFor="optionInput"
+                  className="my-4 text-slate-400 text-lg leading-relaxed"
+                >
+                  Options
+                </label>
+                <div className="relative -mt-2">
                   <input
                     type="text"
                     required
+                    id="optionInput"
                     onChange={(e) => setContent(e.target.value)}
                     value={content}
                     placeholder="Enter option"
@@ -218,15 +220,26 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     ))}
                   </select>
                 </div>
+              </div>
+              {/* footer */}
+              <div className="flex items-center flex-grow -mt-5 ">
+                <div className="border-b border-solid border-slate-200  w-full"></div>
+              </div>
+              <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
                 {errorMessage && (
-                  <p className="text-red-500 md:text-lg text-base  mt-2">
+                  <p className="text-red-500 md:text-lg text-base  mt-5 mr-2">
                     Please fill all the fields
                   </p>
                 )}
-
-                <div className="flex flex-col">
+                <div>
                   <button
-                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
                     type="button"
                     onClick={() => {
                       if (
@@ -239,7 +252,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                         setErrorMessage(true);
                         setTimeout(() => {
                           setErrorMessage(false);
-                        }, 3000);
+                        }, 2000);
                       } else {
                         handleData();
                         setShowModal(false);
