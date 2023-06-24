@@ -36,6 +36,7 @@ const Questions = () => {
   const [showMutlipleResponse, setShowMutlipleResponse] = useState(false);
 
   const [questionId, setQuestionId] = useState("");
+  const [questionOptions, setQuestionOptions] = useState("");
 
   const links = [
     {
@@ -95,7 +96,7 @@ const Questions = () => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionPoints, setQuestionPoints] = useState("");
 
-  const [showOptions, setShowOptions] = useState(false);
+  // const [showOptions, setShowOptions] = useState(false);
 
   const inputElement = useRef();
   const inputPoints = useRef();
@@ -346,21 +347,13 @@ const Questions = () => {
                 </div>
               )}
 
-              <Tooltip title={"Show Options"} placement="left">
-                <div>
-                  <MdAddCircle
-                    onClick={() => setShowOptions(true)}
-                    className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
-                  />
-                </div>
-              </Tooltip>
-
-              <Tooltip title={"Edit Points"} placement="top">
+              <Tooltip title={"Edit Points"} placement="left">
                 <div>
                   <MdOutlineModeEdit
                     onClick={() => {
                       inputPoints.current.focus();
                       setDisabledInputNum(false);
+                      setQuestionPoints(singleData.point);
                     }}
                     onMouseEnter={() => {}}
                     className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
@@ -438,7 +431,7 @@ const Questions = () => {
                 )}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
+              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 xl:ml-32 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
                 <div className="flex">
                   <p className="text-lg">
                     {
@@ -453,11 +446,11 @@ const Questions = () => {
                             : questionTitle
                         }`}
                         onChange={handleInputChange}
-                        className="dark:bg-transparent  text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                        className="dark:bg-transparent capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
-                  <div className="flex  items-center flex-grow mx-2">
+                  <div className="flex md:-ml-8 -ml-12 items-center flex-grow mx-2">
                     <div className="border-b border-gray-500 w-full"></div>
                   </div>
                   <Tooltip title={"Edit Title"} placement="right">
@@ -475,23 +468,26 @@ const Questions = () => {
                 </div>
 
                 {/* // Container To Display The Questions */}
-                <div className="flex justify-center  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 overflow-y-scroll ">
+                <div className="flex   h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 ">
                   {!showQuestion && (
-                    <p className="capitalize self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30">
-                      please select the type of your question
+                    <p
+                      style={{ marginInlineStart: "25%" }}
+                      className="capitalize ml-8 self-center dark:text-white text-gray-800 sm:text-lg text-sm opacity-30"
+                    >
+                      please select your question
                     </p>
                   )}
                   {showQuestion && singleData && (
-                    <div className="flex p-4 mt-6 my-auto flex-col justify-start align-middle border-0 rounded-md shadow-lg bg-gradient-to-b from-[#242830] to-[#33373E] outline-none max-w-lg h-5/6 w-11/12">
+                    <div className="flex p-4 mt-6 my-auto flex-col justify-start align-middle border-0 rounded-md  bg-transparent outline-none  h-5/6 w-full">
                       {/* Title and Point Container */}
-                      <div className="flex justify-between  capitalize text-sm text-white">
+                      <div className="flex justify-between -mt-6 capitalize  text-sm text-white">
                         <p
                           style={{ color: `${currentColor}` }}
-                          className="text-sm  font-semibold uppercase "
+                          className="text-sm md:text-base lg:text-lg font-semibold uppercase "
                         >
                           {singleData.type}
                         </p>
-                        <div>
+                        <div className="-mt-1">
                           <input
                             type="number"
                             disabled={disabledInputNum}
@@ -503,33 +499,45 @@ const Questions = () => {
                             }`}
                             // value={singleData.point}
                             onChange={handlePointsChange}
-                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-10 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-10 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
                           />
-                          <span className="-ml-1">points</span>
+                          <span className="-ml-1 md:text-sm lg:text-base xl:text-lg">
+                            points
+                          </span>
                         </div>
                       </div>
-                      <div className="flex mt-6">
-                        <BsQuestionOctagonFill />
-                        <p className="ml-2 text-sm">
+                      <div className="flex mt-2  ">
+                        <BsQuestionOctagonFill className="md:mt-1 text-red-400" />
+                        <p className="ml-2 md:text-base text-sm">
                           {singleData.questionContent}
                           {"."}
                         </p>
                       </div>
-                      <div className="flex items-center flex-grow -mt-3">
+                      <div className="flex items-center flex-grow ">
                         <div className="border-b border-gray-500 w-full"></div>
                       </div>
-                      <div className="flex mb-2 -mt-5">
-                        <p className="text-green-400">Answer: </p>
-                        <span className="ml-2 text-white">
+
+                      <div className="flex -mt-2">
+                        <p className="md-text-lg text-base">Options: </p>
+                        {questionOptions &&
+                          questionOptions.map((option, index) => {
+                            return (
+                              <div key={index}>
+                                <li className="list-outside mx-2 mt-0.5 md-text-base text-sm">
+                                  {option}
+                                </li>
+                              </div>
+                            );
+                          })}
+                      </div>
+                      <div className="flex mt-2 mb-2 ">
+                        <p className=" md-text-lg text-base">Answer: </p>
+                        <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
                           {singleData.correctOption}
                         </span>
                       </div>
                     </div>
                   )}
-                  {showOptions &&
-                    singleData(
-                      <div className="flex p-4 mt-6 my-auto flex-col justify-start align-middle border-0 rounded-md shadow-lg bg-gradient-to-b from-[#242830] to-[#33373E] outline-none max-w-lg h-5/6 w-11/12"></div>
-                    )}
                 </div>
               </div>
             </div>
@@ -545,8 +553,11 @@ const Questions = () => {
                     key={question._id}
                     onClick={() => {
                       setShowQuestion(true);
+                      console.log(question);
                       getSpecificQuestion(question._id);
                       setQuestionId(question._id);
+                      setQuestionOptions(question.options);
+                      console.log(questionOptions);
                     }}
                     className={`bg-white cursor-pointer mx-auto sm:mt-2 mt-3 border ${
                       isActive ? "border-green-500" : ""
