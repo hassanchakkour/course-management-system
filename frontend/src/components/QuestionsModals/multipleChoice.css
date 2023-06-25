@@ -1,0 +1,7 @@
+.ql-toolbar .ql-picker.ql-color .ql-picker-item {
+  color: white;
+}
+
+.ql-toolbar .ql-picker.ql-background .ql-picker-item {
+  color: red;
+}
