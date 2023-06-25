@@ -172,7 +172,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   />
                   {errorOptionMessage && (
                     <p className="capitalize text-red-500 text-base">
-                      Please enter the option before add
+                      Please enter option before add
                     </p>
                   )}
 
