@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -28,7 +28,9 @@ const Media = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { title, description, file } = values;
+      //  const [editorContent, setEditorContent] = useState(description);
+      const { title,description, file } = values;
+     
       const formData = {
       title:title,
       description:description,
@@ -51,7 +53,7 @@ const Media = () => {
         );
 
         console.log("Resource created:", response.data);
-
+        
         formik.resetForm();
       } catch (error) {
         // console.error("Error creating resource:", error);
@@ -126,7 +128,7 @@ const Media = () => {
           </div>
           <div style={{ width: '100%',marginTop:'0px' }}>
             <input
-              className={`w-full bg-gray-800 text-white border border-gray-500 rounded-lg px-3 py-2 ${formik.touched.title && formik.errors.title ? 'border-red-500' : ''}`}
+              className={`w-full bg-gray-800 text-gray  border text-sm border-white rounded-lg px-3 py-2 ${formik.touched.title && formik.errors.title ? 'border-red-500' : ''}`}
               variant="outlined"
               id="outlined-error"
               fullWidth
@@ -147,38 +149,25 @@ const Media = () => {
                 <div style={{ width: '30%', marginRight: '10px' }}>
                  <h5 style={{ color: 'gray' }}>Description</h5>
                      </div>
-              <div style={{ width: '100%' }}>
-                
-              <ReactQuill
-           label="Media Description"
-           value={formik.values.description}
-           onChange={formik.handleChange}
-           onBlur={formik.handleBlur}
-          modules={modules}
-           formats={formats}
-            className="block mb-1 text-white"
-             style={{
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-              color: 'whitesmoke',
-             width: '51w0%',
-               height: '50%',
-               maxWidth:'100%'
-                     }}
-                     render={() => (
-                  <textarea
+              
+              <div className="w-full">
+                 <ReactQuill
+                 className="bg-gray-800 text-gray text-sm border border-gray rounded-lg overflow-hidden"
+                label="Media Description"
                 value={formik.values.description}
-                  onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                     className="block mb-1 text-white bg-black rounded-md border-gray-300 px-3 py-2 resize-none"
-                    label="Media"
-                     rows={6}
-                    variant="outlined"
-                    height="50%"
-                       fullWidth
-                      style={{  maxHeight: '600px', overflowY: 'auto', color: 'whitesmoke' }}
-                        />
-                        )}
-                          />
+                 onChange={(value) => formik.setFieldValue("description", value)}
+                    onBlur={() => {
+                    formik.setFieldTouched('description', true);
+                         }}
+                    modules={modules}
+                    formats={formats}
+                    
+                    style={{ height: '200px' }}
+                  
+  
+
+/>
+
 
 {/* <ErrorMessage name="description" component="div" style={{ color: 'red' }} /> */}
 <p className="text-right">

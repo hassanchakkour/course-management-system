@@ -34,6 +34,7 @@ const questionSchema = new Schema(
     },
     options: [String],
     correctOption: String,
+    correctResponse:[String],
   },
 
   {

@@ -167,14 +167,14 @@ const Quiz = () => {
   const remainingCharacters =  instructions.replace(/(<([^>]+)>)/gi, '').trim().length;
   const rest=3000-remainingCharacters;
 
-  // const handleTextChange1 = (value) => {
-  //   if (value.replace(/(<([^>]+)>)/gi, '').trim().length <= 3000) {
-  //     setDescription(value);
-  //   }
-  // };
+  const handleTextChange1 = (value) => {
+    if (value.replace(/(<([^>]+)>)/gi, '').trim().length <= 3000) {
+      setDescription(value);
+    }
+  };
 
-  // const remainingCharacters1 =  description.replace(/(<([^>]+)>)/gi, '').trim().length;
-  // const rest1=3000-remainingCharacters1;
+  const remainingCharacters1 =  description.replace(/(<([^>]+)>)/gi, '').trim().length;
+  const rest1=3000-remainingCharacters1;
 
 
  
@@ -221,12 +221,10 @@ const Quiz = () => {
           }}
         >
         <div style={{ display: 'flex' }}>
-  <div style={{ width: '30%', marginRight: '10px',marginBottom:'30px', display: 'flex',  alignItems: 'flex-start'  }}>
-    <MdQuiz style={{ marginRight: '5px' }} />
-    <h1 class="text-2xl text-white font-bold m-0">
-  Quiz
-</h1>
-  </div>
+        <div className="w-30 mr-10 mb-10 flex items-center">
+  <MdQuiz className="mr-2" />
+  <h1 className="text-xl text-white font-bold m-0">Quiz</h1>
+</div>
 
 </div>
                
@@ -240,7 +238,7 @@ const Quiz = () => {
     </div>
     <div style={{ width: '100%' }}>
       <input
-      className={`w-full bg-gray-800 text-white border border-gray-500 rounded-lg px-3 py-2  'border-red-500' : ''}`}
+      className={`w-full bg-gray-800 text-white border border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
         variant="outlined"
         fullWidth
         value={title}
@@ -258,24 +256,25 @@ const Quiz = () => {
 
 
 <Box marginBottom="20px" color="gray">
-<div style={{ display: 'flex', alignItems: 'center' }}>
+<div style={{ display: 'flex', alignItems: 'flex-start' }}>
     <div style={{ width: '30%', marginRight: '10px' }}>
       <h5 style={{ color: 'white' }}>Description</h5>
     </div>
-  <div style={{ width: '100%', borderRadius:'20px' }}>
-   
-    
-        <input
-            className={`w-full bg-gray-800 text-white border border-gray-500 rounded-lg px-3 py-2  'border-red-500' : ''}`}
-             value={description}
-              required
-          multiline
-          rows={6}
-          onChange={(event) => setDescription(event.target.value)}
-          fullWidth
-        />
+    <div className="w-full">
+                 <ReactQuill
+                 className="bg-gray-800 text-gray text-sm border border-white rounded-lg overflow-hidden"
+               
+                      value={description}
+                      onChange={setDescription}
+                      required
+                        modules={modules}
+                        
+                        style={{ height: '200px' }}
+                        formats={formats}
+                  
+                                     />
         
-     {/* <p style={{ textAlign: 'right' }}>{remainingCharacters1}/{rest1}</p> */}
+     <p style={{ textAlign: 'right' }}>{remainingCharacters1}/{rest1}</p>
             </div>
                     </div>
               </Box>
@@ -285,29 +284,20 @@ const Quiz = () => {
         <div style={{ width: '30%', marginRight: '10px' }}>
           <h5 style={{ color: 'white' }}>Instructions</h5>
         </div>
-        <div style={{ width: '100%' }}>
+        <div className="w-full">
                  <ReactQuill
-                 className={` bg-gray-800 text-white border border-gray-500  `}
+                 className="bg-gray-800 text-gray text-sm border border-white rounded-lg overflow-hidden"
+               
                       value={instructions}
                       onChange={setInstructions}
                       required
                         modules={modules}
-                        height="300px"
+                        style={{ height: '200px' }}
+                       
                         formats={formats}
-                         render={({ editor }) => (
-                                  <TextField
-                                  
-                               label="Instructions"
-                                   multiline
-                                    rows={6}
-                                 variant="outlined"
-                                 fullWidth
-                                 height="400px"
-                                  onClick={editor.focus}
-                                
-                                    />
-                                     )}
+                  
                                      />
+                                     
                                       <p style={{ textAlign: 'right' }}>{remainingCharacters}/{rest}</p> 
                                     </div>
                                     </div>
@@ -320,7 +310,7 @@ const Quiz = () => {
     </div>
   <div style={{ width: '100%' }}>
     <input
-    className={`w-full bg-gray-800 text-white border border-gray-500 rounded-lg px-3 py-2  'border-red-500' : ''}`}
+    className={`w-full bg-gray-800 text-white border text-sm  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
       required
       fullWidth
@@ -341,7 +331,7 @@ const Quiz = () => {
     </div>
   <div style={{ width: '100%',color: 'whitesmoke' }}>
     <input
-    className={`w-full bg-gray-800 text-white border border-gray-500 rounded-lg px-3 py-2  'border-red-500' : ''}`}
+    className={`w-full bg-gray-800 text-white border  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
      required
       fullWidth
@@ -369,7 +359,7 @@ const Quiz = () => {
                              </div>
                  <div style={{ width: '100%' }}>
                   <input
-                  className={`w-full bg-gray-800 border border-gray-500  text-white rounded-lg px-3 py-2 'border-red-500' : ''}`}
+                  className={`w-full bg-gray-800 border border-white  text-white rounded-lg px-3 py-2 'border-red-500' : ''}`}
                   variant="outlined"
                     type="number"
                     required
@@ -382,34 +372,39 @@ const Quiz = () => {
                             </div>
                             </div>
                             </Box>
-                            <Box  marginBottom="20px" >
+                            <Box  marginBottom="20px"  maxWidth='100%' >
                          <div style={{ display: 'flex',  alignItems: 'flex-start'  }}>
                          <div style={{ width: '30%', marginRight: '10px' }}>
                            <h5 style={{ color: 'white' }}>Load Quiz</h5>
                              </div>
+                             <div style={{ width: '80%' }}>
                                  <Select
-                           className="mr-5 w-[75%]  bg-gray-800 border border-gray-800 rounded-lg ml-1"
+                           className="mr-8 w-[90%]  bg-gray-800  border-gray-800 rounded-lg ml-1"
      
                            value={selectedQuiz || ""}
                            onChange={handleQuizChange}
                                     sx={{
                              marginBottom: "10px",
-        borderRadius: "10px",
-        boxShadow: "1px 4px 4px rgba(0, 0, 0, 0.2)",
-        height: "40px",
-        border: "1px solid white",
-      }}
-    >
-       {quizzes && quizzes.map(quiz => (
-      <MenuItem key={quiz._id} value={quiz._id}>
-        {quiz.title}
-      </MenuItem>
-    ))}
-    </Select>
-    
-    <button type="button" className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">
-      Create
-    </button>
+                             maxWidth:'100%',
+                              borderRadius: "10px",
+                              borderColor: "gray",
+                             boxShadow: "1px 4px 4px rgba(0, 0, 0, 0.2)",
+                              height: "40px",
+                             border: "1px solid white",
+                               }}
+                                >
+                                    {quizzes && quizzes.map(quiz => (
+                                   <MenuItem key={quiz._id} value={quiz._id}>
+                                     {quiz.title}
+                                     </MenuItem>
+                                       ))}
+                                       </Select>
+                                       </div>
+                                       <button type="button" className="bg-blue-500 text-white  text-xs text-inline-block py-1 px-21 rounded-full hover:bg-blue-600 inline-block">
+  Create New Quiz
+</button>
+
+   
   </div>
 </Box>
 

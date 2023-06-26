@@ -5,7 +5,7 @@ import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
-const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
+const TrueOrFalse = ({  setShowTrueFalse }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [questionContent, setContentContent] = useState("");
@@ -44,7 +44,7 @@ const TrueOrFalse = ({  setShowTrueFalse, onSubmit }) => {
     
       correctOption,
     };
-    onSubmit(data);
+    // onSubmit(data);
   };
 
   // CSS styles
