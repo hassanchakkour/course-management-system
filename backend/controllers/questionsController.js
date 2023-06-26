@@ -80,15 +80,7 @@ const getQuestion = asyncHandler(async (req, res) => {
 
 // Update a question by ID for a specific TeacherID (user.id)
 const putQuestion = asyncHandler(async (req, res) => {
-  const {
-    activityId,
-    questionContent,
-    options,
-    correctOption,
-    type,
-    title,
-    point,
-  } = req.body;
+  const { activityId, title, point, correctOption } = req.body;
 
   const question = await Question.findOne({ _id: req.params.id });
 
@@ -98,10 +90,7 @@ const putQuestion = asyncHandler(async (req, res) => {
 
   Object.assign(question, {
     title: title || question.title,
-    type: type || question.type,
     point: point || question.point,
-    questionContent: questionContent || question.questionContent,
-    options: options || question.options,
     activityId: activityId || question.activityId,
     correctOption: correctOption || question.correctOption,
   });

@@ -8,12 +8,13 @@ import { Tooltip } from "@mui/material";
 const MultipleChoice = ({ setShowModal, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [questionContent, setContentContent] = useState("");
+  const [questionContent, setQuestionContent] = useState("");
   const [point, setPoint] = useState(0);
   const [options, setOptions] = useState([]);
   const [correctOption, setCorrectOption] = useState("");
 
   const [showAddOption, setShowAddOption] = useState(false);
+  const [errorOptionMessage, setErrorOptionMessage] = useState(false);
 
   const handleAddOption = () => {
     const option = {
@@ -21,6 +22,15 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
       id: new Date().getTime(),
       content: content,
     };
+
+    if (option.content == "") {
+      setErrorOptionMessage(true);
+      setShowAddOption(false);
+      setTimeout(() => {
+        setErrorOptionMessage(false);
+      }, 2000);
+      return;
+    }
 
     const updatedOptions = [...options, option];
     setOptions(updatedOptions);
@@ -79,7 +89,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
     <>
       <>
         <div className="justify-center items-center flex overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
-          <div className="relative h-4/5 md:mt-0 mt-12 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
+          <div className="relative h-4/5 md:mt-0 mt-12 lg:mt-16 my-6 mx-auto w-3/5 max-w-3xl min-w-min scrollbar-hide overflow-y-scroll">
             {/*content*/}
             <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
               {/*header*/}
@@ -92,15 +102,9 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     multiple choice
                   </span>
                 </div>
-                <button
-                  className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-3xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150 absolute top-3 right-2"
-                  onClick={() => setShowModal(false)}
-                >
-                  <MdCancel />
-                </button>
               </div>
               {/*body*/}
-              <div className="relative p-6 flex-auto">
+              <div className="relative p-6 -mt-5 flex-auto">
                 <label
                   htmlFor="titleInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
@@ -127,7 +131,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   <textarea
                     id="descriptionInput"
                     required
-                    onChange={(e) => setContentContent(e.target.value)}
+                    onChange={(e) => setQuestionContent(e.target.value)}
                     placeholder="Enter description"
                     className="px-3 py-3 mt-1 placeholder-slate-400 text-white  relative bg-transparent rounded text-sm border-1 border-white shadow outline-none focus:outline-none  w-full"
                   ></textarea>
@@ -149,15 +153,28 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     className="px-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none  w-full"
                   />
                 </div>
-                <div className="relative">
+
+                <label
+                  htmlFor="optionInput"
+                  className="my-4 text-slate-400 text-lg leading-relaxed"
+                >
+                  Options
+                </label>
+                <div className="relative -mt-2">
                   <input
                     type="text"
                     required
+                    id="optionInput"
                     onChange={(e) => setContent(e.target.value)}
                     value={content}
                     placeholder="Enter option"
                     className="w-full px-3 mb-3 mt-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none pr-10"
                   />
+                  {errorOptionMessage && (
+                    <p className="capitalize text-red-500 text-base">
+                      Please enter the option before add
+                    </p>
+                  )}
 
                   {showAddOption && (
                     <div className="flex flex-wrap mt-2">
@@ -177,12 +194,12 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                       ))}
                     </div>
                   )}
-                  <Tooltip title="Add Option" arrow>
+                  <Tooltip title="Add Option" arrow placement="left">
                     <button
-                      className="absolute right-0 top-3 text-white font-bold text-2xl px-6 py-3 rounded dark:hover:text-emerald-400 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="absolute top-6 right-3 flex justify-center align-middle text-white font-bold text-2xl  rounded  shadow hover:shadow-xl outline-none focus:outline-none  ease-linear transition-all duration-150"
                       onClick={handleAddOption}
                     >
-                      <MdLibraryAdd className="-mr-5" />
+                      <MdLibraryAdd className="dark:hover:text-emerald-400" />
                     </button>
                   </Tooltip>
                 </div>
@@ -218,15 +235,21 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     ))}
                   </select>
                 </div>
-                {errorMessage && (
-                  <p className="text-red-500 md:text-lg text-base  mt-2">
-                    Please fill all the fields
-                  </p>
-                )}
-
-                <div className="flex flex-col">
+              </div>
+              {/* footer */}
+              <div className="flex items-center flex-grow -mt-5 ">
+                <div className="border-b border-solid border-slate-200  w-full"></div>
+              </div>
+              <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
+                <div>
                   <button
-                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold capitalize text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
                     type="button"
                     onClick={() => {
                       if (
@@ -239,7 +262,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                         setErrorMessage(true);
                         setTimeout(() => {
                           setErrorMessage(false);
-                        }, 3000);
+                        }, 2000);
                       } else {
                         handleData();
                         setShowModal(false);
@@ -249,6 +272,11 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     Submit
                   </button>
                 </div>
+                {errorMessage && (
+                  <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 mr-2">
+                    Please fill all the fields
+                  </p>
+                )}
               </div>
             </div>
           </div>

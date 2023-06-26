@@ -65,7 +65,7 @@ const Navbar = () => {
   const userInfo = useSelector((state) => state.auth);
   console.log(userInfo);
   const course_Name = localStorage.getItem("course_name", course_name);
-  console.log(course_Name);
+  console.log("course_Name: ", course_Name);
 
   return (
     <div className="flex justify-between p-2  relative">
