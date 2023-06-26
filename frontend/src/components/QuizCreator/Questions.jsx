@@ -100,7 +100,7 @@ const Questions = () => {
   const [singleData, setSingleData] = useState([]);
   const [iconType, setIconType] = useState("");
 
-  const [disabledInput, setDisabledInput] = useState(true);
+  // const [disabledInput, setDisabledInput] = useState(true);
   const [disabledInputText, setDisabledInputText] = useState(true);
   const [disabledInputNum, setDisabledInputNum] = useState(true);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -176,6 +176,8 @@ const Questions = () => {
     try {
       const res = await axios.get(`http://localhost:5000/api/questions/${id}`);
       setSingleData(res.data);
+      // setQuestionTitle(singleData.title);
+      // setQuestionPoints(singleData.point);
     } catch (error) {
       console.log(error);
     }
@@ -201,6 +203,7 @@ const Questions = () => {
       const res = await axios.delete(
         `http://localhost:5000/api/questions/delete/${id}`
       );
+      setSingleData([]);
     } catch (error) {
       console.log(error);
     } finally {
@@ -495,11 +498,11 @@ const Questions = () => {
                             : questionTitle
                         }`}
                         onChange={handleInputChange}
-                        className="dark:bg-transparent capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                        className="dark:bg-transparent mr-4 capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
-                  <div className="flex md:-ml-8 -ml-12 items-center flex-grow mx-2">
+                  <div className="flex md:-ml-6 -ml-10 items-center flex-grow mx-2">
                     <div className="border-b border-gray-500 w-full"></div>
                   </div>
                   <Tooltip title={"Edit Title"} placement="right">
@@ -548,7 +551,7 @@ const Questions = () => {
                             }`}
                             // value={singleData.point}
                             onChange={handlePointsChange}
-                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-10 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
+                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-12 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
                           />
                           <span className="-ml-1 md:text-sm lg:text-base xl:text-lg">
                             points
@@ -606,6 +609,8 @@ const Questions = () => {
                       getSpecificQuestion(question._id);
                       setQuestionId(question._id);
                       setQuestionOptions(question.options);
+                      setDisabledInputNum(true);
+                      setDisabledInputText(true);
                       console.log(questionOptions);
                     }}
                     className={`bg-white cursor-pointer mx-auto sm:mt-2 mt-3 border ${
@@ -639,6 +644,8 @@ const Questions = () => {
                         className="md:text-xl cursor-pointer dark:hover:text-red-400 hover:text-red-400 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
                         onClick={() => {
                           handleRemoveQuestion(question._id);
+                          // setDisabledInputText(false);
+                          // setQuestionTitle("Question");
                           // console.log(question._id);
                         }}
                       />

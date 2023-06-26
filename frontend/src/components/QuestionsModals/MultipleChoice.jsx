@@ -4,6 +4,8 @@ import { MdLibraryAdd } from "react-icons/md";
 import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 const MultipleChoice = ({ setShowModal, onSubmit }) => {
   const [title, setTitle] = useState("");
@@ -172,7 +174,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                   />
                   {errorOptionMessage && (
                     <p className="capitalize text-red-500 text-base">
-                      Please enter the option before add
+                      Please enter option before add
                     </p>
                   )}
 
