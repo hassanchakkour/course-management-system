@@ -15,6 +15,7 @@ const postQuestion = asyncHandler(async (req, res) => {
     teacherId,
     point,
     correctOption,
+    correctResponse,
   } = req.body;
 
   if (!activityId) {
@@ -32,6 +33,7 @@ const postQuestion = asyncHandler(async (req, res) => {
     point,
     teacherId,
     correctOption,
+    correctResponse,
   });
 
   if (question) {

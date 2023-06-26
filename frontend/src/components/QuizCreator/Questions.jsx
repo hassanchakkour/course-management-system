@@ -7,7 +7,9 @@ import axios from "axios";
 import MultipleChoice from "../QuestionsModals/MultipleChoice";
 import TrueOrFalse from "../QuestionsModals/TrueOrFalse";
 import MultipleResponse from "../QuestionsModals/MultipleResponse";
-
+import ShortAnswers from "../QuestionsModals/ShortAnswers";
+import QuestionEassy from "../QuestionsModals/QuestionEssay";
+import Numerical from "../QuestionsModals/Numerical";
 import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
@@ -24,19 +26,27 @@ import { LuFileText } from "react-icons/lu";
 import { BsQuestionOctagonFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 
+
+
 const Questions = () => {
   const { currentColor, activityID } = useStateContext();
   const [showModal, setShowModal] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
-
   const [successMessage, setSuccessMessage] = useState("");
 
   // walaa
   const [showTrueFalse, setShowTrueFalse] = useState(false);
-  const [showMutlipleResponse, setShowMutlipleResponse] = useState(false);
+// <<<<<<< walaa
+//   const [showMutlipleResponse, setShowMutlipleResponse]=useState(false);
+//   const [showShortAnswer,setShowShortAnswer]=useState(false);
+//   const [showNumerical,setShownumerical]=useState(false);
+//   const [showEassy, setShowEassy]=useState(false);
+// =======
+//   const [showMutlipleResponse, setShowMutlipleResponse] = useState(false);
 
-  const [questionId, setQuestionId] = useState("");
-  const [questionOptions, setQuestionOptions] = useState("");
+//   const [questionId, setQuestionId] = useState("");
+//   const [questionOptions, setQuestionOptions] = useState("");
+// >>>>>>> master
 
   const links = [
     {
@@ -404,6 +414,23 @@ const Questions = () => {
                               ? setShowMutlipleResponse(true)
                               : setShowMutlipleResponse(false);
                           }
+                          {
+                            item.title == "Short Answers"
+                              ? setShowShortAnswer(true)
+                              : setShowShortAnswer(false);
+                          }
+                          
+                          {
+                            item.title == "Numerical"
+                              ? setShownumerical(true)
+                              : setShownumerical(false);
+                          }
+                          {
+                            item.title == "Question Eassy"
+                              ? setShowEassyy(true)
+                              : setShowEassy(false);
+                          }
+                          
                         }}
                       >
                         {item.icon}
@@ -429,6 +456,28 @@ const Questions = () => {
                     // onSubmit={addMultipleChoice}
                   />
                 )}
+//<<<<<<< walaa
+                 {showShortAnswer && (
+                  <ShortAnswers
+                  setShowShortAnswer={setShowShortAnswer}
+                    // onSubmit={addMultipleChoice}
+                  />
+                )}
+                {showNumerical && (
+                  <Numerical
+                  setShownumerical={setShownumerical}
+                    // onSubmit={addMultipleChoice}
+                  />
+                )}
+                 {showEassy && (
+                  <QuestionEassy
+                  setShowEassy={ setShowEassy}
+                    // onSubmit={addMultipleChoice}
+                  />
+                )}
+               
+//=======
+//>>>>>>> master
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 xl:ml-32 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
