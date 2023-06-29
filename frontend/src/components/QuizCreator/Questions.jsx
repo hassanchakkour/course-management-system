@@ -35,7 +35,7 @@ const Questions = () => {
 
   const [showTrueFalse, setShowTrueFalse] = useState(false);
 
-  //   const [showMutlipleResponse, setShowMutlipleResponse]=useState(false);
+  const [showMutlipleResponse, setShowMultipleResponse] = useState(false);
   //   const [showShortAnswer,setShowShortAnswer]=useState(false);
   //   const [showNumerical,setShownumerical]=useState(false);
   //   const [showEassy, setShowEassy]=useState(false);
@@ -287,6 +287,46 @@ const Questions = () => {
     };
     submit();
   };
+  // *********** Add Multiple Response ************
+  // const addMultipleResponse = (data) => {
+  //   console.log("This is from child", data);
+  //   let questionOption = [];
+
+  //   for (let i = 0; i < data.options.length; i++) {
+  //     questionOption.push(data.options[i].content);
+  //   }
+
+  //   console.log(data.title);
+  //   console.log(data.questionContent);
+  //   console.log(data.point);
+  //   console.log(data.correctOption);
+
+  //   const submit = async () => {
+  //     let sendData = {
+  //       activityId: activityId,
+  //       questionContent: data.questionContent,
+  //       type: iconType,
+  //       point: data.point,
+  //       title: data.title,
+  //       correctOption: data.correctOption,
+  //       options: questionOption,
+  //     };
+  //     try {
+  //       const res = await axios.post(
+  //         "http://localhost:5000/api/questions",
+  //         sendData
+  //       );
+  //       console.log(res.data);
+  //       setSuccessMessage("Question Created Successfully");
+  //       setTimeout(() => setSuccessMessage(""), 2500);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       await getQuestionData();
+  //     }
+  //   };
+  //   submit();
+  // };
 
   return (
     <>
@@ -444,11 +484,11 @@ const Questions = () => {
                               ? setShowTrueFalse(true)
                               : setShowTrueFalse(false);
                           }
-                          // {
-                          //   item.title == "Multiple Response"
-                          //     ? setShowMutlipleResponse(true)
-                          //     : setShowMutlipleResponse(false);
-                          // }
+                          {
+                            item.title == "Multiple Response"
+                              ? setShowMultipleResponse(true)
+                              : setShowMultipleResponse(false);
+                          }
                           // {
                           //   item.title == "Short Answers"
                           //     ? setShowShortAnswer(true)
@@ -484,16 +524,16 @@ const Questions = () => {
                     setShowTrueFalse={setShowTrueFalse}
                     iconType={iconType}
                     onSubmit={addTrueOrFalse}
-                    // onSubmit={addMultipleChoice}
                   />
                 )}
-                {/* {showMutlipleResponse && (
+                {showMutlipleResponse && (
                   <MultipleResponse
-                    setShowMutlipleResponse={setShowMutlipleResponse}
-                    // onSubmit={addMultipleChoice}
+                    setShowMultipleResponse={setShowMultipleResponse}
+                    iconType={iconType}
+                    // onSubmit={addMultipleResponse}
                   />
                 )}
-//<<<<<<< walaa
+                {/* //<<<<<<< walaa
                  {showShortAnswer && (
                   <ShortAnswers
                   setShowShortAnswer={setShowShortAnswer}
@@ -511,7 +551,7 @@ const Questions = () => {
                   setShowEassy={ setShowEassy}
                     // onSubmit={addMultipleChoice}
                   />
-                )} */}
+                )}  */}
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">

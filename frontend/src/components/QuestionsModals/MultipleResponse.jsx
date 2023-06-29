@@ -5,7 +5,7 @@ import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
-const MultipleResponse = ({ setShowMultipleResponse }) => {
+const MultipleResponse = ({ setShowMultipleResponse, iconType }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [questionContent, setContentContent] = useState("");
@@ -36,7 +36,7 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
-    const type = "Multiple Response";
+    const type = iconType;
     const data = {
       title,
       questionContent,
@@ -44,7 +44,7 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
       options,
       correctResponse,
     };
-    // onSubmit(data);
+    onSubmit(data);
   };
 
   const handleOptionChange = (e) => {
@@ -105,7 +105,7 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
                     Question:
                   </h3>
                   <span className="text-white text-2xl ml-3 mt-1 capitalize">
-                    multiple response
+                    {iconType}
                   </span>
                 </div>
                 <button
