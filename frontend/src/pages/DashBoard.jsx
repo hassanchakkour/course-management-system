@@ -7,6 +7,7 @@ import { FiEdit2 } from "react-icons/fi";
 import { Tooltip } from "@mui/material";
 
 import "react-calendar/dist/Calendar.css";
+import "./Dashboard.css";
 
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
@@ -16,17 +17,26 @@ const DashBoard = () => {
   const { currentColor, currentMode, courseID, setCourse_ID, course_Name } =
     useStateContext();
   const userInfo = useSelector((state) => state.auth);
+  const [numberOfCourses, setNumberOfCourses] = useState(0);
+  const [courses, setCourses] = useState([]);
 
   const carouselRef = useRef(null);
   const [isSliding, setIsSliding] = useState(false);
+  const slideWidth = 384; // Width of each slide
+  const slidesToScroll = 1; // Number of slides to scroll
 
   const handleSlideLeft = () => {
     if (!isSliding) {
       setIsSliding(true);
-      const scrollPosition = carouselRef.current.scrollLeft;
-      if (scrollPosition > 0) {
-        carouselRef.current.scrollLeft -= carouselRef.current.offsetWidth;
-      }
+      const currentScrollPosition = carouselRef.current.scrollLeft;
+      const newScrollPosition =
+        currentScrollPosition - slideWidth * slidesToScroll;
+
+      animateScroll(
+        carouselRef.current,
+        currentScrollPosition,
+        newScrollPosition
+      );
     }
   };
 
@@ -37,16 +47,48 @@ const DashBoard = () => {
   const handleSlideRight = () => {
     if (!isSliding) {
       setIsSliding(true);
-      carouselRef.current.scrollLeft += carouselRef.current.offsetWidth;
+      const currentScrollPosition = carouselRef.current.scrollLeft;
+      const newScrollPosition =
+        currentScrollPosition + slideWidth * slidesToScroll;
+
+      animateScroll(
+        carouselRef.current,
+        currentScrollPosition,
+        newScrollPosition
+      );
     }
   };
 
-  const handleTransitionEnd = () => {
-    setIsSliding(false);
+  const animateScroll = (element, start, end) => {
+    const duration = 200; // Duration of the scroll animation in milliseconds
+    const startTime = performance.now();
+
+    const scroll = (timestamp) => {
+      const currentTime = timestamp - startTime;
+      const progress = Math.min(currentTime / duration, 1); // Calculate the progress of the animation
+
+      const newPosition = start + (end - start) * progress;
+      element.scrollTo({
+        left: newPosition,
+        behavior: "smooth", // Use smooth scroll behavior
+      });
+
+      if (currentTime < duration) {
+        // Continue the animation until the duration is reached
+        requestAnimationFrame(scroll);
+      } else {
+        setIsSliding(false); // Animation completed, reset the sliding state
+      }
+    };
+
+    requestAnimationFrame(scroll);
   };
 
-  const [numberOfCourses, setNumberOfCourses] = useState(0);
-  const [courses, setCourses] = useState([]);
+  const handleTransitionEnd = () => {
+    setTimeout(() => {
+      setIsSliding(false);
+    }, 100); // Adjust the delay time as needed
+  };
 
   const getNumberOfCourses = async () => {
     try {
@@ -124,23 +166,30 @@ const DashBoard = () => {
           </p>
         )}
 
-        <div className="flex m-4 h-48 mt-12 ">
+        <div className="flex align-middle mx-auto m-4 h-48 mt-12 w-11/12 ">
           <BsChevronLeft
             className="opacity-20 mr-1 dark:text-white text-gray-900 cursor-pointer hover:opacity-80 mt-14 hover:transition ease-out duration-700"
             onClick={handleSlideLeft}
-            size={40}
+            size={50}
           />
           <div
-            className="flex gap-10  mx-1 overflow-x-scroll scrollbar-hide"
+            className="flex gap-10  mx-1 overflow-y-auto overflow-x-scroll scrollbar-hide"
             ref={carouselRef}
             onTransitionEnd={handleTransitionEnd}
-            style={{ scrollBehavior: "smooth" }}
+            style={{
+              scrollBehavior: "smooth",
+              WebkitOverflowScrolling: "touch",
+              scrollBehavior: "smooth",
+            }}
           >
             {courses.map((course) => (
               <div
                 key={course._id}
-                style={{ filter: `drop-shadow(0px 0px 3px ${currentColor})` }}
-                className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg w-96 h-40 p-4 rounded-3xl flex-none" // Remove h-40 class
+                style={{
+                  filter: `drop-shadow(0px 0px 3px ${currentColor})`,
+                  scrollSnapAlign: "start",
+                }}
+                className={`bg-white dark:text-gray-200 dark:bg-secondary-dark-bg w-96 h-40 p-4 rounded-3xl flex-none scroll-snap-align-start`}
               >
                 <p className="mb-3">
                   <span
@@ -183,7 +232,7 @@ const DashBoard = () => {
           <BsChevronRight
             className="opacity-20 dark:text-white text-gray-900 cursor-pointer hover:opacity-80 mt-14 hover:transition ease-out duration-700"
             onClick={handleSlideRight}
-            size={40}
+            size={50}
           />
         </div>
         <div
@@ -193,7 +242,7 @@ const DashBoard = () => {
           <Calendar
             className={`${
               currentMode === "Dark" ? "dark:bg-secondary-dark-bg" : "bg-white"
-            } rounded-3xl p-4 mx-auto max-[850px]:ml-[40%] w-6/12 ${
+            } rounded-3xl p-4 mx-auto ml-[30%] max-[850px]:ml-[40%] w-6/12 ${
               currentMode === "Dark" ? "text-white" : "text-gray-700"
             } border`}
             onChange={onChange}

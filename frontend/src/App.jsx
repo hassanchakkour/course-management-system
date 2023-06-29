@@ -84,7 +84,7 @@ const App = () => {
                     <Route path="/courseName" element={<Content />} />
 
                     <Route path="/quizCreator" element={<Questions />} />
-                    <Route path="/messages" element={<MultipleChoice />} />
+                    <Route path="/messages" element={<Questions />} />
                     <Route path="/question1" element={<TrueOrFalse />} />
                   </Routes>
                 </div>
