@@ -1,13 +1,15 @@
 import React from "react";
 import { useState } from "react";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { MdLibraryAdd } from "react-icons/md";
-import { TbSquareRoundedMinus } from "react-icons/tb";
-import { MdCancel } from "react-icons/md";
+import { BiMessageSquareMinus } from "react-icons/bi";
 import { Tooltip } from "@mui/material";
 // import ReactQuill from "react-quill";
 // import "react-quill/dist/quill.snow.css";
 
-const MultipleChoice = ({ setShowModal, onSubmit }) => {
+const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
+  const { currentColor } = useStateContext();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [questionContent, setQuestionContent] = useState("");
@@ -48,7 +50,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
-    const type = "Multiple Choice";
+    const type = { iconType };
     const data = {
       title,
       questionContent,
@@ -95,13 +97,19 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
             {/*content*/}
             <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
               {/*header*/}
-              <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+              <div
+                style={{ borderColor: currentColor }}
+                className={`flex  mb-3 items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t`}
+              >
                 <div className="flex">
                   <h3 className="text-3xl text-gray-300 font-semibold">
                     Question:
                   </h3>
-                  <span className="text-white text-2xl ml-3 mt-1 capitalize">
-                    multiple choice
+                  <span
+                    style={{ color: currentColor }}
+                    className="text-white text-2xl ml-3 mt-1 capitalize"
+                  >
+                    {iconType}
                   </span>
                 </div>
               </div>
@@ -183,13 +191,13 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                       {options.map((option, index) => (
                         <div
                           key={index}
-                          className="flex p-2 w-auto h-8 border-1 border-gray-200 rounded-lg mr-2"
+                          className="flex p-2 relative w-auto h-8 border-1 border-gray-200 rounded-lg mr-2"
                         >
-                          <p className="text-xs mr-1 text-[lightseagreen]">
+                          <p className="text-xs mr-4 text-[lightseagreen]">
                             {option.content}
                           </p>
-                          <TbSquareRoundedMinus
-                            className="text-red-500 font-semibold text-lg cursor-pointer  ml-1 -mt-0.5"
+                          <BiMessageSquareMinus
+                            className="text-red-500 absolute top-0.5 -right-0 font-semibold text-lg cursor-pointer  ml-1 -mt-0.5"
                             onClick={() => handleRemoveOption(option.id)}
                           />
                         </div>
@@ -217,7 +225,7 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
                     onChange={(e) => setCorrectOption(e.target.value)}
                     required
                     value={correctOption}
-                    className={`px-2 py-3 placeholder-slate-400 text-white relative rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full select-style`}
+                    className={`px-2 py-3 mb-3 placeholder-slate-400 text-white relative rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full select-style`}
                     style={selectStyle}
                   >
                     <option value="">Select an option</option>
@@ -240,13 +248,19 @@ const MultipleChoice = ({ setShowModal, onSubmit }) => {
               </div>
               {/* footer */}
               <div className="flex items-center flex-grow -mt-5 ">
-                <div className="border-b border-solid border-slate-200  w-full"></div>
+                <div
+                  style={{ borderColor: currentColor }}
+                  className={`border-b border-solid border-slate-200  w-full`}
+                ></div>
               </div>
               <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
                 <div>
                   <button
                     className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
-                    onClick={() => setShowModal(false)}
+                    onClick={() => {
+                      setShowModal(false);
+                      console.log(currentColor);
+                    }}
                   >
                     Cancel
                   </button>
