@@ -5,7 +5,7 @@ import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
-const MultipleResponse = ({ setShowMultipleResponse }) => {
+const MultipleResponse = ({ setShowMultipleResponse, iconType }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [questionContent, setContentContent] = useState("");
@@ -36,7 +36,7 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
-    const type = "Multiple Response";
+    const type = iconType;
     const data = {
       title,
       questionContent,
@@ -44,10 +44,8 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
       options,
       correctResponse,
     };
-    // onSubmit(data);
+    onSubmit(data);
   };
-
- 
 
   const handleOptionChange = (e) => {
     const selectedValues = Array.from(e.target.options)
@@ -83,13 +81,12 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
     setHoveredOption(null);
   };
 
-  
- 
-
   const handleCheckboxChange = (optionLabel) => {
     if (correctResponse.includes(optionLabel)) {
-        console.log(optionLabel)
-      setCorrectResponse(correctResponse.filter((label) => label !== optionLabel));
+      console.log(optionLabel);
+      setCorrectResponse(
+        correctResponse.filter((label) => label !== optionLabel)
+      );
     } else {
       setCorrectResponse([...correctResponse, optionLabel]);
     }
@@ -108,7 +105,7 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
                     Question:
                   </h3>
                   <span className="text-white text-2xl ml-3 mt-1 capitalize">
-                    multiple response
+                    {iconType}
                   </span>
                 </div>
                 <button
@@ -169,7 +166,7 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
                   />
                 </div>
                 <div className="relative">
-                {/* <label
+                  {/* <label
                   htmlFor="descriptionInput"
                   className="my-4 text-slate-400 text-lg leading-relaxed"
                 >
@@ -243,24 +240,25 @@ const MultipleResponse = ({ setShowMultipleResponse }) => {
                       </option>
                     ))}
                   </select> */}
-                    <div>
-                      {options.map((option) => (
+                  <div>
+                    {options.map((option) => (
                       <div key={option.id} className="flex items-center mb-2">
-                               <input
-                                type="checkbox"
-                                 id={`checkbox-${option.id}`}
-                                   value={option.label}
-                                   
-                                 
-                                     onChange={() => handleCheckboxChange(option.label)}
-                                     className="mr-2 h-4 w-4 placeholder-slate-400 text-white relative  rounded text-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                        />
-                                      <label htmlFor={`checkbox-${option.id}`} className="text-sm text-slate-400 dark:text-gray-300">
-                                       {option.content}
-                                     </label>
-                                      </div>
-                                                 ))}
-                                            </div>
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${option.id}`}
+                          value={option.label}
+                          onChange={() => handleCheckboxChange(option.label)}
+                          className="mr-2 h-4 w-4 placeholder-slate-400 text-white relative  rounded text-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        />
+                        <label
+                          htmlFor={`checkbox-${option.id}`}
+                          className="text-sm text-slate-400 dark:text-gray-300"
+                        >
+                          {option.content}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 {errorMessage && (
                   <p className="text-red-500 md:text-lg text-base  mt-2">

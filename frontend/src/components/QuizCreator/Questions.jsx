@@ -26,27 +26,22 @@ import { LuFileText } from "react-icons/lu";
 import { BsQuestionOctagonFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 
-
-
 const Questions = () => {
   const { currentColor, activityID } = useStateContext();
   const [showModal, setShowModal] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [deleteMessage, setDeleteMessage] = useState("");
 
-  // walaa
   const [showTrueFalse, setShowTrueFalse] = useState(false);
-// <<<<<<< walaa
-//   const [showMutlipleResponse, setShowMutlipleResponse]=useState(false);
-//   const [showShortAnswer,setShowShortAnswer]=useState(false);
-//   const [showNumerical,setShownumerical]=useState(false);
-//   const [showEassy, setShowEassy]=useState(false);
-// =======
-//   const [showMutlipleResponse, setShowMutlipleResponse] = useState(false);
 
-//   const [questionId, setQuestionId] = useState("");
-//   const [questionOptions, setQuestionOptions] = useState("");
-// >>>>>>> master
+  const [showMutlipleResponse, setShowMultipleResponse] = useState(false);
+  //   const [showShortAnswer,setShowShortAnswer]=useState(false);
+  //   const [showNumerical,setShownumerical]=useState(false);
+  //   const [showEassy, setShowEassy]=useState(false);
+
+  const [questionId, setQuestionId] = useState("");
+  const [questionOptions, setQuestionOptions] = useState("");
 
   const links = [
     {
@@ -100,13 +95,11 @@ const Questions = () => {
   const [singleData, setSingleData] = useState([]);
   const [iconType, setIconType] = useState("");
 
-  const [disabledInput, setDisabledInput] = useState(true);
+  // const [disabledInput, setDisabledInput] = useState(true);
   const [disabledInputText, setDisabledInputText] = useState(true);
   const [disabledInputNum, setDisabledInputNum] = useState(true);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionPoints, setQuestionPoints] = useState("");
-
-  // const [showOptions, setShowOptions] = useState(false);
 
   const inputElement = useRef();
   const inputPoints = useRef();
@@ -180,7 +173,6 @@ const Questions = () => {
       console.log(error);
     }
   };
-  console.log(singleData.point);
   const updateSpecificQuestion = async (id) => {
     try {
       const res = await axios.put(`http://localhost:5000/api/questions/${id}`, {
@@ -201,6 +193,9 @@ const Questions = () => {
       const res = await axios.delete(
         `http://localhost:5000/api/questions/delete/${id}`
       );
+      setSingleData([]);
+      setDeleteMessage("Question Deleted");
+      setTimeout(() => setDeleteMessage(""), 2500);
     } catch (error) {
       console.log(error);
     } finally {
@@ -211,14 +206,13 @@ const Questions = () => {
 
   useEffect(() => {
     getQuestionData();
-    // setDisabledInput(false);
-    // setDisabledInputNum(false);
   }, []);
 
   const iconQuestionStyle =
     "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
-  console.log(iconType);
+  // console.log(iconType);
 
+  // *********** Add Multiple Choice ************
   const addMultipleChoice = (data) => {
     console.log("This is from child", data);
     let questionOption = [];
@@ -236,7 +230,7 @@ const Questions = () => {
       let sendData = {
         activityId: activityId,
         questionContent: data.questionContent,
-        type: "Multiple Choice",
+        type: iconType,
         point: data.point,
         title: data.title,
         correctOption: data.correctOption,
@@ -249,7 +243,7 @@ const Questions = () => {
         );
         console.log(res.data);
         setSuccessMessage("Question Created Successfully");
-        setTimeout(() => setSuccessMessage(""), 3000);
+        setTimeout(() => setSuccessMessage(""), 2500);
       } catch (error) {
         console.log(error);
       } finally {
@@ -258,6 +252,81 @@ const Questions = () => {
     };
     submit();
   };
+
+  // *********** Add True Or False ************
+  const addTrueOrFalse = (data) => {
+    console.log("This is from child", data);
+
+    console.log(data.title);
+    console.log(data.questionContent);
+    console.log(data.point);
+    console.log(data.correctOption);
+
+    const submit = async () => {
+      let sendData = {
+        activityId: activityId,
+        questionContent: data.questionContent,
+        type: iconType,
+        point: data.point,
+        title: data.title,
+        correctOption: data.correctOption,
+      };
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/questions",
+          sendData
+        );
+        console.log(res.data);
+        setSuccessMessage("Question Created Successfully");
+        setTimeout(() => setSuccessMessage(""), 2500);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        await getQuestionData();
+      }
+    };
+    submit();
+  };
+  // *********** Add Multiple Response ************
+  // const addMultipleResponse = (data) => {
+  //   console.log("This is from child", data);
+  //   let questionOption = [];
+
+  //   for (let i = 0; i < data.options.length; i++) {
+  //     questionOption.push(data.options[i].content);
+  //   }
+
+  //   console.log(data.title);
+  //   console.log(data.questionContent);
+  //   console.log(data.point);
+  //   console.log(data.correctOption);
+
+  //   const submit = async () => {
+  //     let sendData = {
+  //       activityId: activityId,
+  //       questionContent: data.questionContent,
+  //       type: iconType,
+  //       point: data.point,
+  //       title: data.title,
+  //       correctOption: data.correctOption,
+  //       options: questionOption,
+  //     };
+  //     try {
+  //       const res = await axios.post(
+  //         "http://localhost:5000/api/questions",
+  //         sendData
+  //       );
+  //       console.log(res.data);
+  //       setSuccessMessage("Question Created Successfully");
+  //       setTimeout(() => setSuccessMessage(""), 2500);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       await getQuestionData();
+  //     }
+  //   };
+  //   submit();
+  // };
 
   return (
     <>
@@ -352,8 +421,14 @@ const Questions = () => {
             {/* Icons Top Bar Clickable */}
             <div className="flex justify-end dark:text-white text-gray-800">
               {successMessage && (
-                <div className="text-green-500 text-lg mt-5">
+                <div className="text-green-500 md:text-lg text-base mt-5  md:mr-6 lg:mr-48">
                   {successMessage}
+                </div>
+              )}
+
+              {deleteMessage && (
+                <div className="text-red-400 md:text-lg text-base mt-5  md:mr-6 lg:mr-48">
+                  {deleteMessage}
                 </div>
               )}
 
@@ -395,10 +470,10 @@ const Questions = () => {
                   >
                     <div className="mx-auto my-auto">
                       <NavLink
-                        // to={"/questionsBank"}
                         style={{ color: item.color }}
                         onClick={() => {
                           setIconType(item.title);
+                          console.log(iconType);
                           {
                             item.title == "Multiple Choice"
                               ? setShowModal(true)
@@ -411,26 +486,25 @@ const Questions = () => {
                           }
                           {
                             item.title == "Multiple Response"
-                              ? setShowMutlipleResponse(true)
-                              : setShowMutlipleResponse(false);
+                              ? setShowMultipleResponse(true)
+                              : setShowMultipleResponse(false);
                           }
-                          {
-                            item.title == "Short Answers"
-                              ? setShowShortAnswer(true)
-                              : setShowShortAnswer(false);
-                          }
-                          
-                          {
-                            item.title == "Numerical"
-                              ? setShownumerical(true)
-                              : setShownumerical(false);
-                          }
-                          {
-                            item.title == "Question Eassy"
-                              ? setShowEassyy(true)
-                              : setShowEassy(false);
-                          }
-                          
+                          // {
+                          //   item.title == "Short Answers"
+                          //     ? setShowShortAnswer(true)
+                          //     : setShowShortAnswer(false);
+                          // }
+
+                          // {
+                          //   item.title == "Numerical"
+                          //     ? setShownumerical(true)
+                          //     : setShownumerical(false);
+                          // }
+                          // {
+                          //   item.title == "Question Eassy"
+                          //     ? setShowEassyy(true)
+                          //     : setShowEassy(false);
+                          // }
                         }}
                       >
                         {item.icon}
@@ -441,22 +515,25 @@ const Questions = () => {
                 {showModal && (
                   <MultipleChoice
                     setShowModal={setShowModal}
+                    iconType={iconType}
                     onSubmit={addMultipleChoice}
                   />
                 )}
                 {showTrueFalse && (
                   <TrueOrFalse
                     setShowTrueFalse={setShowTrueFalse}
-                    // onSubmit={addMultipleChoice}
+                    iconType={iconType}
+                    onSubmit={addTrueOrFalse}
                   />
                 )}
                 {showMutlipleResponse && (
                   <MultipleResponse
-                    setShowMutlipleResponse={setShowMutlipleResponse}
-                    // onSubmit={addMultipleChoice}
+                    setShowMultipleResponse={setShowMultipleResponse}
+                    iconType={iconType}
+                    // onSubmit={addMultipleResponse}
                   />
                 )}
-//<<<<<<< walaa
+                {/* //<<<<<<< walaa
                  {showShortAnswer && (
                   <ShortAnswers
                   setShowShortAnswer={setShowShortAnswer}
@@ -474,13 +551,10 @@ const Questions = () => {
                   setShowEassy={ setShowEassy}
                     // onSubmit={addMultipleChoice}
                   />
-                )}
-               
-//=======
-//>>>>>>> master
+                )}  */}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-28 xl:ml-32 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
+              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
                 <div className="flex">
                   <p className="text-lg">
                     {
@@ -495,11 +569,11 @@ const Questions = () => {
                             : questionTitle
                         }`}
                         onChange={handleInputChange}
-                        className="dark:bg-transparent capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                        className="dark:bg-transparent mr-4 capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
-                  <div className="flex md:-ml-8 -ml-12 items-center flex-grow mx-2">
+                  <div className="flex md:-ml-6 -ml-10 items-center flex-grow mx-2">
                     <div className="border-b border-gray-500 w-full"></div>
                   </div>
                   <Tooltip title={"Edit Title"} placement="right">
@@ -546,9 +620,8 @@ const Questions = () => {
                                 ? singleData.point
                                 : questionPoints
                             }`}
-                            // value={singleData.point}
                             onChange={handlePointsChange}
-                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-10 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
+                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-12 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
                           />
                           <span className="-ml-1 md:text-sm lg:text-base xl:text-lg">
                             points
@@ -566,19 +639,22 @@ const Questions = () => {
                         <div className="border-b border-gray-500 w-full"></div>
                       </div>
 
-                      <div className="flex">
-                        <p className="md-text-lg text-base">Options: </p>
-                        {questionOptions &&
-                          questionOptions.map((option, index) => {
-                            return (
-                              <div key={index}>
-                                <li className="list-outside mx-2 mt-0.5 md-text-base text-sm">
-                                  {option}
-                                </li>
-                              </div>
-                            );
-                          })}
-                      </div>
+                      {iconType == "Multiple Choice" && (
+                        <div className="flex">
+                          <p className="md-text-lg text-base">Options: </p>
+                          {questionOptions &&
+                            questionOptions.map((option, index) => {
+                              return (
+                                <div key={index}>
+                                  <li className="list-outside mx-2 mt-0.5 md-text-base text-sm">
+                                    {option}
+                                  </li>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      )}
+
                       <div className="flex mt-2 ">
                         <p className=" md-text-lg text-base">Answer: </p>
                         <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
@@ -592,7 +668,7 @@ const Questions = () => {
             </div>
           </div>
           {/* Question Bank */}
-          <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll scrollbar-hide p-1 sm:p-2">
+          <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll  p-1 sm:p-2">
             {/* Question Container */}
             {data &&
               data.map((question) => {
@@ -600,17 +676,11 @@ const Questions = () => {
                 return (
                   <div
                     key={question._id}
-                    onClick={() => {
-                      setShowQuestion(true);
-                      console.log(question);
-                      getSpecificQuestion(question._id);
-                      setQuestionId(question._id);
-                      setQuestionOptions(question.options);
-                      console.log(questionOptions);
-                    }}
-                    className={`bg-white cursor-pointer mx-auto sm:mt-2 mt-3 border ${
+                    className={`bg-white mx-auto sm:mt-2 mt-3 border ${
                       isActive ? "border-green-500" : ""
-                    } dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2`}
+                    } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
+                      !isActive ? "dark:hover:border-gray-600" : ""
+                    }  rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2 ease-linear transition-all duration-150`}
                   >
                     <div className="flex justify-around">
                       {question.type === "Multiple Choice" ? (
@@ -632,13 +702,29 @@ const Questions = () => {
                         <LuFileText className={iconQuestionStyle} />
                       ) : null}
 
-                      <p className="lg:-mt-1 capitalize text-center dark:text-white text-gray-800 lg:text-lg text-xs ">
+                      <p
+                        onClick={() => {
+                          setShowQuestion(true);
+                          console.log(question);
+                          getSpecificQuestion(question._id);
+                          setQuestionId(question._id);
+                          setIconType(question.type);
+                          setQuestionOptions(question.options);
+                          setDisabledInputNum(true);
+                          setDisabledInputText(true);
+                          console.log(questionOptions);
+                          console.log(iconType);
+                        }}
+                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-green-400  dark:hover:drop-shadow-lg lg:text-lg text-xs ease-linear transition-all duration-150`}
+                      >
                         {question.title}
                       </p>
                       <MdDelete
                         className="md:text-xl cursor-pointer dark:hover:text-red-400 hover:text-red-400 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
                         onClick={() => {
                           handleRemoveQuestion(question._id);
+                          setQuestionTitle("Question");
+                          // setDisabledInputText(false);
                           // console.log(question._id);
                         }}
                       />
