@@ -572,8 +572,8 @@ const Questions = () => {
                 )}  */}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
-                <div className="flex">
+              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-2">
+                <div className="flex mr-5">
                   <p className="text-lg">
                     {
                       <input
@@ -609,7 +609,7 @@ const Questions = () => {
                 </div>
 
                 {/* // Container To Display The Questions */}
-                <div className="flex   h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 ">
+                <div className="flex  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 ">
                   {!showQuestion && (
                     <p
                       style={{ marginInlineStart: "25%" }}
