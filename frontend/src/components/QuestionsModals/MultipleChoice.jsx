@@ -19,19 +19,31 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
 
   const [showAddOption, setShowAddOption] = useState(false);
   const [errorOptionMessage, setErrorOptionMessage] = useState(false);
+  const [errorOptionExist, setErrorOptionExist] = useState(false);
 
   const handleAddOption = () => {
     const option = {
-      // Unique identifier for each option
       id: new Date().getTime(),
       content: content,
     };
 
-    if (option.content == "") {
+    if (option.content === "") {
       setErrorOptionMessage(true);
       setShowAddOption(false);
       setTimeout(() => {
         setErrorOptionMessage(false);
+      }, 2000);
+      return;
+    }
+
+    const optionExists = options.some(
+      (existingOption) => existingOption.content === option.content
+    );
+    if (optionExists) {
+      setErrorOptionExist(true);
+      setShowAddOption(false);
+      setTimeout(() => {
+        setErrorOptionExist(false);
       }, 2000);
       return;
     }
@@ -183,6 +195,11 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                   {errorOptionMessage && (
                     <p className="capitalize text-red-500 text-base">
                       Please enter option before add
+                    </p>
+                  )}
+                  {errorOptionExist && (
+                    <p className="capitalize text-red-500 text-base">
+                      Option already exist!
                     </p>
                   )}
 
