@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
@@ -42,6 +42,10 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const [profileClicked, setProfileClicked] = useState(false);
+  const userRef = useRef();
+  const userImageRef = useRef();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -137,17 +141,31 @@ const Navbar = () => {
         <Tooltip title="Profile">
           <div
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-            onClick={() => handleClick("userProfile")}
+            onClick={() => {
+              setProfileClicked(!profileClicked);
+              console.log(!profileClicked);
+            }}
+            ref={userRef}
           >
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
             <img
               className="rounded-full w-12 h-12"
               src={avatar}
               alt="profile"
+              onClick={() => {
+                setProfileClicked(!profileClicked);
+              }}
+              ref={userImageRef}
             />
           </div>
         </Tooltip>
-        {isClicked.userProfile && <UserProfile />}
+        {profileClicked && (
+          <UserProfile
+            setProfileClicked={setProfileClicked}
+            userRef={userRef}
+            userImageRef={userImageRef}
+          />
+        )}
       </div>
     </div>
   );
