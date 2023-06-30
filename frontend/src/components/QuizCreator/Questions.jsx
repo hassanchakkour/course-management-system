@@ -363,13 +363,22 @@ const Questions = () => {
                 </p>
               </div>
               <div className="flex flex-col">
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {multipleChoiceNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {multipleResponceNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {trueFalseNbr}
                 </span>
               </div>
@@ -386,13 +395,22 @@ const Questions = () => {
                 </p>
               </div>
               <div className="flex flex-col">
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {shortAnswersNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {numericalNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {essayNbr}
                 </span>
               </div>

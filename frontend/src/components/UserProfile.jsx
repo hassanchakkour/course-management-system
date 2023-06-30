@@ -53,7 +53,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
   return (
     <div
       ref={userProfileMenuRef}
-      className="nav-item absolute right-4 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-4 rounded-xl w-64"
+      className="nav-item absolute right-4 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-4 rounded-xl md:w-64 w-48"
     >
       <div className="mt-1">
         <button
@@ -77,7 +77,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
             setProfileClicked(false);
           }}
           style={{ background: currentColor, borderRadius: "6px" }}
-          className="text-base w-full mt-5 text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+          className="text-base w-full mt-2 text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
         >
           Settings
         </button>
