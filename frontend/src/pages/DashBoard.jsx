@@ -166,7 +166,7 @@ const DashBoard = () => {
           </p>
         )}
 
-        <div className="flex align-middle mx-auto m-4 h-48 mt-12 w-11/12 ">
+        <div className="flex justify-center align-middle mx-auto m-4 h-48 mt-12 w-11/12 ">
           <BsChevronLeft
             className="opacity-20 mr-1 dark:text-white text-gray-900 cursor-pointer hover:opacity-80 mt-14 hover:transition ease-out duration-700"
             onClick={handleSlideLeft}
