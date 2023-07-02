@@ -127,8 +127,8 @@ const getActivitiesCourseId = asyncHandler(async (req, res) => {
 // @route   GET /api/activities/:id
 // @access  Private (Teacher only)
 const getActivity = asyncHandler(async (req, res) => {
-  const _id = req.body;
-  const activity = await Activity.findById(_id).populate(
+  // const _id = req.params.id;
+  const activity = await Activity.findById(req.params.id).populate(
     "submitted",
     "studentId"
   );
@@ -267,6 +267,37 @@ const updateActivity = asyncHandler(async (req, res) => {
   }
 });
 
+const updateSingleActivity = asyncHandler(async (req, res) => {
+  const {
+    title,
+    description,
+    id,
+    passingGrade,
+    duration,
+    numberOfAttempts,
+    instructions,
+  } = req.body;
+
+  let activity = await Activity.findById(req.params.id);
+  console.log(activity);
+  if (activity) {
+    activity.title = title || activity.title;
+    activity.description = description || activity.description;
+    activity.passingGrade = passingGrade || activity.passingGrade;
+    activity.duration = duration || activity.duration;
+    activity.numberOfAttempts = numberOfAttempts || activity.numberOfAttempts;
+    activity.instructions = instructions || activity.instructions;
+    await activity.save();
+    res.status(200).json({
+      message: "Activity Updated Successfully !!",
+    });
+  } else {
+    res.status(501).json({
+      message: "Something Went Wrong !!",
+    });
+  }
+});
+
 export {
   postActivity,
   getActivity,
@@ -278,4 +309,5 @@ export {
   getActivitiesCourseId,
   createActivity,
   updateActivity,
+  updateSingleActivity,
 };

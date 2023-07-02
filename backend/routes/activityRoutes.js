@@ -11,6 +11,7 @@ import {
   putActivity,
   // getActivitiesTeacherId,
   getActivitiesByStudentId,
+  updateSingleActivity,
   getAllActivities,
   getActivitiesCourseId,
   createActivity,
@@ -58,9 +59,10 @@ router.post("/", upload.single("mediaUrl"), postActivity, (req, res) => {
   res.send("single filll");
 });
 
-router.post("/single", getActivity);
+router.get("/:id", getActivity);
 
 router.put("/:id", putActivity);
+router.put("/updateSingleActivity/:id", updateSingleActivity);
 
 // router.post("/teacher", getActivitiesTeacherId);
 // GET /api/activities/student/:studentId

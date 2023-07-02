@@ -104,9 +104,14 @@ const putQuestion = asyncHandler(async (req, res) => {
 // @route   DELETE /api/questions/:id
 // @access  Private (Teacher only)
 const deleteQuestion = asyncHandler(async (req, res) => {
+  const { activityId } = req.body;
   const question = await Question.findOneAndDelete({ _id: req.params.id });
 
   if (question) {
+    const removeFromActivity = await Activity.findOneAndUpdate(
+      { _id: activityId },
+      { $pull: { questionId: { $in: [`${question._id}`] } } }
+    );
     res.status(200).json({ message: "Question deleted" });
   } else {
     res.status(404).json({ message: "Question not found or unauthorized" });

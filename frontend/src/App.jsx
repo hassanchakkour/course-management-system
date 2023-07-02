@@ -89,7 +89,7 @@ const App = () => {
                     <Route path="/questionsBank" element={<QuestionsBank />} />
                     <Route path="/resources" element={<Resources />} />
                     <Route path="/quiz" element={<QuizModal />} />
-                    <Route path="/courseName" element={<Content />} />
+                    <Route path="/Main" element={<Content />} />
 
                     <Route path="/quizCreator" element={<Questions />} />
                     <Route path="/messages" element={<Questions />} />
