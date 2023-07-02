@@ -48,25 +48,27 @@ const App = () => {
         {userInfo ? (
           <div className={currentMode === "Dark" ? "dark" : ""}>
             <div className="flex relative dark:bg-main-dark-bg">
-              {activeMenu ? (
+              <div
+                className={`fixed pb-3 top-0 z-10 left-0 w-28 h-[85%] lg:mt-[4%] md:mt-[10%] mt-[12%] overflow-y-scroll scrollbar-hide transition-transform  duration-300 ease-in-out ${
+                  activeMenu
+                    ? "transform translate-x-0 opacity-100"
+                    : "transform -translate-x-full opacity-0"
+                }`}
+              >
                 <div
                   style={{
                     borderColor: `${currentColor}`,
                     filter: `drop-shadow(0px 0px 3px ${currentColor})`,
                   }}
-                  className="w-24 h-5/6 md:mt-16 mt-20 fixed sidebar bg-secondary-dark-bg border-1 border-l-0 rounded-r-3xl"
+                  className="sidebar bg-secondary-dark-bg border-1 border-l-0 rounded-r-3xl h-full"
                 >
                   <Sidebar />
                 </div>
-              ) : (
-                <div className="w-0 dark:bg-secondary-dark-bg">
-                  <Sidebar />
-                </div>
-              )}
+              </div>
               <div
                 className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full ${
-                  activeMenu ? "md:ml-24" : "flex-2"
-                }`}
+                  activeMenu ? "md:ml-24 " : "flex-2"
+                } transition-all duration-300 ease-in-out`}
               >
                 <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
                   <Navbar />

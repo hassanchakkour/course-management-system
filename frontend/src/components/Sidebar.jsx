@@ -12,7 +12,8 @@ import {
   FaEnvelope,
 } from "react-icons/fa";
 
-import logo from "../../public/zidyia-logo.png";
+import logo from "../../public/aub-logo1.png";
+import logoZidyia from "../../public/zidyia-logo.png";
 
 // import links from "../constants/links";
 const links = [
@@ -62,40 +63,59 @@ const Sidebar = () => {
     " rounded-lg text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
   return (
-    <div className="pt-5 pb-3 sm:mt-0 mt-5 flex flex-col justify-center align-middle md:overflow-hidden overflow-y-auto md:hover:overflow-auto ">
+    <div className="sm:pt-3 md:pt-6 sm:mt-0 mt-5 flex flex-col justify-center align-middle md:overflow-hidden overflow-y-auto md:hover:overflow-auto ">
       {activeMenu && (
         <>
-          <div>
-            <Link
-              to="/"
-              onClick={handleCloseSideBar}
-              className="items-center ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
-            >
-              <div>
-                <img width={70} height={70} src={logo} alt="logo" />
-              </div>
-            </Link>
-          </div>
-
-          <div className="mt-5 text-2xl mx-auto">
-            {links.map((item) => (
-              <Tooltip key={item.title} title={item.title} placement="right">
-                <div className="hover:bg-[#5BD0B0] hover:transition ease-out duration-700 rounded-lg  px-7">
-                  <NavLink
-                    to={`/${item.title}`}
-                    onClick={handleCloseSideBar}
-                    style={({ isActive }) => ({
-                      color: isActive ? currentColor : "",
-                    })}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    {item.icon}
-                  </NavLink>
+          <div className="flex flex-col justify-between align-middle">
+            <div className="mb-3">
+              <Link
+                to="/"
+                onClick={handleCloseSideBar}
+                className="items-center ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
+              >
+                <div>
+                  <img width={80} height={80} src={logo} alt="logo" />
                 </div>
-              </Tooltip>
-            ))}
+              </Link>
+            </div>
+
+            <div className=" text-2xl my-2 mb-6 mx-auto">
+              {links.map((item) => (
+                <Tooltip key={item.title} title={item.title} placement="right">
+                  <div className="hover:bg-[#5BD0B0] hover:transition ease-out -my-2 duration-700 rounded-lg  px-8">
+                    <NavLink
+                      to={`/${item.title}`}
+                      onClick={handleCloseSideBar}
+                      style={({ isActive }) => ({
+                        color: isActive ? currentColor : "",
+                      })}
+                      className={({ isActive }) =>
+                        isActive ? activeLink : normalLink
+                      }
+                    >
+                      {item.icon}
+                    </NavLink>
+                  </div>
+                </Tooltip>
+              ))}
+            </div>
+            <div>
+              <Link
+                to="/"
+                onClick={handleCloseSideBar}
+                className="items-center  ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
+              >
+                <div>
+                  <img
+                    className="ml-1.5"
+                    width={70}
+                    height={70}
+                    src={logoZidyia}
+                    alt="logo"
+                  />
+                </div>
+              </Link>
+            </div>
           </div>
         </>
       )}
