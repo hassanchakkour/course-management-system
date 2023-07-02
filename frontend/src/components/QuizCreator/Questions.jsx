@@ -383,7 +383,7 @@ const Questions = () => {
     };
     submit();
   };
-  // *********** Add  Short Answer ************
+  // *********** Add  Question Essay ************
   const addQuestionEssay = (data) => {
     console.log(data.title);
     console.log(data.questionContent);
@@ -416,7 +416,7 @@ const Questions = () => {
     submit();
   };
 
-  // *********** Add Multiple Response ************
+  // *********** Add Numerical  ************
   const addNumerical = (data) => {
     console.log("This is from child", data);
     let questionOption = [];
