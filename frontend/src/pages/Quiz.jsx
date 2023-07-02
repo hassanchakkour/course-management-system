@@ -310,7 +310,7 @@ const Quiz = () => {
     </div>
   <div style={{ width: '100%' }}>
     <input
-    className={`w-full bg-gray-800 text-white border text-sm  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
+    className={`w-full bg-gray-800 text-gray  border text-sm  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
       required
       fullWidth
@@ -331,7 +331,7 @@ const Quiz = () => {
     </div>
   <div style={{ width: '100%',color: 'whitesmoke' }}>
     <input
-    className={`w-full bg-gray-800 text-white border  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
+    className={`w-full bg-gray-800 text-gray border  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
      required
       fullWidth
@@ -359,7 +359,7 @@ const Quiz = () => {
                              </div>
                  <div style={{ width: '100%' }}>
                   <input
-                  className={`w-full bg-gray-800 border border-white  text-white rounded-lg px-3 py-2 'border-red-500' : ''}`}
+                  className={`w-full bg-gray-800 border border-white  text-gray rounded-lg px-3 py-2 'border-red-500' : ''}`}
                   variant="outlined"
                     type="number"
                     required
@@ -379,7 +379,7 @@ const Quiz = () => {
                              </div>
                              <div style={{ width: '80%' }}>
                                  <Select
-                           className="mr-8 w-[90%]  bg-gray-800  border-gray-800 rounded-lg ml-1"
+                           className="mr-8 w-[90%]  bg-gray-800  text-gray  border-gray-800 rounded-lg ml-1"
      
                            value={selectedQuiz || ""}
                            onChange={handleQuizChange}
