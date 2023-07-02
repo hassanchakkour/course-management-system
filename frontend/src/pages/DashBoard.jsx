@@ -211,7 +211,7 @@ const DashBoard = () => {
                     {course.duration}
                   </p>
                   <Tooltip arrow title="Edit" placement="top">
-                    <NavLink to="/courseName">
+                    <NavLink to="/Main">
                       <button
                         type="button"
                         onClick={() => setCourse_ID(course._id, course.title)}
