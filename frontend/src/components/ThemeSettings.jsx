@@ -1,4 +1,6 @@
 import { MdOutlineCancel } from "react-icons/md";
+import { MdOutlineLightMode } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
 import { Tooltip } from "@mui/material";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -52,7 +54,7 @@ const ThemeSettings = () => {
         <div className="flex-col border-t-1 border-color p-4 ml-4">
           <p className="font-semibold text-xl ">Theme Option</p>
 
-          <div className="mt-4">
+          <div className="mt-4 flex relative">
             <input
               type="radio"
               id="light"
@@ -65,8 +67,14 @@ const ThemeSettings = () => {
             <label htmlFor="light" className="ml-2 text-md cursor-pointer">
               Light
             </label>
+            <div
+              style={{ borderColor: `${currentColor}` }}
+              className="border z-10 border-gray-300 h-8 ml-8 absolute left-10 -top-1 opacity-60 "
+            ></div>
+            <MdOutlineLightMode className="text-2xl  ml-7 mt-0.5" />
           </div>
-          <div className="mt-4">
+
+          <div className="mt-6 relative flex">
             <input
               type="radio"
               id="dark"
@@ -79,6 +87,11 @@ const ThemeSettings = () => {
             <label htmlFor="dark" className="ml-2 text-md cursor-pointer">
               Dark
             </label>
+            <div
+              style={{ borderColor: `${currentColor}` }}
+              className="border z-10 border-gray-300 h-8 ml-8 absolute left-10 -top-1 opacity-60 "
+            ></div>
+            <MdOutlineDarkMode className="text-2xl  ml-7 mt-0.5" />
           </div>
         </div>
 
