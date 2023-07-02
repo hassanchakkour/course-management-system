@@ -56,8 +56,9 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
       className="nav-item absolute right-4 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-4 rounded-xl md:w-64 w-48"
     >
       <div className="mt-1">
-        <div className="relative">
+        <div className="relative flex">
           <CgLogOut className="z-10 text-white  absolute left-3 top-3 text-2xl " />
+          <div className="border z-10 border-white h-8 ml-7 absolute left-5 top-2 opacity-30"></div>
           <button
             style={{
               color: "white",
@@ -75,6 +76,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
 
         <div className="relative">
           <FiSettings className="z-10 text-white absolute left-3 top-5 text-2xl " />
+          <div className="border z-10 border-white h-8 ml-7 absolute left-5 top-4 opacity-50"></div>
           <button
             type="button"
             onClick={() => {
