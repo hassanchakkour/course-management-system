@@ -8,7 +8,7 @@ import MultipleChoice from "../QuestionsModals/MultipleChoice";
 import TrueOrFalse from "../QuestionsModals/TrueOrFalse";
 import MultipleResponse from "../QuestionsModals/MultipleResponse";
 import ShortAnswers from "../QuestionsModals/ShortAnswers";
-import QuestionEassy from "../QuestionsModals/QuestionEssay";
+import QuestionEssay from "../QuestionsModals/QuestionEssay";
 import Numerical from "../QuestionsModals/Numerical";
 import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -38,9 +38,9 @@ const Questions = () => {
   const [showTrueFalse, setShowTrueFalse] = useState(false);
 
   const [showMutlipleResponse, setShowMultipleResponse] = useState(false);
-  //   const [showShortAnswer,setShowShortAnswer]=useState(false);
-  //   const [showNumerical,setShownumerical]=useState(false);
-  //   const [showEassy, setShowEassy]=useState(false);
+    const [showShortAnswer,setShowShortAnswer]=useState(false);
+    const [showNumerical,setShownumerical]=useState(false);
+    const [showEssay, setShowEssay]=useState(false);
 
   const [questionId, setQuestionId] = useState("");
   const [questionOptions, setQuestionOptions] = useState("");
@@ -289,47 +289,165 @@ const Questions = () => {
     };
     submit();
   };
-  // *********** Add Multiple Response ************
-  // const addMultipleResponse = (data) => {
-  //   console.log("This is from child", data);
-  //   let questionOption = [];
+ // *********** Add Multiple Response ************ 
+  const addMultipleResponse = (data) => {
+    console.log("This is from child", data);
+    let questionOption = [];
 
-  //   for (let i = 0; i < data.options.length; i++) {
-  //     questionOption.push(data.options[i].content);
-  //   }
+    for (let i = 0; i < data.options.length; i++) {
+      questionOption.push(data.options[i].content);
+    }
+    let correctResp = [];
 
-  //   console.log(data.title);
-  //   console.log(data.questionContent);
-  //   console.log(data.point);
-  //   console.log(data.correctOption);
+    for (let i = 0; i < data.correctResponse.length; i++) {
+      correctResp.push(data.correctResponse[i].content);
+    }
 
-  //   const submit = async () => {
-  //     let sendData = {
-  //       activityId: activityId,
-  //       questionContent: data.questionContent,
-  //       type: iconType,
-  //       point: data.point,
-  //       title: data.title,
-  //       correctOption: data.correctOption,
-  //       options: questionOption,
-  //     };
-  //     try {
-  //       const res = await axios.post(
-  //         "http://localhost:5000/api/questions",
-  //         sendData
-  //       );
-  //       console.log(res.data);
-  //       setSuccessMessage("Question Created Successfully");
-  //       setTimeout(() => setSuccessMessage(""), 2500);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       await getQuestionData();
-  //     }
-  //   };
-  //   submit();
-  // };
+    console.log(data.title);
+    console.log(data.questionContent);
+    console.log(data.point);
+    console.log(data.correctResponse);
 
+    const submit = async () => {
+      let sendData = {
+        activityId: activityId,
+        questionContent: data.questionContent,
+        type: iconType,
+        point: data.point,
+        title: data.title,
+        correctResponse: data.correctResp,
+        options: questionOption,
+      };
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/questions",
+          sendData
+        );
+        console.log(res.data);
+        setSuccessMessage("Question Created Successfully");
+        setTimeout(() => setSuccessMessage(""), 2500);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        await getQuestionData();
+      }
+    };
+    submit();
+  };
+
+  // *********** Add  Short Answer ************ 
+  const addShortAnswer = (data) => {
+    
+
+    console.log(data.title);
+    console.log(data.questionContent);
+    console.log(data.point);
+    console.log(data.correctOption);
+
+    const submit = async () => {
+      let sendData = {
+        activityId: activityId,
+        questionContent: data.questionContent,
+        type: iconType,
+        point: data.point,
+        title: data.title,
+        correctOption: data.correctOption,
+        
+      };
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/questions",
+          sendData
+        );
+        console.log(res.data);
+        setSuccessMessage("Question Created Successfully");
+        setTimeout(() => setSuccessMessage(""), 2500);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        await getQuestionData();
+      }
+    };
+    submit();
+  };
+ // *********** Add  Short Answer ************ 
+ const addQuestionEssay = (data) => {
+    
+
+  console.log(data.title);
+  console.log(data.questionContent);
+  console.log(data.point);
+  console.log(data.correctOption);
+
+  const submit = async () => {
+    let sendData = {
+      activityId: activityId,
+      questionContent: data.questionContent,
+      type: iconType,
+      point: data.point,
+      title: data.title,
+      correctOption: data.correctOption,
+      
+    };
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/questions",
+        sendData
+      );
+      console.log(res.data);
+      setSuccessMessage("Question Created Successfully");
+      setTimeout(() => setSuccessMessage(""), 2500);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await getQuestionData();
+    }
+  };
+  submit();
+};
+
+// *********** Add Multiple Response ************ 
+const addNumerical = (data) => {
+  console.log("This is from child", data);
+  let questionOption = [];
+
+  for (let i = 0; i < data.options.length; i++) {
+    questionOption.push(data.options[i].content);
+  }
+
+  console.log(data.title);
+  console.log(data.questionContent);
+  console.log(data.point);
+  console.log(data.correctResponse);
+
+  const submit = async () => {
+    let sendData = {
+      activityId: activityId,
+      questionContent: data.questionContent,
+      type: iconType,
+      point: data.point,
+      title: data.title,
+      correctOption: data.correctOption,
+      options: questionOption,
+    };
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/questions",
+        sendData
+      );
+      console.log(res.data);
+      setSuccessMessage("Question Created Successfully");
+      setTimeout(() => setSuccessMessage(""), 2500);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await getQuestionData();
+    }
+  };
+  submit();
+};
+
+  
   return (
     <>
       {/* Main Container */}
@@ -509,22 +627,22 @@ const Questions = () => {
                               ? setShowMultipleResponse(true)
                               : setShowMultipleResponse(false);
                           }
-                          // {
-                          //   item.title == "Short Answers"
-                          //     ? setShowShortAnswer(true)
-                          //     : setShowShortAnswer(false);
-                          // }
+                          {
+                            item.title == "Short Answers"
+                              ? setShowShortAnswer(true)
+                              : setShowShortAnswer(false);
+                          }
 
-                          // {
-                          //   item.title == "Numerical"
-                          //     ? setShownumerical(true)
-                          //     : setShownumerical(false);
-                          // }
-                          // {
-                          //   item.title == "Question Eassy"
-                          //     ? setShowEassyy(true)
-                          //     : setShowEassy(false);
-                          // }
+                          {
+                            item.title == "Numerical"
+                              ? setShownumerical(true)
+                              : setShownumerical(false);
+                          }
+                          {
+                            item.title == "Essay"
+                              ? setShowEssay(true)
+                              : setShowEssay(false);
+                          }
                         }}
                       >
                         {item.icon}
@@ -550,28 +668,31 @@ const Questions = () => {
                   <MultipleResponse
                     setShowMultipleResponse={setShowMultipleResponse}
                     iconType={iconType}
-                    // onSubmit={addMultipleResponse}
+                    onSubmit={addMultipleResponse}
                   />
                 )}
-                {/* //<<<<<<< walaa
+                
                  {showShortAnswer && (
                   <ShortAnswers
                   setShowShortAnswer={setShowShortAnswer}
-                    // onSubmit={addMultipleChoice}
+                  iconType={iconType}
+                  onSubmit={addShortAnswer}
                   />
                 )}
-                {showNumerical && (
+                 {showNumerical && (
                   <Numerical
                   setShownumerical={setShownumerical}
-                    // onSubmit={addMultipleChoice}
+                  iconType={iconType}
+                    onSubmit={addNumerical}
                   />
                 )}
-                 {showEassy && (
-                  <QuestionEassy
-                  setShowEassy={ setShowEassy}
-                    // onSubmit={addMultipleChoice}
+                 {showEssay && (
+                  <QuestionEssay
+                  setShowEssay={setShowEssay}
+                  iconType={iconType}
+                  onSubmit={addQuestionEssay}
                   />
-                )}  */}
+                )}  
               </div>
               {/* Sub Container 1 */}
               <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
