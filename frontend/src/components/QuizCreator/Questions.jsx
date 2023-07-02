@@ -14,6 +14,8 @@ import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 
+import "./scrollStyle.css";
+
 import { BsThreeDots } from "react-icons/bs";
 
 import { TfiList } from "react-icons/tfi";
@@ -363,13 +365,22 @@ const Questions = () => {
                 </p>
               </div>
               <div className="flex flex-col">
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {multipleChoiceNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {multipleResponceNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {trueFalseNbr}
                 </span>
               </div>
@@ -386,13 +397,22 @@ const Questions = () => {
                 </p>
               </div>
               <div className="flex flex-col">
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {shortAnswersNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {numericalNbr}
                 </span>
-                <span className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4">
+                <span
+                  style={{ color: `${currentColor}` }}
+                  className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
+                >
                   {essayNbr}
                 </span>
               </div>
@@ -421,13 +441,13 @@ const Questions = () => {
             {/* Icons Top Bar Clickable */}
             <div className="flex justify-end dark:text-white text-gray-800">
               {successMessage && (
-                <div className="text-green-500 md:text-lg text-base mt-5  md:mr-6 lg:mr-48">
+                <div className="text-green-500 md:text-lg text-base mt-3  md:mr-6 lg:mr-48">
                   {successMessage}
                 </div>
               )}
 
               {deleteMessage && (
-                <div className="text-red-400 md:text-lg text-base mt-5  md:mr-6 lg:mr-48">
+                <div className="text-red-400 md:text-lg text-base mt-3  md:mr-6 lg:mr-48">
                   {deleteMessage}
                 </div>
               )}
@@ -441,7 +461,7 @@ const Questions = () => {
                       setQuestionPoints(singleData.point);
                     }}
                     onMouseEnter={() => {}}
-                    className="m-6 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
+                    className="m-4 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
                   />
                 </div>
               </Tooltip>
@@ -454,14 +474,14 @@ const Questions = () => {
 
                       updateSpecificQuestion(questionId);
                     }}
-                    className="m-6 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                    className="m-4 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
                   />
                 </div>
               </Tooltip>
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
-              <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-2/3 w-1/12 p-3">
+              <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
                 {links.map((item) => (
                   <Tooltip
                     key={item.title}
@@ -554,8 +574,8 @@ const Questions = () => {
                 )}  */}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-2/3 w-5/6 p-4">
-                <div className="flex">
+              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
+                <div className="flex mr-5">
                   <p className="text-lg">
                     {
                       <input
@@ -591,7 +611,7 @@ const Questions = () => {
                 </div>
 
                 {/* // Container To Display The Questions */}
-                <div className="flex   h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 ">
+                <div className="flex  h-5/6 border-solid border-2 border-gray-400 rounded-md w-full mt-3 ">
                   {!showQuestion && (
                     <p
                       style={{ marginInlineStart: "25%" }}
@@ -668,7 +688,7 @@ const Questions = () => {
             </div>
           </div>
           {/* Question Bank */}
-          <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll  p-1 sm:p-2">
+          <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll custom-scrollbar p-1 sm:p-2">
             {/* Question Container */}
             {data &&
               data.map((question) => {
@@ -676,7 +696,7 @@ const Questions = () => {
                 return (
                   <div
                     key={question._id}
-                    className={`bg-white mx-auto sm:mt-2 mt-3 border ${
+                    className={`bg-white mx-auto sm:mt-2 mt-3 border h-fit ${
                       isActive ? "border-green-500" : ""
                     } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
                       !isActive ? "dark:hover:border-gray-600" : ""
