@@ -74,7 +74,13 @@ const Sidebar = () => {
                 className="items-center ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
               >
                 <div>
-                  <img width={80} height={80} src={logo} alt="logo" />
+                  <img
+                    className="ml-1"
+                    width={80}
+                    height={80}
+                    src={logo}
+                    alt="logo"
+                  />
                 </div>
               </Link>
             </div>
