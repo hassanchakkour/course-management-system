@@ -58,7 +58,7 @@ const App = () => {
                 <div
                   style={{
                     borderColor: `${currentColor}`,
-                    filter: `drop-shadow(0px 0px 5px ${currentColor})`,
+                    filter: `drop-shadow(0px 0px 3px ${currentColor})`,
                   }}
                   className="sidebar bg-secondary-dark-bg border-2 border-l-0 rounded-r-3xl h-full"
                 >

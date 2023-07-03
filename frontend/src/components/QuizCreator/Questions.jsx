@@ -829,7 +829,9 @@ const Questions = () => {
                     className={`bg-white mx-auto sm:mt-2 mt-3 border h-fit ${
                       isActive ? "border-green-500" : ""
                     } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
-                      !isActive ? "dark:hover:border-gray-600" : ""
+                      !isActive
+                        ? "dark:hover:border-gray-600 hover:border-gray-700"
+                        : ""
                     }  rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2 ease-linear transition-all duration-150`}
                   >
                     <div className="flex justify-around">
@@ -865,7 +867,7 @@ const Questions = () => {
                           console.log(questionOptions);
                           console.log(iconType);
                         }}
-                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-green-400  dark:hover:drop-shadow-lg lg:text-lg text-xs ease-linear transition-all duration-150`}
+                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-green-400  dark:hover:drop-shadow-lg hover:text-gray-400 lg:text-lg text-xs ease-linear transition-all duration-150`}
                       >
                         {question.title}
                       </p>

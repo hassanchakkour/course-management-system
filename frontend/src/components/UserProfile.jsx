@@ -58,7 +58,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
       <div className="mt-1">
         <div className="relative flex">
           <CgLogOut className="z-10 text-white  absolute left-3 top-3 text-2xl " />
-          <div className="border z-10 border-white h-8 ml-7 absolute left-5 top-2 opacity-30"></div>
+          <div className="border z-10 border-white h-8 ml-7 absolute md:left-5 left-4 top-2 opacity-30"></div>
           <button
             style={{
               color: "white",
@@ -76,7 +76,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
 
         <div className="relative">
           <FiSettings className="z-10 text-white absolute left-3 top-5 text-2xl " />
-          <div className="border z-10 border-white h-8 ml-7 absolute left-5 top-4 opacity-50"></div>
+          <div className="border z-10 border-white h-8 ml-7 absolute md:left-5 left-4 top-4 opacity-50"></div>
           <button
             type="button"
             onClick={() => {
@@ -84,7 +84,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
               setProfileClicked(false);
             }}
             style={{ background: currentColor, borderRadius: "6px" }}
-            className="text-base w-full mt-2 text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+            className="text-base w-full mt-2 text-white p-3  hover:drop-shadow-xl hover:bg-light-gray"
           >
             Settings
           </button>
