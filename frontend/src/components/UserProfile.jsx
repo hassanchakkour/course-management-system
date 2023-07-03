@@ -53,7 +53,7 @@ const UserProfile = ({ setProfileClicked, userRef, userImageRef }) => {
   return (
     <div
       ref={userProfileMenuRef}
-      className="nav-item absolute right-4 top-16 bg-white dark:bg-[#42464D] dark:text-gray-200 p-4 rounded-xl md:w-64 w-48"
+      className="nav-item absolute right-4 top-16 bg-main-bg drop-shadow-lg dark:bg-[#42464D] dark:text-gray-200 p-4 rounded-xl md:w-64 w-48"
     >
       <div className="mt-1">
         <div className="relative flex">
