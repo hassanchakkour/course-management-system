@@ -281,7 +281,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
               <div className="flex justify-end mb-3 mt-0 mx-auto w-11/12">
                 {errorMessage && (
                   <div className="flex align-middle">
-                    <BiMessageError className="text-red-500 mt-6" />
+                    <BiMessageError className="text-red-500 mt-5" />
                     <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
                       Please fill all the fields
                     </p>

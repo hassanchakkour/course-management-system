@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 
 import logo from "../../public/aub-logo1.png";
+import logoLight from "../../public/aub-logoLight.png";
 import logoZidyia from "../../public/zidyia-logo.png";
 
 // import links from "../constants/links";
@@ -43,7 +44,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect } from "react";
 
 const Sidebar = () => {
-  const { currentColor, activeMenu, setActiveMenu, screenSize } =
+  const { currentColor, activeMenu, setActiveMenu, screenSize, currentMode } =
     useStateContext();
 
   const handleCloseSideBar = () => {
@@ -60,7 +61,7 @@ const Sidebar = () => {
   // text-2xl flex flex-col justify-center align-middle
   const activeLink = "rounded-lg m-2";
   const normalLink =
-    " rounded-lg text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
+    " rounded-lg text-gray-700 dark:text-white dark:hover:text-black hover:text-gray-200 m-2";
 
   return (
     <div className="sm:pt-3 md:pt-6 sm:mt-0 mt-5 flex flex-col justify-center align-middle md:overflow-hidden overflow-y-auto md:hover:overflow-auto ">
@@ -78,7 +79,7 @@ const Sidebar = () => {
                     className="ml-1"
                     width={80}
                     height={80}
-                    src={logo}
+                    src={currentMode == "Dark" ? logo : logoLight}
                     alt="logo"
                   />
                 </div>
