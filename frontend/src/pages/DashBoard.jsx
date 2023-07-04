@@ -4,6 +4,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FiEdit2 } from "react-icons/fi";
+import { FiUsers } from "react-icons/fi";
 import { Tooltip } from "@mui/material";
 
 import "react-calendar/dist/Calendar.css";
@@ -214,21 +215,38 @@ const DashBoard = () => {
                   <p className="text-base text-gray-500 dark:text-gray-400">
                     {course.duration}
                   </p>
-                  <Tooltip arrow title="Edit" placement="top">
-                    <NavLink to="/Main">
-                      <button
-                        type="button"
-                        onClick={() => setCourse_ID(course._id, course.title)}
-                        style={{
-                          color: currentColor,
-                          borderRadius: "50%",
-                        }}
-                        className="text-xl hover:bg-light-gray dark:hover:bg-gray-700 rounded-full p-3 hover:drop-shadow-xl hover:transition ease-out duration-700"
-                      >
-                        <FiEdit2 />
-                      </button>
-                    </NavLink>
-                  </Tooltip>
+                  <div>
+                    <Tooltip arrow title="Students" placement="bottom">
+                      <NavLink to="/students">
+                        <button
+                          type="button"
+                          onClick={() => setCourse_ID(course._id, course.title)}
+                          style={{
+                            color: currentColor,
+                            borderRadius: "50%",
+                          }}
+                          className="text-xl hover:bg-light-gray dark:hover:bg-gray-700 rounded-full p-3 hover:drop-shadow-xl hover:transition ease-out duration-700"
+                        >
+                          <FiUsers />
+                        </button>
+                      </NavLink>
+                    </Tooltip>
+                    <Tooltip arrow title="Edit" placement="top">
+                      <NavLink to="/Main">
+                        <button
+                          type="button"
+                          onClick={() => setCourse_ID(course._id, course.title)}
+                          style={{
+                            color: currentColor,
+                            borderRadius: "50%",
+                          }}
+                          className="text-xl hover:bg-light-gray dark:hover:bg-gray-700 rounded-full p-3 hover:drop-shadow-xl hover:transition ease-out duration-700"
+                        >
+                          <FiEdit2 />
+                        </button>
+                      </NavLink>
+                    </Tooltip>
+                  </div>
                 </div>
               </div>
             ))}

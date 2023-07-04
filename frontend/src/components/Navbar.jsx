@@ -135,6 +135,18 @@ const Navbar = () => {
             </span>
           </Tooltip>
         )}
+        {pathname === "/students" && (
+          <Tooltip title="Back">
+            <span
+              className="md:mt-4 cursor-pointer mt-5 text-xl md:text-2xl dark:text-gray-200 text-gray-500 hover:text-gray-400 dark:hover:text-gray-500 hover:transition ease-out duration-700"
+              onClick={() => {
+                navigate("/dashboard");
+              }}
+            >
+              <BsChevronLeft />
+            </span>
+          </Tooltip>
+        )}
 
         {pathname === "/quizCreator" && (
           <Tooltip title="Back">
@@ -150,11 +162,11 @@ const Navbar = () => {
         )}
 
         <p className="dark:text-white text-gray-500 mt-4 md:mt-3 ld:mt-2 ml-1">
-          {pathname !== "/courseName" && (
+          {pathname === "/dashboard" && (
             <span className="text-xl md:text-2xl">Welcome</span>
           )}
           <span className="font-bold ml-2.5 text-xl md:text-2xl">
-            {pathname === "/courseName" ? (
+            {pathname === "/Main" || pathname === "/students" ? (
               <span
                 style={{ color: `${currentColor}` }}
                 className="text-xl md:text-2xl"
@@ -164,7 +176,7 @@ const Navbar = () => {
             ) : (
               userInfo.userInfo.name
             )}
-            {pathname !== "/courseName" && " !"}
+            {pathname == "/dashboard" && " !"}
           </span>
         </p>
       </div>
