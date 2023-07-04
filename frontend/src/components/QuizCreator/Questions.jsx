@@ -271,7 +271,7 @@ const Questions = () => {
     submit();
   };
 
-  // *********** Add True Or False ************
+  // *********** Add True Or False ************data
   const addTrueOrFalse = (data) => {
     console.log("This is from child", data);
 
@@ -849,6 +849,11 @@ const Questions = () => {
           {/* Question Bank */}
           <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll custom-scrollbar p-1 sm:p-2">
             {/* Question Container */}
+            {data.length == 0 && (
+              <p className="text-gray-400 my-auto mx-auto  md:text-lg lg:text-2xl text-base">
+                No Questions Yet
+              </p>
+            )}
             {data &&
               data.map((question) => {
                 const isActive = question._id == questionId;
