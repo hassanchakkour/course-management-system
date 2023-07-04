@@ -12,7 +12,7 @@ const MultipleResponse = ({ setShowMultipleResponse, iconType, onSubmit}) => {
   const [questionContent, setContentContent] = useState("");
   const [point, setPoint] = useState(0);
   const [options, setOptions] = useState([]);
-  const [correctResponse, setCorrectResponse] = useState("");
+  const [correctResponse, setCorrectResponse] = useState([]);
   const { currentColor } = useStateContext();
 
   const [showAddOption, setShowAddOption] = useState(false);
@@ -34,8 +34,13 @@ const MultipleResponse = ({ setShowMultipleResponse, iconType, onSubmit}) => {
     const updatedOptions = options.filter((option) => option.id !== id);
     setOptions(updatedOptions);
   };
+  const handleCheckboxChange = (optionValue) => {
+    const updatedResponse = correctResponse.includes(optionValue)
+      ? correctResponse.filter((value) => value !== optionValue)
+      : [...correctResponse, optionValue];
   
-
+    setCorrectResponse(updatedResponse);
+  };
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleData = () => {
@@ -83,14 +88,34 @@ const MultipleResponse = ({ setShowMultipleResponse, iconType, onSubmit}) => {
   const handleMouseLeave = () => {
     setHoveredOption(null);
   };
+  
+  
 
-  const handleCheckboxChange = (optionLabel) => {
-    if (correctResponse.includes(optionLabel)) {
-      setCorrectResponse(correctResponse.filter((label) => label !== optionLabel));
-    } else {
-      setCorrectResponse([...correctResponse, optionLabel]);
-    }
-  };
+  // const handleCheckboxChange = (optionId) => {
+  //  const  correctRespons={
+  //     // Unique identifier for each option
+  //     id: new Date().getTime(),
+  //     content: content,
+  //   }
+  //   const updatedResponse = [...correctResponse, correctRespons];
+  //   if (correctResponse.includes(optionId)) {
+  //     correctResponse(correctResponse.filter((id) => id !== optionId));
+  //     setCorrectResponse(updatedResponse)
+  //     console.log(setCorrectResponse)
+  //   } else {
+  //     setCorrectResponse([...correctResponse, optionId]);
+  //   }
+  // };
+
+  // const handleCheckboxChange = (optionId, optionValue) => {
+  //   if (correctResponse.find((option) => option.id === optionId)) {
+  //     setCorrectResponse(correctResponse.filter((option) => option.id !== optionId));
+  //   } else {
+  //     setCorrectResponse([...correctResponse, { id: optionId, value: optionValue }]);
+  //   }
+  // };
+ 
+  
   return (
     <>
       <>
@@ -218,14 +243,17 @@ const MultipleResponse = ({ setShowMultipleResponse, iconType, onSubmit}) => {
                 <div className="mb-8 pt-1">
               
                   <div>
-                    {options.map((option) => (
-                      <div key={option.id} className="flex items-center mb-2">
+                    {options.map((option,index) => (
+                      <div  key={index} className="flex items-center mb-2">
                         <input
                           type="checkbox"
                           id={`checkbox-${option.id}`}
-                          value={option.label}
-                          checked={correctResponse.includes(option.label)}
-                          onChange={() => handleCheckboxChange(option.label)}
+                          value={option.content}
+                          // checked={correctResponse.includes(option.id)}
+                          // onChange={() => handleCheckboxChange(option.id)}
+                          checked={correctResponse.includes(option.content)}
+                           onChange={() => handleCheckboxChange(option.content)}
+                          
                           className="mr-2 h-4 w-4 placeholder-slate-400 text-white relative  rounded text-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label

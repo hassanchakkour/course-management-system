@@ -113,18 +113,18 @@ const Media = () => {
         <Box marginBottom="30px" color="gray">
         <div style={{ display: 'flex' }}>
         <div style={{ width: '30%', marginRight: '10px', display: 'flex', alignItems: 'center' }}>
-  <MdOutlinePermMedia style={{ marginRight: '5px' }} />
-  <h1 class="text-1xl text-white font-bold m-0">
-  Media
-</h1>
-</div>
+               <MdOutlinePermMedia style={{ marginRight: '5px' }} />
+                    <h1 class="text-1xl text-white font-bold m-0">
+                       Media
+                       </h1>
+                      </div>
                </div>
                    </Box>
 
                    <Box marginBottom="20px">
         <div className="flex items-center">
           <div style={{ width: '30%', marginRight: '10px' }}>
-            <h5 className="text-gray-500">Title</h5>
+            <h5 className="text-white">Title</h5>
           </div>
           <div style={{ width: '100%',marginTop:'0px' }}>
             <input
@@ -147,7 +147,7 @@ const Media = () => {
                 <Box marginBottom="20px">
                      <div style={{ display: 'flex', alignItems: 'flex-start'  }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h5 style={{ color: 'gray' }}>Description</h5>
+                 <h5 style={{ color: 'white' }}>Description</h5>
                      </div>
               
               <div className="w-full">
@@ -183,7 +183,7 @@ const Media = () => {
           <Box marginBottom="16px">
           <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30%', marginRight: '10px' }}>
-                 <h5 style={{ color: 'gray' }}>Quiz Name</h5>
+                 <h5 style={{ color: 'white' }}>Quiz Name</h5>
                      </div>
               <div style={{ width: '100%' }}>
             <input

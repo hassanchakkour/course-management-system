@@ -170,8 +170,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       if (
                         !title ||
                         !questionContent ||
-                        !point ||
-                        !correctResponse
+                        !point                      
                       ) {
                         setErrorMessage(true);
                         setTimeout(() => {
