@@ -271,7 +271,7 @@ const Questions = () => {
     submit();
   };
 
-  // *********** Add True Or False ************
+  // *********** Add True Or False ************data
   const addTrueOrFalse = (data) => {
     console.log("This is from child", data);
 
@@ -313,17 +313,13 @@ const Questions = () => {
     for (let i = 0; i < data.options.length; i++) {
       questionOption.push(data.options[i].content);
     }
-    // let correctResp = [];
-    
-    // for (let i = 0; i < data.correctResponse.length; i++) {
-      
-    //     correctResp.push(data.correctResponse[i].content);
-      
-    // }
-    // console.log(correctResp)
-  
-    
-    
+    let correctResp = [];
+
+    for (let i = 0; i < data.correctResponse.length; i++) {
+      correctResp.push(data.correctResponse[i].content);
+    }
+    console.log(correctResp);
+
     console.log(data.title);
     console.log(data.questionContent);
     console.log(data.point);
@@ -336,7 +332,7 @@ const Questions = () => {
         type: iconType,
         point: data.point,
         title: data.title,
-        correctResponse: data.correctResponse.join(', '),
+        correctResponse: data.correctResponse.join(",  "),
         options: questionOption,
       };
       try {
@@ -615,7 +611,7 @@ const Questions = () => {
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
-              <div className="absolute min-w-max bg-main-bg  dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
+              <div className="absolute min-w-max bg-gray-100 dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
                 {links.map((item) => (
                   <Tooltip
                     key={item.title}
@@ -737,9 +733,11 @@ const Questions = () => {
                     <div>
                       <BsThreeDots
                         onClick={() => {
-                          setDisabledInputText(false);
-                          inputElement.current.focus();
-                          setQuestionTitle(singleData.title);
+                          if (showQuestion) {
+                            setDisabledInputText(false);
+                            inputElement.current.focus();
+                            setQuestionTitle(singleData.title);
+                          }
                         }}
                         className="md:text-xl mt-2 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
                       />
@@ -793,10 +791,26 @@ const Questions = () => {
                         </p>
                       </div>
                       <div className="flex items-center mt-2 flex-grow ">
-                        <div className="border-b border-gray-500 w-full"></div>
+                        <div className="border-b border-gray-500 w-full opacity-50"></div>
                       </div>
 
                       {iconType == "Multiple Choice" && (
+                        <div className="flex">
+                          <p className="md-text-lg text-base">Options: </p>
+                          {questionOptions &&
+                            questionOptions.map((option, index) => {
+                              return (
+                                <div key={index}>
+                                  <li className="list-outside mx-2 mt-0.5 md-text-base text-sm">
+                                    {option}
+                                  </li>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      )}
+
+                      {iconType == "Multiple Response" && (
                         <div className="flex">
                           <p className="md-text-lg text-base">Options: </p>
                           {questionOptions &&
@@ -816,15 +830,15 @@ const Questions = () => {
                         <p className=" md-text-lg text-base">Answer: </p>
                         <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
                           {singleData.correctOption}
-                        
                         </span>
+
                         {iconType == "Multiple Response" && (
-                        <div className="flex">
-                           <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
-                          {singleData.correctResponse}
-                          </span>
-                        </div>
-                      )}
+                          <div className="flex">
+                            <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
+                              {singleData.correctResponse}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -835,6 +849,11 @@ const Questions = () => {
           {/* Question Bank */}
           <div className="h-[60vh] flex flex-col justify-start align-middle border-solid border-2 border-gray-400 rounded-3xl rounded-tr-none rounded-br-none w-1/4 md:ml-5 ml-2 overflow-y-scroll custom-scrollbar p-1 sm:p-2">
             {/* Question Container */}
+            {data.length == 0 && (
+              <p className="text-gray-400 my-auto mx-auto  md:text-lg lg:text-2xl text-base">
+                No Questions Yet
+              </p>
+            )}
             {data &&
               data.map((question) => {
                 const isActive = question._id == questionId;
