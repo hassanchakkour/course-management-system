@@ -123,7 +123,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       />
                       <label
                         htmlFor="correctOptionTrue"
-                        className="px-3 py-3 relative text-slate-400 placeholder-slate-400 bg-transparent  md:text-lg text-sm "
+                        className="px-3 py-3 relative cursor-pointer text-slate-400 placeholder-slate-400 bg-transparent  md:text-lg text-sm "
                       >
                         True
                       </label>
@@ -139,7 +139,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       />
                       <label
                         htmlFor="correctOptionFalse"
-                        className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent  rounded md:text-lg text-sm "
+                        className="px-3 py-3 cursor-pointer text-slate-400 placeholder-slate-400 relative bg-transparent  rounded md:text-lg text-sm "
                       >
                         False
                       </label>

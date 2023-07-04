@@ -62,6 +62,8 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
   };
 
   const [errorMessage, setErrorMessage] = useState(false);
+  const [singleOptionErrorMessage, setSingleOptionErrorMessage] =
+    useState(false);
 
   const handleData = () => {
     const type = { iconType };
@@ -287,6 +289,14 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                     </p>
                   </div>
                 )}
+                {singleOptionErrorMessage && (
+                  <div className="flex align-middle">
+                    <BiMessageError className="text-red-500 mt-5" />
+                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                      Please add more than one option
+                    </p>
+                  </div>
+                )}
                 <div>
                   <button
                     className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
@@ -311,6 +321,11 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                         setErrorMessage(true);
                         setTimeout(() => {
                           setErrorMessage(false);
+                        }, 2000);
+                      } else if (options.length == 1) {
+                        setSingleOptionErrorMessage(true);
+                        setTimeout(() => {
+                          setSingleOptionErrorMessage(false);
                         }, 2000);
                       } else {
                         handleData();
