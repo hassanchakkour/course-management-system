@@ -313,12 +313,17 @@ const Questions = () => {
     for (let i = 0; i < data.options.length; i++) {
       questionOption.push(data.options[i].content);
     }
-    let correctResp = [];
-
-    for (let i = 0; i < data.correctResponse.length; i++) {
-      correctResp.push(data.correctResponse[i].content);
-    }
-
+    // let correctResp = [];
+    
+    // for (let i = 0; i < data.correctResponse.length; i++) {
+      
+    //     correctResp.push(data.correctResponse[i].content);
+      
+    // }
+    // console.log(correctResp)
+  
+    
+    
     console.log(data.title);
     console.log(data.questionContent);
     console.log(data.point);
@@ -331,7 +336,7 @@ const Questions = () => {
         type: iconType,
         point: data.point,
         title: data.title,
-        correctResponse: data.correctResp,
+        correctResponse: data.correctResponse.join(', '),
         options: questionOption,
       };
       try {
@@ -811,7 +816,15 @@ const Questions = () => {
                         <p className=" md-text-lg text-base">Answer: </p>
                         <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
                           {singleData.correctOption}
+                        
                         </span>
+                        {iconType == "Multiple Response" && (
+                        <div className="flex">
+                           <span className="ml-2  text-green-400 font-bold md-text-lg text-base">
+                          {singleData.correctResponse}
+                          </span>
+                        </div>
+                      )}
                       </div>
                     </div>
                   )}

@@ -179,8 +179,12 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       if (
                         !title ||
                         !questionContent ||
-                        !point ||
-                        !correctOption
+// <<<<<<< walaa
+//                         !point                      
+// =======
+//                         !point ||
+//                         !correctOption
+// >>>>>>> master
                       ) {
                         setErrorMessage(true);
                         setTimeout(() => {

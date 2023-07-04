@@ -205,7 +205,7 @@ const Numerical = ({ setShownumerical, onSubmit , iconType}) => {
                 <div className="mb-3 mt-2 pt-1 text-sm text-gray-400">
         {/* Render radio buttons for options */}
         {options.map((option, index) => (
-          <label key={index} className=" m-2">  
+          <label key={index} className=" ml-1">  
         <span className="right-0 top-3 mr-1 mb-1 border-gray-400 mt-4 border  f text-emerald-400 rounded-md px-3 py-2  text-sminline-block cursor-pointer">
           
             <input
@@ -222,7 +222,7 @@ const Numerical = ({ setShownumerical, onSubmit , iconType}) => {
         ))}
       </div>
        {/* footer */}
-       <div className="flex items-center flex-grow -mt-5 ">
+       <div className="flex items-center flex-grow mt-5 ">
                 <div
                   style={{ borderColor: currentColor }}
                   className={`border-b border-solid border-slate-200  w-full`}
@@ -270,11 +270,6 @@ const Numerical = ({ setShownumerical, onSubmit , iconType}) => {
                 )}
               </div>
     
-                {errorMessage && (
-                  <p className="text-red-500 md:text-lg text-base  mt-2">
-                    Please fill all the fields
-                  </p>
-                )}
 
                 
               </div>

@@ -331,7 +331,7 @@ const Quiz = () => {
     </div>
   <div style={{ width: '100%',color: 'whitesmoke' }}>
     <input
-    className={`w-full bg-gray-800 text-gray border  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
+    className={`w-full bg-gray-800 text-gray-500 text-sm border  border-white rounded-lg px-3 py-2  'border-red-500' : ''}`}
       variant="outlined"
      required
       fullWidth
