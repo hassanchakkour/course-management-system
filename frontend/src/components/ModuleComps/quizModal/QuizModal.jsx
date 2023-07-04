@@ -33,7 +33,6 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
     if (
       description === "" ||
       instructions === "" ||
-      passingGrade === 0 ||
       nbrAttempts === 0 ||
       duration === 0
     ) {
