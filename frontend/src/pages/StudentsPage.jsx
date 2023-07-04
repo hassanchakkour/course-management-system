@@ -310,7 +310,7 @@ const StudentsPage = () => {
                     <div className="relative w-full">
                       <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
                         <div
-                          style={{ width: "73%" }}
+                          style={{ width: "75%" }}
                           className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
                         />
                       </div>
