@@ -123,7 +123,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       />
                       <label
                         htmlFor="correctOptionTrue"
-                        className="px-3 py-3 relative text-slate-400 placeholder-slate-400 bg-transparent  md:text-lg text-sm "
+                        className="px-3 py-3 relative cursor-pointer text-slate-400 placeholder-slate-400 bg-transparent  md:text-lg text-sm "
                       >
                         True
                       </label>
@@ -139,7 +139,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       />
                       <label
                         htmlFor="correctOptionFalse"
-                        className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent  rounded md:text-lg text-sm "
+                        className="px-3 py-3 cursor-pointer text-slate-400 placeholder-slate-400 relative bg-transparent  rounded md:text-lg text-sm "
                       >
                         False
                       </label>
@@ -156,7 +156,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
               <div className="flex justify-end mb-3 mt-0 mx-auto w-11/12">
                 {errorMessage && (
                   <div className="flex align-middle">
-                    <BiMessageError className="text-red-500 mt-6" />
+                    <BiMessageError className="text-red-500 mt-5" />
                     <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
                       Please fill all the fields
                     </p>
@@ -180,7 +180,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                         !title ||
                         !questionContent ||
                         !point ||
-                        !correctResponse
+                        !correctOption
                       ) {
                         setErrorMessage(true);
                         setTimeout(() => {

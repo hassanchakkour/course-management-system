@@ -493,19 +493,21 @@ const Questions = () => {
               </div>
               <div className="flex flex-col">
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${multipleChoiceNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {multipleChoiceNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{
+                    color: `${multipleResponceNbr > 0 && currentColor}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {multipleResponceNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${trueFalseNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {trueFalseNbr}
@@ -525,19 +527,19 @@ const Questions = () => {
               </div>
               <div className="flex flex-col">
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${shortAnswersNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {shortAnswersNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${numericalNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {numericalNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${essayNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {essayNbr}
@@ -608,7 +610,7 @@ const Questions = () => {
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
-              <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
+              <div className="absolute min-w-max bg-main-bg  dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
                 {links.map((item) => (
                   <Tooltip
                     key={item.title}
@@ -704,7 +706,7 @@ const Questions = () => {
                 )}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
+              <div className="bg-main-bg drop-shadow-lg absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
                 <div className="flex mr-5">
                   <p className="text-lg">
                     {
@@ -719,7 +721,7 @@ const Questions = () => {
                             : questionTitle
                         }`}
                         onChange={handleInputChange}
-                        className="dark:bg-transparent mr-4 capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                        className="dark:bg-transparent mr-4 capitalize text-sm md:text-base bg-main-bg  dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
@@ -771,9 +773,9 @@ const Questions = () => {
                                 : questionPoints
                             }`}
                             onChange={handlePointsChange}
-                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-12 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
+                            className="dark:bg-transparent bg-main-bg  dark:text-white text-gray-900 w-12 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
                           />
-                          <span className="-ml-1 md:text-sm lg:text-base xl:text-lg">
+                          <span className="-ml-1 md:text-sm text-gray-900  dark:text-white lg:text-base xl:text-lg">
                             points
                           </span>
                         </div>
@@ -826,7 +828,7 @@ const Questions = () => {
                 return (
                   <div
                     key={question._id}
-                    className={`bg-white mx-auto sm:mt-2 mt-3 border h-fit ${
+                    className={`bg-main-bg drop-shadow-lg mx-auto sm:mt-2 mt-3 border h-fit ${
                       isActive ? "border-green-500" : ""
                     } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
                       !isActive

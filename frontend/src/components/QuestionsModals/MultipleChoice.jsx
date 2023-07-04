@@ -62,6 +62,8 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
   };
 
   const [errorMessage, setErrorMessage] = useState(false);
+  const [singleOptionErrorMessage, setSingleOptionErrorMessage] =
+    useState(false);
 
   const handleData = () => {
     const type = { iconType };
@@ -281,9 +283,17 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
               <div className="flex justify-end mb-3 mt-0 mx-auto w-11/12">
                 {errorMessage && (
                   <div className="flex align-middle">
-                    <BiMessageError className="text-red-500 mt-6" />
+                    <BiMessageError className="text-red-500 mt-5" />
                     <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
                       Please fill all the fields
+                    </p>
+                  </div>
+                )}
+                {singleOptionErrorMessage && (
+                  <div className="flex align-middle">
+                    <BiMessageError className="text-red-500 mt-5" />
+                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                      Please add more than one option
                     </p>
                   </div>
                 )}
@@ -311,6 +321,11 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                         setErrorMessage(true);
                         setTimeout(() => {
                           setErrorMessage(false);
+                        }, 2000);
+                      } else if (options.length == 1) {
+                        setSingleOptionErrorMessage(true);
+                        setTimeout(() => {
+                          setSingleOptionErrorMessage(false);
                         }, 2000);
                       } else {
                         handleData();
