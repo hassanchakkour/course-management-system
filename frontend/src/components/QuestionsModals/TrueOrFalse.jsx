@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { BiMessageError } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 
@@ -122,7 +123,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       />
                       <label
                         htmlFor="correctOptionTrue"
-                        className="px-3 py-3 relative text-slate-400 placeholder-slate-400 bg-transparent  md:text-lg text-sm "
+                        className="px-3 py-3 relative cursor-pointer text-slate-400 placeholder-slate-400 bg-transparent  md:text-lg text-sm "
                       >
                         True
                       </label>
@@ -138,7 +139,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       />
                       <label
                         htmlFor="correctOptionFalse"
-                        className="px-3 py-3 text-slate-400 placeholder-slate-400 relative bg-transparent  rounded md:text-lg text-sm "
+                        className="px-3 py-3 cursor-pointer text-slate-400 placeholder-slate-400 relative bg-transparent  rounded md:text-lg text-sm "
                       >
                         False
                       </label>
@@ -152,7 +153,15 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                   className={`border-b border-solid border-slate-200  w-full`}
                 ></div>
               </div>
-              <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
+              <div className="flex justify-end mb-3 mt-0 mx-auto w-11/12">
+                {errorMessage && (
+                  <div className="flex align-middle">
+                    <BiMessageError className="text-red-500 mt-5" />
+                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                      Please fill all the fields
+                    </p>
+                  </div>
+                )}
                 <div>
                   <button
                     className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
@@ -170,7 +179,12 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                       if (
                         !title ||
                         !questionContent ||
-                        !point                      
+// <<<<<<< walaa
+//                         !point                      
+// =======
+//                         !point ||
+//                         !correctOption
+// >>>>>>> master
                       ) {
                         setErrorMessage(true);
                         setTimeout(() => {
@@ -185,11 +199,6 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                     Submit
                   </button>
                 </div>
-                {errorMessage && (
-                  <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 mr-2">
-                    Please fill all the fields
-                  </p>
-                )}
               </div>
             </div>
           </div>

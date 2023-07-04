@@ -28,7 +28,7 @@ const Content = () => {
         />
       </div>
 
-      <Header onDataFromChild={handleDataFromModules} course={course} />
+      <Module onDataFromChild={handleDataFromModules} course={course} />
     </div>
   );
 };

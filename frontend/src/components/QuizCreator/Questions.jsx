@@ -38,9 +38,9 @@ const Questions = () => {
   const [showTrueFalse, setShowTrueFalse] = useState(false);
 
   const [showMutlipleResponse, setShowMultipleResponse] = useState(false);
-    const [showShortAnswer,setShowShortAnswer]=useState(false);
-    const [showNumerical,setShownumerical]=useState(false);
-    const [showEssay, setShowEssay]=useState(false);
+  const [showShortAnswer, setShowShortAnswer] = useState(false);
+  const [showNumerical, setShownumerical] = useState(false);
+  const [showEssay, setShowEssay] = useState(false);
 
   const [questionId, setQuestionId] = useState("");
   const [questionOptions, setQuestionOptions] = useState("");
@@ -192,8 +192,12 @@ const Questions = () => {
 
   const handleRemoveQuestion = async (id) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:5000/api/questions/delete/${id}`
+      let sendData = {
+        activityId: activityId,
+      };
+      const res = await axios.post(
+        `http://localhost:5000/api/questions/delete/${id}`,
+        sendData
       );
       setSingleData([]);
       setDeleteMessage("Question Deleted");
@@ -206,9 +210,21 @@ const Questions = () => {
     }
   };
 
+  const updatePassingGradeInQuiz = async () => {
+    let sendData = {
+      passingGrade: gradeNbr,
+    };
+    const res = axios.put(
+      `http://localhost:5000/api/activities/updateSingleActivity/${activityId}`,
+      sendData
+    );
+    console.log(res);
+  };
+
   useEffect(() => {
     getQuestionData();
-  }, []);
+    updatePassingGradeInQuiz();
+  }, [gradeNbr]);
 
   const iconQuestionStyle =
     "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
@@ -289,7 +305,7 @@ const Questions = () => {
     };
     submit();
   };
- // *********** Add Multiple Response ************ 
+  // *********** Add Multiple Response ************
   const addMultipleResponse = (data) => {
     console.log("This is from child", data);
     let questionOption = [];
@@ -340,10 +356,8 @@ const Questions = () => {
     submit();
   };
 
-  // *********** Add  Short Answer ************ 
+  // *********** Add  Short Answer ************
   const addShortAnswer = (data) => {
-    
-
     console.log(data.title);
     console.log(data.questionContent);
     console.log(data.point);
@@ -357,7 +371,6 @@ const Questions = () => {
         point: data.point,
         title: data.title,
         correctOption: data.correctOption,
-        
       };
       try {
         const res = await axios.post(
@@ -375,84 +388,80 @@ const Questions = () => {
     };
     submit();
   };
- // *********** Add  Short Answer ************ 
- const addQuestionEssay = (data) => {
-    
+  // *********** Add  Question Essay ************
+  const addQuestionEssay = (data) => {
+    console.log(data.title);
+    console.log(data.questionContent);
+    console.log(data.point);
+    console.log(data.correctOption);
 
-  console.log(data.title);
-  console.log(data.questionContent);
-  console.log(data.point);
-  console.log(data.correctOption);
-
-  const submit = async () => {
-    let sendData = {
-      activityId: activityId,
-      questionContent: data.questionContent,
-      type: iconType,
-      point: data.point,
-      title: data.title,
-      correctOption: data.correctOption,
-      
+    const submit = async () => {
+      let sendData = {
+        activityId: activityId,
+        questionContent: data.questionContent,
+        type: iconType,
+        point: data.point,
+        title: data.title,
+        correctOption: data.correctOption,
+      };
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/questions",
+          sendData
+        );
+        console.log(res.data);
+        setSuccessMessage("Question Created Successfully");
+        setTimeout(() => setSuccessMessage(""), 2500);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        await getQuestionData();
+      }
     };
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/questions",
-        sendData
-      );
-      console.log(res.data);
-      setSuccessMessage("Question Created Successfully");
-      setTimeout(() => setSuccessMessage(""), 2500);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      await getQuestionData();
-    }
+    submit();
   };
-  submit();
-};
 
-// *********** Add Multiple Response ************ 
-const addNumerical = (data) => {
-  console.log("This is from child", data);
-  let questionOption = [];
+  // *********** Add Numerical  ************
+  const addNumerical = (data) => {
+    console.log("This is from child", data);
+    let questionOption = [];
 
-  for (let i = 0; i < data.options.length; i++) {
-    questionOption.push(data.options[i].content);
-  }
+    for (let i = 0; i < data.options.length; i++) {
+      questionOption.push(data.options[i].content);
+    }
 
-  console.log(data.title);
-  console.log(data.questionContent);
-  console.log(data.point);
-  console.log(data.correctResponse);
+    console.log(data.title);
+    console.log(data.questionContent);
+    console.log(data.point);
+    console.log(data.correctResponse);
 
-  const submit = async () => {
-    let sendData = {
-      activityId: activityId,
-      questionContent: data.questionContent,
-      type: iconType,
-      point: data.point,
-      title: data.title,
-      correctOption: data.correctOption,
-      options: questionOption,
+    const submit = async () => {
+      let sendData = {
+        activityId: activityId,
+        questionContent: data.questionContent,
+        type: iconType,
+        point: data.point,
+        title: data.title,
+        correctOption: data.correctOption,
+        options: questionOption,
+      };
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/questions",
+          sendData
+        );
+        console.log(res.data);
+        setSuccessMessage("Question Created Successfully");
+        setTimeout(() => setSuccessMessage(""), 2500);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        await getQuestionData();
+      }
     };
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/questions",
-        sendData
-      );
-      console.log(res.data);
-      setSuccessMessage("Question Created Successfully");
-      setTimeout(() => setSuccessMessage(""), 2500);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      await getQuestionData();
-    }
+    submit();
   };
-  submit();
-};
 
-  
   return (
     <>
       {/* Main Container */}
@@ -489,19 +498,21 @@ const addNumerical = (data) => {
               </div>
               <div className="flex flex-col">
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${multipleChoiceNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {multipleChoiceNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{
+                    color: `${multipleResponceNbr > 0 && currentColor}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {multipleResponceNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${trueFalseNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {trueFalseNbr}
@@ -521,19 +532,19 @@ const addNumerical = (data) => {
               </div>
               <div className="flex flex-col">
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${shortAnswersNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {shortAnswersNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${numericalNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {numericalNbr}
                 </span>
                 <span
-                  style={{ color: `${currentColor}` }}
+                  style={{ color: `${essayNbr > 0 && currentColor}` }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {essayNbr}
@@ -604,7 +615,7 @@ const addNumerical = (data) => {
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
-              <div className="absolute min-w-max bg-white dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
+              <div className="absolute min-w-max bg-main-bg  dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
                 {links.map((item) => (
                   <Tooltip
                     key={item.title}
@@ -676,31 +687,31 @@ const addNumerical = (data) => {
                     onSubmit={addMultipleResponse}
                   />
                 )}
-                
-                 {showShortAnswer && (
+
+                {showShortAnswer && (
                   <ShortAnswers
-                  setShowShortAnswer={setShowShortAnswer}
-                  iconType={iconType}
-                  onSubmit={addShortAnswer}
+                    setShowShortAnswer={setShowShortAnswer}
+                    iconType={iconType}
+                    onSubmit={addShortAnswer}
                   />
                 )}
-                 {showNumerical && (
+                {showNumerical && (
                   <Numerical
-                  setShownumerical={setShownumerical}
-                  iconType={iconType}
+                    setShownumerical={setShownumerical}
+                    iconType={iconType}
                     onSubmit={addNumerical}
                   />
                 )}
-                 {showEssay && (
+                {showEssay && (
                   <QuestionEssay
-                  setShowEssay={setShowEssay}
-                  iconType={iconType}
-                  onSubmit={addQuestionEssay}
+                    setShowEssay={setShowEssay}
+                    iconType={iconType}
+                    onSubmit={addQuestionEssay}
                   />
-                )}  
+                )}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-white absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
+              <div className="bg-main-bg drop-shadow-lg absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
                 <div className="flex mr-5">
                   <p className="text-lg">
                     {
@@ -715,7 +726,7 @@ const addNumerical = (data) => {
                             : questionTitle
                         }`}
                         onChange={handleInputChange}
-                        className="dark:bg-transparent mr-4 capitalize text-sm md:text-base bg-white dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
+                        className="dark:bg-transparent mr-4 capitalize text-sm md:text-base bg-main-bg  dark:text-white text-gray-800 w-32 focus:outline-none focus:border-transparent p-1 rounded-lg"
                       />
                     }
                   </p>
@@ -767,9 +778,9 @@ const addNumerical = (data) => {
                                 : questionPoints
                             }`}
                             onChange={handlePointsChange}
-                            className="dark:bg-transparent bg-white dark:text-white text-gray-800 w-12 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
+                            className="dark:bg-transparent bg-main-bg  dark:text-white text-gray-900 w-12 xl:text-lg lg:text-base md:text-sm focus:outline-none focus:border-transparent p-1 rounded-lg"
                           />
-                          <span className="-ml-1 md:text-sm lg:text-base xl:text-lg">
+                          <span className="-ml-1 md:text-sm text-gray-900  dark:text-white lg:text-base xl:text-lg">
                             points
                           </span>
                         </div>
@@ -830,10 +841,12 @@ const addNumerical = (data) => {
                 return (
                   <div
                     key={question._id}
-                    className={`bg-white mx-auto sm:mt-2 mt-3 border h-fit ${
+                    className={`bg-main-bg drop-shadow-lg mx-auto sm:mt-2 mt-3 border h-fit ${
                       isActive ? "border-green-500" : ""
                     } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
-                      !isActive ? "dark:hover:border-gray-600" : ""
+                      !isActive
+                        ? "dark:hover:border-gray-600 hover:border-gray-700"
+                        : ""
                     }  rounded-xl sm:h-2/6 h-1/6 w-5/6 sm:p-4 p-1 pt-2 ease-linear transition-all duration-150`}
                   >
                     <div className="flex justify-around">
@@ -869,7 +882,7 @@ const addNumerical = (data) => {
                           console.log(questionOptions);
                           console.log(iconType);
                         }}
-                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-green-400  dark:hover:drop-shadow-lg lg:text-lg text-xs ease-linear transition-all duration-150`}
+                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-green-400  dark:hover:drop-shadow-lg hover:text-gray-400 lg:text-lg text-xs ease-linear transition-all duration-150`}
                       >
                         {question.title}
                       </p>

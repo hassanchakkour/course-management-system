@@ -20,6 +20,14 @@ const activitySchema = Schema(
       type: Number,
       default: 0,
     },
+    numberOfAttempts: {
+      type: Number,
+      default: 0,
+    },
+    instructions: {
+      type: String,
+      default: "",
+    },
     submoduleId: {
       type: SchemaTypes.ObjectId,
       ref: "Submodule",

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { MdLibraryAdd } from "react-icons/md";
 import { BiMessageSquareMinus } from "react-icons/bi";
+import { BiErrorCircle } from "react-icons/bi";
+import { BiMessageError } from "react-icons/bi";
 import { Tooltip } from "@mui/material";
 // import ReactQuill from "react-quill";
 // import "react-quill/dist/quill.snow.css";
@@ -60,6 +62,8 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
   };
 
   const [errorMessage, setErrorMessage] = useState(false);
+  const [singleOptionErrorMessage, setSingleOptionErrorMessage] =
+    useState(false);
 
   const handleData = () => {
     const type = { iconType };
@@ -193,14 +197,20 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                     className="w-full px-3 mb-3 mt-3 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none pr-10"
                   />
                   {errorOptionMessage && (
-                    <p className="capitalize text-red-500 text-base">
-                      Please enter option before add
-                    </p>
+                    <div className="flex text-red-500">
+                      <BiErrorCircle />
+                      <p className="capitalize text-red-500 text-base ml-1">
+                        Please enter option before add
+                      </p>
+                    </div>
                   )}
                   {errorOptionExist && (
-                    <p className="capitalize text-red-500 text-base">
-                      Option already exist!
-                    </p>
+                    <div className="flex text-red-500">
+                      <BiErrorCircle />
+                      <p className="capitalize text-red-500 text-base ml-1">
+                        Option already exist!
+                      </p>
+                    </div>
                   )}
 
                   {showAddOption && (
@@ -270,7 +280,23 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                   className={`border-b border-solid border-slate-200  w-full`}
                 ></div>
               </div>
-              <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
+              <div className="flex justify-end mb-3 mt-0 mx-auto w-11/12">
+                {errorMessage && (
+                  <div className="flex align-middle">
+                    <BiMessageError className="text-red-500 mt-5" />
+                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                      Please fill all the fields
+                    </p>
+                  </div>
+                )}
+                {singleOptionErrorMessage && (
+                  <div className="flex align-middle">
+                    <BiMessageError className="text-red-500 mt-5" />
+                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                      Please add more than one option
+                    </p>
+                  </div>
+                )}
                 <div>
                   <button
                     className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
@@ -296,6 +322,11 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                         setTimeout(() => {
                           setErrorMessage(false);
                         }, 2000);
+                      } else if (options.length == 1) {
+                        setSingleOptionErrorMessage(true);
+                        setTimeout(() => {
+                          setSingleOptionErrorMessage(false);
+                        }, 2000);
                       } else {
                         handleData();
                         setShowModal(false);
@@ -305,11 +336,6 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                     Submit
                   </button>
                 </div>
-                {errorMessage && (
-                  <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 mr-2">
-                    Please fill all the fields
-                  </p>
-                )}
               </div>
             </div>
           </div>

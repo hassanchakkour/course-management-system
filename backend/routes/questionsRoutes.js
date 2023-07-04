@@ -17,7 +17,7 @@ router.post(
   getQuestionsByactivityId
 );
 router.get("/:id", getQuestion);
-router.delete("/delete/:id", deleteQuestion);
+router.post("/delete/:id", deleteQuestion);
 router.put("/:id", putQuestion);
 
 export default router;

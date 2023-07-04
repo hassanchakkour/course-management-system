@@ -123,12 +123,25 @@ const Navbar = () => {
           />
         )}
 
-        {pathname === "/courseName" && (
+        {pathname === "/Main" && (
           <Tooltip title="Back">
             <span
               className="md:mt-4 cursor-pointer mt-5 text-xl md:text-2xl dark:text-gray-200 text-gray-500 hover:text-gray-400 dark:hover:text-gray-500 hover:transition ease-out duration-700"
               onClick={() => {
-                navigate(-1);
+                navigate("/dashboard");
+              }}
+            >
+              <BsChevronLeft />
+            </span>
+          </Tooltip>
+        )}
+
+        {pathname === "/quizCreator" && (
+          <Tooltip title="Back">
+            <span
+              className="md:mt-4 cursor-pointer mt-5 text-xl md:text-2xl dark:text-gray-200 text-gray-500 hover:text-gray-400 dark:hover:text-gray-500 hover:transition ease-out duration-700"
+              onClick={() => {
+                navigate("/Main");
               }}
             >
               <BsChevronLeft />

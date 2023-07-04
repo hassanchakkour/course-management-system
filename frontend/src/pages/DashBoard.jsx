@@ -129,9 +129,9 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="mt-24 lg:-ml-2 md:mt-3">
+    <div className="mt-24 lg:-ml-2 md:mt-3 ">
       <div className="flex flex-col">
-        <div className="mx-auto bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-24 rounded-3xl w-11/12 p-8">
+        <div className="mx-auto bg-main-bg drop-shadow-lg dark:text-gray-200 dark:bg-secondary-dark-bg h-24 rounded-3xl w-11/12 p-8">
           <div className="flex justify-between">
             <p className="text-xl text-gray-500 dark:text-gray-400 lg:dark:text-white">
               <span>Academic</span> <span className="font-bold">Session</span>
@@ -186,10 +186,14 @@ const DashBoard = () => {
               <div
                 key={course._id}
                 style={{
-                  filter: `drop-shadow(0px 0px 3px ${currentColor})`,
+                  // filter: `${
+                  //   currentMode === "Dark" &&
+                  //   `drop-shadow(0px 0px 3px ${currentColor})`
+                  // }`,
+                  borderColor: `${currentColor}`,
                   scrollSnapAlign: "start",
                 }}
-                className={`bg-white dark:text-gray-200 dark:bg-secondary-dark-bg w-96 h-40 p-4 rounded-3xl flex-none scroll-snap-align-start`}
+                className={`bg-main-bg dark:border-1  drop-shadow-md dark:text-gray-200 dark:bg-secondary-dark-bg w-96 h-40 p-4 rounded-3xl flex-none scroll-snap-align-start`}
               >
                 <p className="mb-3">
                   <span
@@ -211,7 +215,7 @@ const DashBoard = () => {
                     {course.duration}
                   </p>
                   <Tooltip arrow title="Edit" placement="top">
-                    <NavLink to="/courseName">
+                    <NavLink to="/Main">
                       <button
                         type="button"
                         onClick={() => setCourse_ID(course._id, course.title)}
