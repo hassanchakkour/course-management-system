@@ -26,8 +26,8 @@ const ThemeSettings = () => {
       color: "#FF5C8E",
     },
     {
-      name: "indigo-theme",
-      color: "#1E4DB7",
+      name: "TealSea-theme",
+      color: "#14b8a6",
     },
     {
       color: "#FB9678",
