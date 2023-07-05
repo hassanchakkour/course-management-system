@@ -29,7 +29,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     res.status(201).json(responseData);
-    console.log(`Successfully logged in! ${user.firstName} ${user.lastName}`);
+    // console.log(`Successfully logged in! ${user.firstName} ${user.lastName}`);
   } else {
     res.status(401); // Unauthorized
     throw new Error("Invalid email or password");
@@ -127,7 +127,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     res.status(201).json(responseData);
 
-    console.log(`Successfully signed up! ${user.firstName} ${user.lastName}`);
+    // console.log(`Successfully signed up! ${user.firstName} ${user.lastName}`);
   } else {
     res.status(400);
     throw new Error("Invalid user data");

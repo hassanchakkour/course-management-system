@@ -78,7 +78,7 @@ const userSchema = Schema(
           return [];
         }
       },
-      select: false,
+      // select: false,
     },
     badges: {
       type: [
@@ -92,7 +92,7 @@ const userSchema = Schema(
           return [];
         }
       },
-      select: false,
+      // select: false,
     },
     certificates: {
       type: [
@@ -106,12 +106,12 @@ const userSchema = Schema(
           return [];
         }
       },
-      select: false,
+      // select: false,
     },
   },
   {
     timestamps: true,
-    toJSON: { getters: true, setters: true },
+    // toJSON: { getters: true, setters: true },
   }
 );
 
