@@ -8,10 +8,12 @@ import {
   getSingleBadge,
   updateBadge,
   deleteBadge,
+  updateStudentBadge,
 } from "../controllers/badgeController.js";
 
-router.post("/", protect, isTeacher, createBadge);
-router.get("/", protect, isTeacher, getAllBadges);
+router.post("/", createBadge);
+router.post("/getBadge", getAllBadges);
+router.post("/updateBadge", updateStudentBadge);
 router.get("/:id", protect, isTeacher, getSingleBadge);
 router.put("/update/:id", protect, isTeacher, updateBadge);
 router.delete("/delete", protect, isTeacher, deleteBadge);
