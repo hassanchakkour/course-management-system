@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import { validateRegister } from "../middleware/validatorMiddleware.js";
 import nodemailer from "nodemailer";
+import Submission from "../models/submissionModel.js";
 
 // @desc    Authenticate user/set token
 // @route   POST/api/users/login
@@ -294,7 +295,17 @@ const getAllUserbyCourseId = asyncHandler(async (req, res) => {
   const { courseId } = req.body;
   const getAllStudents = await User.find({
     studentEnrollmentCourses: courseId,
-  });
+  })
+    .populate({
+      path: "submitted",
+      populate: {
+        path: "activityId",
+        model: "Activity",
+        strictPopulate: false,
+      },
+    })
+    .exec();
+
   if (getAllStudents) {
     res.status(200).json(getAllStudents);
   } else {

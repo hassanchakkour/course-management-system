@@ -11,7 +11,7 @@ const StudentsPage = () => {
 
   const [users, setUsers] = useState();
   const [badge, setBadge] = useState();
-
+  const [nbrOnline, setNbrOnline] = useState(0);
   const getAllStudents = async () => {
     let sendData = {
       courseId: courseId,
@@ -20,9 +20,10 @@ const StudentsPage = () => {
       "http://localhost:5000/api/users/getAll",
       sendData
     );
-    // console.log("this", res.data.badges);
+    // console.log("this", res.data);
     setUsers(res.data);
   };
+
   const getBadge = async () => {
     let sendData = {
       courseId: courseId,
@@ -55,11 +56,74 @@ const StudentsPage = () => {
     // console.log(res.data);
   };
 
+  const getModuleData = async () => {
+    let sendData = {
+      courseId: courseId,
+    };
+    const res = await axios.post(
+      "http://localhost:5000/api/modules/course",
+      sendData
+    );
+    // console.log(res.data[0].submoduleId);
+    let onlineTemp = 0;
+    for (let i = 0; i < res.data.length; i++) {
+      for (let j = 0; j < res.data[i].submoduleId.length; j++) {
+        for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
+          console.log(res.data[i].submoduleId[j].activityId[k].type);
+          if (
+            res.data[i].submoduleId[j].activityId[k].type === "online session"
+          ) {
+            onlineTemp += 1;
+          }
+        }
+      }
+    }
+    setNbrOnline(onlineTemp);
+    console.log(onlineTemp);
+    // return onlineTemp;
+  };
+
+  const grades = (asd) => {
+    let nbr = 0;
+    for (let i = 0; i < asd.length; i++) {
+      if (asd[i].type === "Quiz") {
+        nbr += asd[i].grade;
+      }
+    }
+    return nbr;
+  };
+  const gradeAssignment = (asd) => {
+    let nbr = 0;
+    for (let i = 0; i < asd.length; i++) {
+      if (asd[i].type === "Assignment") {
+        nbr += asd[i].grade;
+      }
+    }
+    return nbr;
+  };
+  const gradeOnline = (asd) => {
+    let nbr = 0;
+    for (let i = 0; i < asd.length; i++) {
+      if (asd[i].type === "online session") {
+        nbr += 1;
+      }
+    }
+    return nbr;
+  };
+  const over = (asd) => {
+    let nbr = 0;
+    for (let i = 0; i < asd.length; i++) {
+      if (asd[i].type === "online session") {
+        nbr += 1;
+      }
+    }
+    return nbr;
+  };
   useEffect(() => {
     getAllStudents();
     getBadge();
+    getModuleData();
   }, []);
-
   return (
     <>
       <div className="relative  lg:ml-14 md:ml-8 md:mt-12 ml-6 mt-28 w-11/12 overflow-x-auto custom-scrollbar drop-shadow-md dark:drop-shadow-xl bg-main-bg dark:bg-main-dark-bg sm:rounded-lg p-10">
@@ -101,13 +165,13 @@ const StudentsPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Name
                 </th>
-
-                <th scope="col" className="px-6 py-3">
-                  Assignment
-                </th>
                 <th scope="col" className="px-6 py-3">
                   Quiz
                 </th>
+                <th scope="col" className="px-6 py-3">
+                  Assignment
+                </th>
+
                 <th scope="col" className="px-6 py-3">
                   Online Session
                 </th>
@@ -130,6 +194,7 @@ const StudentsPage = () => {
             </thead>
             {users &&
               users.map((user, index) => {
+                // console.log(user.submitted);
                 return (
                   <tbody key={user._id}>
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -148,19 +213,29 @@ const StudentsPage = () => {
                         </div>
                       </th>
 
-                      <td className="px-6 py-4">0</td>
-                      <td className="px-6 py-4">0</td>
                       <td className="px-6 py-4">
+                        <p className="">{grades(user.submitted)}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="">{gradeAssignment(user.submitted)}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="">
+                          {gradeOnline(user.submitted)} / {nbrOnline}
+                        </p>
+                      </td>
+
+                      {/* <td className="px-6 py-4">
                         {index % 2 === 0 ? (
-                          <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
+                          <span className="px-2 py-1 font-bold leading-tight text-green-500  rounded-sm">
                             2/3
                           </span>
                         ) : (
-                          <span className="px-2 py-1 font-bold leading-tight text-red-700  rounded-sm">
+                          <span className="px-2 py-1 font-bold leading-tight text-red-500  rounded-sm">
                             1/3
                           </span>
                         )}
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4">
                         {badge ? badge.title : null}
                       </td>
@@ -177,7 +252,7 @@ const StudentsPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 ">
-                        <p>Passed</p>
+                        <p className="text-green-500 font-bold">Passed</p>
                       </td>
                       <td className="px-6 py-4">
                         {badge && user.badges.includes(badge._id) ? (
