@@ -18,12 +18,10 @@ const registerSchema = Joi.object({
     .min(6)
     .max(1024)
     .required(),
-  role: Joi.string().valid("teacher", "student").required(),
-  birthDate: Joi.date().iso().required(),
-  phoneNumber: Joi.string()
-    .pattern(/^(?:(?:\+|00)961)?\d{8}$/)
-    .required(),
-  gender: Joi.string().valid("male", "female").required(),
+  role: Joi.string().valid("teacher", "student"),
+  birthDate: Joi.date().iso(),
+  phoneNumber: Joi.string().pattern(/^(?:(?:\+|00)961)?\d{8}$/),
+  gender: Joi.string().valid("male", "female"),
   specialization: Joi.when("role", {
     is: "teacher",
     then: Joi.string().required(),

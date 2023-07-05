@@ -14,6 +14,14 @@ const userSchema = Schema(
       type: String,
       required: [true, "Please provide your last name."],
     },
+    submitted: {
+      type: [
+        {
+          type: SchemaTypes.ObjectId,
+          ref: "Submission",
+        },
+      ],
+    },
     email: {
       type: String,
       required: [true, "Please provide your email address."],
@@ -30,13 +38,11 @@ const userSchema = Schema(
     },
     birthDate: {
       type: Date,
-      required: [true, "Please provide your birth date."],
       get: (value) => (value ? value.toISOString().split("T")[0] : null),
       set: (value) => (value ? new Date(value) : null),
     },
     phoneNumber: {
       type: String,
-      required: [true, "Please provide your phone number."],
     },
     gender: {
       type: String,

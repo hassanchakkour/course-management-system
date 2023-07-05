@@ -20,7 +20,7 @@ const StudentsPage = () => {
       "http://localhost:5000/api/users/getAll",
       sendData
     );
-    // console.log("this", res.data.badges);
+    console.log("this", res.data);
     setUsers(res.data);
   };
   const getBadge = async () => {
@@ -130,6 +130,7 @@ const StudentsPage = () => {
             </thead>
             {users &&
               users.map((user, index) => {
+                console.log(user.submitted[0].activityId.completion);
                 return (
                   <tbody key={user._id}>
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -147,16 +148,50 @@ const StudentsPage = () => {
                           </div>
                         </div>
                       </th>
+                      {user.submitted[1].type === "Assignment" ? (
+                        <td className="px-6 py-4">
+                          {user.submitted[1].grade >= 50 ? (
+                            <p className="text-green-500">
+                              {user.submitted[1].grade}
+                            </p>
+                          ) : (
+                            <p className="text-red-500">
+                              {user.submitted[1].grade}
+                            </p>
+                          )}
+                        </td>
+                      ) : (
+                        <td className="px-6 py-4">
+                          <p className="text-red-500">0</p>
+                        </td>
+                      )}
+                      {user.submitted[0].type === "Quiz" ? (
+                        <td className="px-6 py-4">
+                          {user.submitted[0].grade >= 50 ? (
+                            <p className="text-green-500">
+                              {user.submitted[0].grade}
+                            </p>
+                          ) : (
+                            <p className="text-red-500">
+                              {user.submitted[0].grade}
+                            </p>
+                          )}
+                        </td>
+                      ) : (
+                        <td className="px-6 py-4">
+                          <p className="text-red-500">
+                            {user.submitted[0].grade}
+                          </p>
+                        </td>
+                      )}
 
-                      <td className="px-6 py-4">0</td>
-                      <td className="px-6 py-4">0</td>
                       <td className="px-6 py-4">
                         {index % 2 === 0 ? (
-                          <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
+                          <span className="px-2 py-1 font-bold leading-tight text-green-500  rounded-sm">
                             2/3
                           </span>
                         ) : (
-                          <span className="px-2 py-1 font-bold leading-tight text-red-700  rounded-sm">
+                          <span className="px-2 py-1 font-bold leading-tight text-red-500  rounded-sm">
                             1/3
                           </span>
                         )}
@@ -177,7 +212,12 @@ const StudentsPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 ">
-                        <p>Passed</p>
+                        {user.submitted[0].grade >= 50 &&
+                        user.submitted[1].grade >= 50 ? (
+                          <p className="text-green-500 font-bold">Passed</p>
+                        ) : (
+                          <p className="text-red-500 font-bold">Failed</p>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         {badge && user.badges.includes(badge._id) ? (
