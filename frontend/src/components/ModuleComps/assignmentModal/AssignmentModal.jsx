@@ -68,7 +68,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Quiz: {quizTitle}
+                Assignment: {quizTitle}
               </h3>
             </div>
             {/*body*/}
@@ -92,7 +92,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                   />
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Description
+                  Assignment Description
                 </label>
                 <div className="mb-3 pt-0">
                   <textarea
@@ -104,7 +104,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                   />
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Instructions
+                  Attachments
                 </label>
                 <div className="mb-3 pt-0">
                   <textarea
@@ -116,20 +116,18 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                   />
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Passing Grade
+                  Rubric
                 </label>
                 <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    disabled={true}
-                    value={passingGrade}
-                    placeholder="Add a Passing Grade"
-                    onChange={(e) => setPassingGrade(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
+                <button type="submit"  
+                 variant="contained" 
+                 className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full">
+                  
+              Insert Rubric
+                 </button>
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Number Of Attempts
+                  Due Date
                 </label>
                 <div className="mb-3 pt-0">
                   <input
@@ -137,11 +135,11 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                     value={nbrAttempts}
                     placeholder="Add a Number Of Attempts"
                     onChange={(e) => setNbrAttempts(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Duration
+                  Penality Percentage
                 </label>
                 <div className="mb-3 pt-0">
                   <input
@@ -149,21 +147,10 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                     value={duration}
                     placeholder="Add Duration in min"
                     onChange={(e) => setDuration(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Number Of Questions
-                </label>
-                <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    disabled={true}
-                    value={nbrQuestion}
-                    placeholder="Add Duration in min"
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
-                </div>
+               
                 {/* <div className="">
                     <label className="my-4 text-slate-400 text-lg leading-relaxed">
                       Load Quiz
@@ -176,7 +163,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
             </div>
 
             {/*footer*/}
-            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <div className="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
               {error && (
                 <p className="absolute left-16 text-red-500 mb-2 ">
                   <span className="flex">
@@ -187,14 +174,14 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 </p>
               )}
               <button
-                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              className="text-teal-500 border-teal-300 rounded-full font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={() => setAssignemntModal(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full"
                 type="button"
                 onClick={() => {
                   setAssignemntModal(false);

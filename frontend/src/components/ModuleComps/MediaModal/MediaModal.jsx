@@ -68,7 +68,7 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Quiz: {quizTitle}
+                  Media: {quizTitle}
               </h3>
             </div>
             {/*body*/}
@@ -103,67 +103,28 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
+              
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Instructions
+                  Media 
                 </label>
                 <div className="mb-3 pt-0">
-                  <textarea
-                    type="text"
-                    value={instructions}
-                    placeholder="Add Instructions"
-                    onChange={(e) => setInstructions(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
+                <input
+                   id="outlined-error"
+              type="file"
+               label="Upload Media"
+               class="mt-2 block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" 
+              // onChange={(event) => {
+              //   formik.setFieldValue("file", event.currentTarget.files[0]);
+              // }}
+              name="file"
+              accept="image/*,video/*,audio/*"
+             
+              placeholder="Upload Media"
+              
+            />
                 </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Passing Grade
-                </label>
-                <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    disabled={true}
-                    value={passingGrade}
-                    placeholder="Add a Passing Grade"
-                    onChange={(e) => setPassingGrade(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
-                </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Number Of Attempts
-                </label>
-                <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    value={nbrAttempts}
-                    placeholder="Add a Number Of Attempts"
-                    onChange={(e) => setNbrAttempts(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
-                </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Duration
-                </label>
-                <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    value={duration}
-                    placeholder="Add Duration in min"
-                    onChange={(e) => setDuration(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
-                </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Number Of Questions
-                </label>
-                <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    disabled={true}
-                    value={nbrQuestion}
-                    placeholder="Add Duration in min"
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
-                </div>
+               
+               
                 {/* <div className="">
                     <label className="my-4 text-slate-400 text-lg leading-relaxed">
                       Load Quiz
@@ -176,7 +137,7 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
             </div>
 
             {/*footer*/}
-            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <div className="flex items-center  justify-center p-6 border-t border-solid border-slate-200 rounded-b">
               {error && (
                 <p className="absolute left-16 text-red-500 mb-2 ">
                   <span className="flex">
@@ -187,14 +148,14 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                 </p>
               )}
               <button
-                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                className="text-teal-500 border rounded-full mr-2  border-teal-500  font-semibold uppercase px-4 py-2 text-sm  "
                 type="button"
                 onClick={() => setMediaModal(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full"  
                 type="button"
                 onClick={() => {
                   setMediaModal(false);
