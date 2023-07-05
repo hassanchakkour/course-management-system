@@ -9,11 +9,13 @@ import {
   updateBadge,
   deleteBadge,
   updateStudentBadge,
+  checkIfBadgeExist,
 } from "../controllers/badgeController.js";
 
 router.post("/", createBadge);
 router.post("/getBadge", getAllBadges);
 router.post("/updateBadge", updateStudentBadge);
+router.post("/ifExist", checkIfBadgeExist);
 router.get("/:id", protect, isTeacher, getSingleBadge);
 router.put("/update/:id", protect, isTeacher, updateBadge);
 router.delete("/delete", protect, isTeacher, deleteBadge);

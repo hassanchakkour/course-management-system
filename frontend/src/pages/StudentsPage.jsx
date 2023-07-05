@@ -7,7 +7,7 @@ const StudentsPage = () => {
   const { currentColor, courseID } = useStateContext();
 
   const courseId = localStorage.getItem("course_id", courseID);
-  console.log("cid", courseId);
+  // console.log("cid", courseId);
 
   const [users, setUsers] = useState();
   const [badge, setBadge] = useState();
@@ -20,7 +20,7 @@ const StudentsPage = () => {
       "http://localhost:5000/api/users/getAll",
       sendData
     );
-    console.log(res.data);
+    // console.log("this", res.data.badges);
     setUsers(res.data);
   };
   const getBadge = async () => {
@@ -31,7 +31,7 @@ const StudentsPage = () => {
       "http://localhost:5000/api/badges/getBadge",
       sendData
     );
-    console.log(res.data[0]);
+    // console.log(res.data[0]._id);
     setBadge(res.data[0]);
   };
 
@@ -45,7 +45,7 @@ const StudentsPage = () => {
       "http://localhost:5000/api/badges/updateBadge",
       sendData
     );
-    console.log(res.data);
+    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -122,73 +122,78 @@ const StudentsPage = () => {
               </tr>
             </thead>
             {users &&
-              users.map((user) => (
-                <tbody key={user._id}>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      style={{ marginTop: "0.5rem" }}
-                      className="  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      <div>
-                        <div className="text-base font-semibold">
-                          {user.firstName} {user.lastName}
-                        </div>
-                        <div className="font-normal text-gray-500">
-                          {user.email}
-                        </div>
-                      </div>
-                    </th>
-
-                    <td className="px-6 py-4">0</td>
-                    <td className="px-6 py-4">0</td>
-                    <td className="px-6 py-4">
-                      <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
-                        2/3
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">{badge ? badge.title : null}</td>
-                    <td className="px-6 py-4">Full Stack</td>
-                    <td className="px-2 py-4">
-                      <div className="flex justify-center items-center">
-                        <span>45%</span>
-                        <div className="w-full ml-2 bg-gray-200 rounded-full h-2.5  dark:bg-gray-700">
-                          <div
-                            className="bg-green-600 h-2.5 rounded-full dark:bg-green-500"
-                            style={{ width: "45%" }}
-                          ></div>
-                        </div>
-
-                        {/* <div className="relative w-full">
-                          <div className="overflow-hidden h-2 text-xs flex rounded bg-emerald-500">
-                            <div
-                              style={{ width: "100%" }}
-                              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                            />
-                          </div>
-                        </div> */}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p>Passed</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        style={{
-                          backgroundColor: badge ? currentColor : "gray",
-                        }}
-                        className={`px-4 py-2 rounded-md text-white ${
-                          badge ? "" : "bg-gray-300"
-                        }`}
-                        disabled={badge ? false : true}
-                        onClick={() => handleBadge(user._id)}
+              users.map((user, index) => {
+                return (
+                  <tbody key={user._id}>
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th
+                        scope="row"
+                        style={{ marginTop: "0.5rem" }}
+                        className="  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        Issue Badge
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
+                        <div>
+                          <div className="text-base font-semibold">
+                            {user.firstName} {user.lastName}
+                          </div>
+                          <div className="font-normal text-gray-500">
+                            {user.email}
+                          </div>
+                        </div>
+                      </th>
+
+                      <td className="px-6 py-4">0</td>
+                      <td className="px-6 py-4">0</td>
+                      <td className="px-6 py-4">
+                        {index % 2 === 0 ? (
+                          <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
+                            2/3
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 font-bold leading-tight text-red-700  rounded-sm">
+                            1/3
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        {badge ? badge.title : null}
+                      </td>
+                      <td className="px-6 py-4">Full Stack</td>
+                      <td className="px-2 py-4">
+                        <div className="flex justify-center items-center">
+                          <span>45%</span>
+                          <div className="w-full ml-2 bg-gray-200 rounded-full h-2.5  dark:bg-gray-700">
+                            <div
+                              className="bg-green-600 h-2.5 rounded-full dark:bg-green-500"
+                              style={{ width: "45%" }}
+                            ></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p>Passed</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        {badge && user.badges.includes(badge._id) ? (
+                          <p className="text-green-500 font-bold">Issued</p>
+                        ) : (
+                          <button
+                            style={{
+                              backgroundColor: badge ? currentColor : "gray",
+                            }}
+                            className={`px-4 py-2 rounded-md text-white ${
+                              badge ? "" : "bg-gray-300"
+                            }`}
+                            disabled={badge ? false : true}
+                            onClick={() => handleBadge(user._id)}
+                          >
+                            Issue Badge
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              })}
           </table>
         </div>
       </div>

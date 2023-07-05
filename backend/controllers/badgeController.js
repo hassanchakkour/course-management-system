@@ -81,7 +81,6 @@ const deleteBadge = asyncHandler(async (req, res) => {
 const updateStudentBadge = asyncHandler(async (req, res) => {
   const { badgeId, studentId } = req.body;
   const findBadge = await Badge.findById(badgeId);
-  console.log(findBadge);
   if (findBadge) {
     const addTonewModules = await User.findOneAndUpdate(
       { _id: studentId },
@@ -92,6 +91,16 @@ const updateStudentBadge = asyncHandler(async (req, res) => {
   }
 });
 
+const checkIfBadgeExist = asyncHandler(async (req, res) => {
+  const { studentId, badgeId } = req.body;
+
+  const student = await User.findById(studentId);
+  let asd;
+  console.log(student.badges.includes(badgeId));
+  asd = student.badges.includes(badgeId);
+  res.status(200).json(asd);
+});
+
 export {
   createBadge,
   getAllBadges,
@@ -99,4 +108,5 @@ export {
   updateBadge,
   deleteBadge,
   updateStudentBadge,
+  checkIfBadgeExist,
 };
