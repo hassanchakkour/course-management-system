@@ -290,6 +290,18 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllUserbyCourseId = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
+  const getAllStudents = await User.find({
+    studentEnrollmentCourses: courseId,
+  });
+  if (getAllStudents) {
+    res.status(200).json(getAllStudents);
+  } else {
+    res.status(500).json({ message: "Something Went Wrong!!!" });
+  }
+});
+
 export {
   loginUser,
   registerUser,
@@ -301,4 +313,5 @@ export {
   forgotPassword,
   getResetPassword,
   resetPassword,
+  getAllUserbyCourseId,
 };

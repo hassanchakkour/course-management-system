@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
 import "./studentsScrollStyle.css";
-import avatar from "../assets/images/avatar1.jpg";
+import axios from "axios";
 
 const StudentsPage = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, courseID } = useStateContext();
+
+  const courseId = localStorage.getItem("course_id", courseID);
+  console.log("cid", courseId);
+
+  const [users, setUsers] = useState();
+
+  const getAllStudents = async () => {
+    let sendData = {
+      courseId: courseId,
+    };
+    const res = await axios.post(
+      "http://localhost:5000/api/users/getAll",
+      sendData
+    );
+    console.log(res.data);
+    setUsers(res.data);
+  };
+
+  useEffect(() => {
+    getAllStudents();
+  }, []);
+
   return (
     <>
       <div className="relative  lg:ml-14 md:ml-8 md:mt-12 ml-6 mt-28 w-11/12 overflow-x-auto custom-scrollbar drop-shadow-md dark:drop-shadow-xl bg-main-bg dark:bg-main-dark-bg sm:rounded-lg p-10">
@@ -43,9 +65,6 @@ const StudentsPage = () => {
           <table className="w-full text-base text-center text-gray-500 dark:text-gray-400 ">
             <thead className="text-base text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 ">
               <tr>
-                <th scope="col" className="p-4">
-                  <div className="flex items-center"></div>
-                </th>
                 <th scope="col" className="px-6 py-3">
                   Name
                 </th>
@@ -78,25 +97,10 @@ const StudentsPage = () => {
             </thead>
             <tbody>
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td className="w-4 p-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-search-1"
-                      type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="checkbox-table-search-1"
-                      className="sr-only"
-                    >
-                      checkbox
-                    </label>
-                  </div>
-                </td>
                 <th
                   scope="row"
                   style={{ marginTop: "0.5rem" }}
-                  className="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                  className="  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   <div>
                     <div className="text-base font-semibold">Neil Sims</div>
@@ -110,23 +114,11 @@ const StudentsPage = () => {
                 <td className="px-6 py-4">0</td>
                 <td className="px-6 py-4">
                   <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
-                    {" "}
-                    Present{" "}
+                    2/3
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  <p className="bg-yellow-100 flex justify-center items-center text-yellow-800 text-xs w-fit font-medium  px-2.5 py-0.5 rounded-full">
-                    Front end
-                  </p>
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    id="badge-dismiss-default"
-                    className="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded "
-                  >
-                    Full Stack
-                  </span>
-                </td>
+                <td className="px-6 py-4">Front end</td>
+                <td className="px-6 py-4">Full Stack</td>
                 <td className="px-6 py-4">
                   <div className="flex items-center">
                     <span className="mr-2">100%</span>
