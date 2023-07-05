@@ -11,11 +11,13 @@ import {
   forgotPassword,
   getResetPassword,
   resetPassword,
+  getAllUserbyCourseId,
 } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 router.post("/", registerUser);
 router.post("/login", loginUser);
+router.post("/getAll", getAllUserbyCourseId);
 router
   .route("/profile")
   .get(protect, getUserProfile)

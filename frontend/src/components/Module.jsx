@@ -4,24 +4,26 @@ import { useSelector } from "react-redux";
 import { useStateContext } from "../contexts/ContextProvider";
 import axios from "axios";
 import { MdAddCircle, MdQuiz } from "react-icons/md";
-import { MdOutlineModeEdit, MdMoveDown } from "react-icons/md";
+import { MdOutlinePermMedia, MdMoveDown } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
+
 import { toast } from "react-toastify";
-import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
+import { BsThreeDots, BsThreeDotsVertical, BsFolderPlus } from "react-icons/bs";
 import { RiCheckDoubleFill, RiDeleteBin3Line } from "react-icons/ri";
-import { RiCheckboxMultipleFill } from "react-icons/ri";
 import { SlMicrophone } from "react-icons/sl";
-import { TfiList } from "react-icons/tfi";
 import { BiCommentMinus, BiEdit } from "react-icons/bi";
 import { AiOutlineSubnode } from "react-icons/ai";
 import { BsCalculator } from "react-icons/bs";
 import { LuFileText, LuPcCase } from "react-icons/lu";
+import AssignmentModal from "./ModuleComps/assignmentModal/AssignmentModal";
 import { Tooltip } from "@mui/material";
 import ButtonMove from "./ModuleComps/ButtonMove";
 import ButtonMoveSub from "./ModuleComps/ButtonMoveSub";
 import EditBtn from "./ModuleComps/editBtn/EditBtn";
 import EditBtnSub from "./ModuleComps/editBtn/EditBtnSub";
 import QuizModal from "./ModuleComps/quizModal/QuizModal";
+import MediaModal from "./ModuleComps/MediaModal/MediaModal";
+
 const Header = ({ course, onDataFromChild }) => {
   const {
     courseID,
@@ -50,6 +52,8 @@ const Header = ({ course, onDataFromChild }) => {
   const [activTitle, setActivTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [quizOpen, setQuizOpen] = useState(false);
+  const [assignemntModal, setAssignemntModal] = useState(false);
+  const [mediaModal, setMediaModal] = useState(false);
   const [modsTitle, setModsTitle] = useState("");
   const [btnEditSubOpen, setBtnEditSubOpen] = useState(false);
   const handleMoveButtonClick = (data) => {
@@ -460,10 +464,16 @@ const Header = ({ course, onDataFromChild }) => {
                     />
                   </span>
                 </Tooltip>
+                <Tooltip title="Media" placement="right">
+                  <span>
+                    <BsFolderPlus
+                      onClick={() => CreateNewActivity("Media")}
+                      className="mb-5 mx-auto cursor-pointer text-pink-400 hover:opacity-75"
+                    />
+                  </span>
+                </Tooltip>
 
                 <BiCommentMinus className="mb-5 mx-auto" />
-                <BsCalculator className="mb-5 mx-auto" />
-                <LuFileText className=" mx-auto" />
               </div>
 
               {/* Sub Container 1 */}
@@ -619,6 +629,8 @@ const Header = ({ course, onDataFromChild }) => {
                                           ? "border  border-blue-400 mb-1"
                                           : activity.type === "Recorded Session"
                                           ? "border  border-blue-400 mb-1"
+                                          : activity.type === "Media"
+                                          ? "border  border-pink-400 mb-1"
                                           : "border  border-gray-400 "
                                       }
                                     >
@@ -633,11 +645,23 @@ const Header = ({ course, onDataFromChild }) => {
                                             : activity.type ===
                                               "Recorded Session"
                                             ? "ml-5 flex justify-between text-blue-400 cursor-pointer"
+                                            : activity.type === "Media"
+                                            ? "ml-5 flex justify-between text-pink-400 cursor-pointer"
                                             : "ml-5 flex justify-between text-gray-400 cursor-pointer"
                                         }
                                         onClick={() => {
                                           if (activity.type === "Quiz") {
                                             setQuizOpen(true);
+                                            setActivTitle(activity.title);
+                                          } else if (
+                                            activity.type === "Assignment"
+                                          ) {
+                                            setAssignemntModal(true);
+                                            setActivTitle(activity.title);
+                                          } else if (
+                                            activity.type === "Media"
+                                          ) {
+                                            setMediaModal(true);
                                             setActivTitle(activity.title);
                                           }
                                         }}
@@ -705,6 +729,20 @@ const Header = ({ course, onDataFromChild }) => {
             {quizOpen && (
               <QuizModal
                 setQuizOpen={setQuizOpen}
+                activityTitle={activTitle}
+                activeId={isActivityId}
+              />
+            )}
+            {assignemntModal && (
+              <AssignmentModal
+                setAssignemntModal={setAssignemntModal}
+                activityTitle={activTitle}
+                activeId={isActivityId}
+              />
+            )}
+            {mediaModal && (
+              <MediaModal
+                setMediaModal={setMediaModal}
                 activityTitle={activTitle}
                 activeId={isActivityId}
               />
