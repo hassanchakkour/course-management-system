@@ -6,46 +6,40 @@ import axios from "axios";
 const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
-  const [instructions, setInstructions] = useState("");
-  const [passingGrade, setPassingGrade] = useState(0);
-  const [nbrAttempts, setNbrAttempts] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [file,setFile]=useState("")
   const [error, setError] = useState(false);
-  const [nbrQuestion, setNbrQuestion] = useState();
+
+
+  
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
   };
+
+  const handleFileChange =(e)=>{
+    
+    setFile(e.target.files[0]);
+  }
   const getActivity = async () => {
     const res = await axios.get(
       `http://localhost:5000/api/activities/${activeId}`
     );
 
     setDescription(res.data.description);
-    setInstructions(res.data.instructions);
-    setDuration(res.data.duration);
-    setNbrAttempts(res.data.numberOfAttempts);
-    setPassingGrade(res.data.passingGrade);
-    setNbrQuestion(res.data.questionId.length);
+    
     console.log(res.data);
   };
   const handleSubmit = async () => {
     if (
-      description === "" ||
-      instructions === "" ||
-      nbrAttempts === 0 ||
-      duration === 0
+      description === "" 
     ) {
       setError(true);
     } else {
       let sendData = {
         title: quizTitle,
         description: description,
-        passingGrade: passingGrade,
-        duration: duration,
-        numberOfAttempts: nbrAttempts,
-        instructions: instructions,
-      };
+       file:file,
+      }
       const res = await axios.put(
         `http://localhost:5000/api/activities/updateSingleActivity/${activeId}`,
         sendData
@@ -113,9 +107,8 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
               type="file"
                label="Upload Media"
                class="mt-2 block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" 
-              // onChange={(event) => {
-              //   formik.setFieldValue("file", event.currentTarget.files[0]);
-              // }}
+               onChange={handleFileChange}
+              
               name="file"
               accept="image/*,video/*,audio/*"
              
