@@ -169,7 +169,7 @@ const StudentsPage = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 ">
                         <p>Passed</p>
                       </td>
                       <td className="px-6 py-4">
