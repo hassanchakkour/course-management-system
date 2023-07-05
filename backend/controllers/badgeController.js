@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Badge from "../models/badgeModel.js";
+import User from "../models/userModel.js";
 
 const createBadge = asyncHandler(async (req, res) => {
-  const { title, description, imageUrl } = req.body;
+  const { title, description, imageUrl, courseId } = req.body;
 
   // Chek if user exists
   const checkbadge = await Badge.findOne({ title });
@@ -15,6 +16,7 @@ const createBadge = asyncHandler(async (req, res) => {
     const badge = await Badge.create({
       title,
       description,
+      courseId,
       imageUrl,
     });
     res.status(201).json(badge);
@@ -22,8 +24,9 @@ const createBadge = asyncHandler(async (req, res) => {
 });
 
 const getAllBadges = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
   try {
-    const badge = await Badge.find({});
+    const badge = await Badge.find({ courseId: courseId });
     res.status(200).json(badge);
   } catch (error) {
     res.status(500).json({ message: "something Went Wrong" });
@@ -75,4 +78,25 @@ const deleteBadge = asyncHandler(async (req, res) => {
   }
 });
 
-export { createBadge, getAllBadges, getSingleBadge, updateBadge, deleteBadge };
+const updateStudentBadge = asyncHandler(async (req, res) => {
+  const { badgeId, studentId } = req.body;
+  const findBadge = await Badge.findById(badgeId);
+  console.log(findBadge);
+  if (findBadge) {
+    const addTonewModules = await User.findOneAndUpdate(
+      { _id: studentId },
+      { $push: { badges: { $each: [`${findBadge._id}`] } } }
+    );
+
+    res.status(200).json({ message: "Added Badge to Student !" });
+  }
+});
+
+export {
+  createBadge,
+  getAllBadges,
+  getSingleBadge,
+  updateBadge,
+  deleteBadge,
+  updateStudentBadge,
+};

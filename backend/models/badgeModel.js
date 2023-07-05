@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema } = mongoose;
+const { Schema, SchemaTypes } = mongoose;
 
 const badgeSchema = new Schema(
   {
@@ -8,6 +8,11 @@ const badgeSchema = new Schema(
       type: String,
       required: [true, "Please provide the title of the badge."],
       unique: true,
+    },
+    courseId: {
+      type: SchemaTypes.ObjectId,
+      ref: "Courses",
+      required: true,
     },
     description: {
       type: String,

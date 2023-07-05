@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
 import "./studentsScrollStyle.css";
 import axios from "axios";
-
+import { Progress } from "@material-tailwind/react";
 const StudentsPage = () => {
   const { currentColor, courseID } = useStateContext();
 
@@ -10,6 +10,7 @@ const StudentsPage = () => {
   console.log("cid", courseId);
 
   const [users, setUsers] = useState();
+  const [badge, setBadge] = useState();
 
   const getAllStudents = async () => {
     let sendData = {
@@ -22,9 +23,33 @@ const StudentsPage = () => {
     console.log(res.data);
     setUsers(res.data);
   };
+  const getBadge = async () => {
+    let sendData = {
+      courseId: courseId,
+    };
+    const res = await axios.post(
+      "http://localhost:5000/api/badges/getBadge",
+      sendData
+    );
+    console.log(res.data[0]);
+    setBadge(res.data[0]);
+  };
+
+  const handleBadge = async (id) => {
+    let sendData = {
+      badgeId: badge._id,
+      studentId: id,
+    };
+    const res = await axios.post(
+      "http://localhost:5000/api/badges/updateBadge",
+      sendData
+    );
+    console.log(res.data);
+  };
 
   useEffect(() => {
     getAllStudents();
+    getBadge();
   }, []);
 
   return (
@@ -95,56 +120,68 @@ const StudentsPage = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  style={{ marginTop: "0.5rem" }}
-                  className="  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  <div>
-                    <div className="text-base font-semibold">Neil Sims</div>
-                    <div className="font-normal text-gray-500">
-                      neil.sims@flowbite.com
-                    </div>
-                  </div>
-                </th>
-
-                <td className="px-6 py-4">0</td>
-                <td className="px-6 py-4">0</td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
-                    2/3
-                  </span>
-                </td>
-                <td className="px-6 py-4">Front end</td>
-                <td className="px-6 py-4">Full Stack</td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center">
-                    <span className="mr-2">100%</span>
-                    <div className="relative w-full">
-                      <div className="overflow-hidden h-2 text-xs flex rounded bg-emerald-500">
-                        <div
-                          style={{ width: "100%" }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                        />
+            {users &&
+              users.map((user) => (
+                <tbody key={user._id}>
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th
+                      scope="row"
+                      style={{ marginTop: "0.5rem" }}
+                      className="  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      <div>
+                        <div className="text-base font-semibold">
+                          {user.firstName} {user.lastName}
+                        </div>
+                        <div className="font-normal text-gray-500">
+                          {user.email}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <p>Passed</p>
-                </td>
-                <td className="px-6 py-4">
-                  <button
-                    style={{ backgroundColor: currentColor }}
-                    className={`px-4 py-2 rounded-md text-white`}
-                  >
-                    Issue Badge
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+                    </th>
+
+                    <td className="px-6 py-4">0</td>
+                    <td className="px-6 py-4">0</td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 font-bold leading-tight text-green-700  rounded-sm">
+                        2/3
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">{badge ? badge.title : null}</td>
+                    <td className="px-6 py-4">Full Stack</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+                          <div
+                            className="bg-green-600 h-2.5 rounded-full dark:bg-green-500"
+                            style={{ width: "45%" }}
+                          ></div>
+                        </div>
+
+                        {/* <div className="relative w-full">
+                          <div className="overflow-hidden h-2 text-xs flex rounded bg-emerald-500">
+                            <div
+                              style={{ width: "100%" }}
+                              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
+                            />
+                          </div>
+                        </div> */}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <p>Passed</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        style={{ backgroundColor: currentColor }}
+                        className={`px-4 py-2 rounded-md text-white`}
+                        onClick={() => handleBadge(user._id)}
+                      >
+                        Issue Badge
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
           </table>
         </div>
       </div>
