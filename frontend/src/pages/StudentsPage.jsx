@@ -35,6 +35,7 @@ const StudentsPage = () => {
     setBadge(res.data[0]);
   };
 
+  // console.log(badge._id);
   const handleBadge = async (id) => {
     let sendData = {
       badgeId: badge._id,
@@ -148,9 +149,10 @@ const StudentsPage = () => {
                     </td>
                     <td className="px-6 py-4">{badge ? badge.title : null}</td>
                     <td className="px-6 py-4">Full Stack</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+                    <td className="px-2 py-4">
+                      <div className="flex justify-center items-center">
+                        <span>45%</span>
+                        <div className="w-full ml-2 bg-gray-200 rounded-full h-2.5  dark:bg-gray-700">
                           <div
                             className="bg-green-600 h-2.5 rounded-full dark:bg-green-500"
                             style={{ width: "45%" }}
@@ -172,8 +174,13 @@ const StudentsPage = () => {
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        style={{ backgroundColor: currentColor }}
-                        className={`px-4 py-2 rounded-md text-white`}
+                        style={{
+                          backgroundColor: badge ? currentColor : "gray",
+                        }}
+                        className={`px-4 py-2 rounded-md text-white ${
+                          badge ? "" : "bg-gray-300"
+                        }`}
+                        disabled={badge ? false : true}
                         onClick={() => handleBadge(user._id)}
                       >
                         Issue Badge
