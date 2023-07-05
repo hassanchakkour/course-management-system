@@ -10,6 +10,8 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
   const [passingGrade, setPassingGrade] = useState(0);
   const [nbrAttempts, setNbrAttempts] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [overAll, setOverAll] = useState(0);
   const [error, setError] = useState(false);
   const [nbrQuestion, setNbrQuestion] = useState();
   const navigate = useNavigate();
@@ -27,17 +29,22 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
     setNbrAttempts(res.data.numberOfAttempts);
     setPassingGrade(res.data.passingGrade);
     setNbrQuestion(res.data.questionId.length);
-    console.log(res.data);
+    setCompletionPercentage(res.data.completion);
+    setOverAll(res.data.overall);
+    console.log("hello", res.data.overall);
   };
   const handleSubmit = async () => {
     if (
       description === "" ||
       instructions === "" ||
       nbrAttempts === 0 ||
+      completionPercentage === 0 ||
+      overAll === 0 ||
       duration === 0
     ) {
       setError(true);
     } else {
+      console.log("overall", overAll);
       let sendData = {
         title: quizTitle,
         description: description,
@@ -45,6 +52,8 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
         duration: duration,
         numberOfAttempts: nbrAttempts,
         instructions: instructions,
+        completion: completionPercentage,
+        overall: overAll,
       };
       const res = await axios.put(
         `http://localhost:5000/api/activities/updateSingleActivity/${activeId}`,
@@ -55,16 +64,17 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
       navigate("/quizCreator");
     }
   };
+
   useEffect(() => {
     getActivity();
   }, []);
 
   return (
-    <div>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+    <div className="">
+      <div className="justify-center    items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-[750px] my-6 mx-auto max-w-3xl">
           {/*content*/}
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
+          <div className="border-0  rounded-lg shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
@@ -73,7 +83,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
             </div>
             {/*body*/}
 
-            <div className="relative p-6 flex-auto">
+            <div className="relative overflow-y-auto p-6 flex-auto">
               <div className="my-4 mx-10 text-slate-500 text-lg leading-relaxed">
                 <label
                   htmlFor="titleInput"
@@ -129,6 +139,30 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                   />
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                  Overall Grade
+                </label>
+                <div className="mb-3 pt-0">
+                  <input
+                    type="number"
+                    value={overAll}
+                    placeholder="Add a Passing Grade"
+                    onChange={(e) => setOverAll(e.target.value)}
+                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                  />
+                </div>
+                <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                  Completion %
+                </label>
+                <div className="mb-3 pt-0">
+                  <input
+                    type="number"
+                    value={completionPercentage}
+                    placeholder="Add a Passing Grade"
+                    onChange={(e) => setCompletionPercentage(e.target.value)}
+                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                  />
+                </div>
+                <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Number Of Attempts
                 </label>
                 <div className="mb-3 pt-0">
@@ -164,14 +198,6 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
-                {/* <div className="">
-                    <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                      Load Quiz
-                    </label>
-                    <select className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent">
-                      <option>asd</option>
-                    </select>
-                  </div> */}
               </div>
             </div>
 
