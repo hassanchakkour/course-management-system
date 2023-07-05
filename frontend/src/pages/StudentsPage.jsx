@@ -69,7 +69,6 @@ const StudentsPage = () => {
     for (let i = 0; i < res.data.length; i++) {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
-          console.log(res.data[i].submoduleId[j].activityId[k].type);
           if (
             res.data[i].submoduleId[j].activityId[k].type === "online session"
           ) {
@@ -79,8 +78,6 @@ const StudentsPage = () => {
       }
     }
     setNbrOnline(onlineTemp);
-    console.log(onlineTemp);
-    // return onlineTemp;
   };
 
   const grades = (asd) => {
@@ -110,15 +107,14 @@ const StudentsPage = () => {
     }
     return nbr;
   };
-  const over = (asd) => {
-    let nbr = 0;
-    for (let i = 0; i < asd.length; i++) {
-      if (asd[i].type === "online session") {
-        nbr += 1;
-      }
+  const onlineSessionFormula = (asd) => {
+    if (Math.floor(nbrOnline / 2) <= gradeOnline(asd)) {
+      return false;
+    } else {
+      return true;
     }
-    return nbr;
   };
+
   useEffect(() => {
     getAllStudents();
     getBadge();
@@ -213,29 +209,46 @@ const StudentsPage = () => {
                         </div>
                       </th>
 
-                      <td className="px-6 py-4">
-                        <p className="">{grades(user.submitted)}</p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <p className="">{gradeAssignment(user.submitted)}</p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <p className="">
-                          {gradeOnline(user.submitted)} / {nbrOnline}
-                        </p>
-                      </td>
+                      {grades(user.submitted) >= 50 ? (
+                        <td className="px-6 py-4">
+                          <p className="text-green-500 ">
+                            {grades(user.submitted)}
+                          </p>
+                        </td>
+                      ) : (
+                        <td className="px-6 py-4">
+                          <p className="text-red-500">
+                            {grades(user.submitted)}
+                          </p>
+                        </td>
+                      )}
+                      {gradeAssignment(user.submitted) >= 50 ? (
+                        <td className="px-6 py-4">
+                          <p className="text-green-500">
+                            {gradeAssignment(user.submitted)}
+                          </p>
+                        </td>
+                      ) : (
+                        <td className="px-6 py-4">
+                          <p className="text-red-500">
+                            {gradeAssignment(user.submitted)}
+                          </p>
+                        </td>
+                      )}
+                      {onlineSessionFormula(user.submitted) ? (
+                        <td className="px-6 py-4">
+                          <p className="text-red-500">
+                            {gradeOnline(user.submitted)} / {nbrOnline}
+                          </p>
+                        </td>
+                      ) : (
+                        <td className="px-6 py-4">
+                          <p className="text-green-500">
+                            {gradeOnline(user.submitted)} / {nbrOnline}
+                          </p>
+                        </td>
+                      )}
 
-                      {/* <td className="px-6 py-4">
-                        {index % 2 === 0 ? (
-                          <span className="px-2 py-1 font-bold leading-tight text-green-500  rounded-sm">
-                            2/3
-                          </span>
-                        ) : (
-                          <span className="px-2 py-1 font-bold leading-tight text-red-500  rounded-sm">
-                            1/3
-                          </span>
-                        )}
-                      </td> */}
                       <td className="px-6 py-4">
                         {badge ? badge.title : null}
                       </td>
