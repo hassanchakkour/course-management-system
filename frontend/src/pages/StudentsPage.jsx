@@ -37,14 +37,21 @@ const StudentsPage = () => {
 
   // console.log(badge._id);
   const handleBadge = async (id) => {
-    let sendData = {
-      badgeId: badge._id,
-      studentId: id,
-    };
-    const res = await axios.post(
-      "http://localhost:5000/api/badges/updateBadge",
-      sendData
-    );
+    try {
+      let sendData = {
+        badgeId: badge._id,
+        studentId: id,
+      };
+      const res = await axios.post(
+        "http://localhost:5000/api/badges/updateBadge",
+        sendData
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getAllStudents();
+    }
+
     // console.log(res.data);
   };
 

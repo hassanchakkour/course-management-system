@@ -70,6 +70,8 @@ const createActivity = asyncHandler(async (req, res) => {
     note,
     teacherId,
     courseId,
+    completion,
+    overall,
   } = req.body;
   const activity = await Activity.create({
     title,
@@ -80,6 +82,8 @@ const createActivity = asyncHandler(async (req, res) => {
     passingGrade,
     note,
     courseId,
+    completion,
+    overall,
   });
 
   if (activity) {
@@ -276,6 +280,8 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     duration,
     numberOfAttempts,
     instructions,
+    completion,
+    overall,
   } = req.body;
 
   let activity = await Activity.findById(req.params.id);
@@ -287,6 +293,8 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     activity.duration = duration || activity.duration;
     activity.numberOfAttempts = numberOfAttempts || activity.numberOfAttempts;
     activity.instructions = instructions || activity.instructions;
+    activity.completion = completion || activity.completion;
+    activity.overall = overall || activity.overall;
     await activity.save();
     res.status(200).json({
       message: "Activity Updated Successfully !!",

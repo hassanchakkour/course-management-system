@@ -20,6 +20,14 @@ const activitySchema = Schema(
       type: Number,
       default: 0,
     },
+    completion: {
+      type: Number,
+      default: 0,
+    },
+    overall: {
+      type: Number,
+      default: 0,
+    },
     numberOfAttempts: {
       type: Number,
       default: 0,
