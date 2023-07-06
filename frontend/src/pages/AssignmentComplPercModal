@@ -1,0 +1,7 @@
+import React from "react";
+
+const assignmentComplPercModal = () => {
+  return <div>assignmentComplPercModal</div>;
+};
+
+export default assignmentComplPercModal;

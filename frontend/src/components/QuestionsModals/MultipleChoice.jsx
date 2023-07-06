@@ -275,7 +275,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                 {errorMessage && (
                   <div className="flex align-middle -mt-8 mb-2 mx-auto">
                     <BiMessageError className="text-red-500 mt-5" />
-                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                    <p className="text-red-500 font-semibold capitalize  text-base  mt-5 md:mr-14 mr-2 ml-2">
                       Please fill all the fields
                     </p>
                   </div>
@@ -283,7 +283,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                 {singleOptionErrorMessage && (
                   <div className="flex align-middle -mt-8 mb-2 mx-auto">
                     <BiMessageError className="text-red-500 mt-5" />
-                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                    <p className="text-red-500 font-semibold capitalize text-base  mt-5 md:mr-14 mr-2 ml-2">
                       Please add more than one option
                     </p>
                   </div>
@@ -299,7 +299,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
               <div className="flex justify-center mb-3 mt-3 mx-auto w-11/12">
                 <div>
                   <button
-                    className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
+                    className="px-4 py-2 text-teal-500 hover:text-white hover:bg-teal-500 border rounded-full mr-2  border-teal-500  font-semibold capitalize  text-sm ease-linear transition-all duration-150 "
                     onClick={() => {
                       setShowModal(false);
                       console.log(currentColor);
@@ -308,7 +308,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                     Cancel
                   </button>
                   <button
-                    className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+                    className="bg-teal-500  hover:bg-teal-600 text-sm text-white py-2 px-4 rounded-full ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => {
                       if (

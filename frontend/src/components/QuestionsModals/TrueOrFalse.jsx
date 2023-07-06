@@ -147,7 +147,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                     {errorMessage && (
                       <div className="flex align-middle -mt-3">
                         <BiMessageError className="text-red-500 mt-5" />
-                        <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                        <p className="text-red-500 font-semibold capitalize  text-base  mt-5 md:mr-14 mr-2 ml-2">
                           Please fill all the fields
                         </p>
                       </div>
@@ -164,7 +164,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
               <div className="flex justify-center mb-3 mt-3 mx-auto w-11/12">
                 <div>
                   <button
-                    className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
+                    className="px-4 py-2 text-teal-500 hover:text-white hover:bg-teal-500 border rounded-full mr-2  border-teal-500  font-semibold capitalize  text-sm ease-linear transition-all duration-150 "
                     onClick={() => {
                       setShowTrueFalse(false);
                       console.log(currentColor);
@@ -173,7 +173,7 @@ const TrueOrFalse = ({ setShowTrueFalse, onSubmit, iconType }) => {
                     Cancel
                   </button>
                   <button
-                    className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+                    className="bg-teal-500  hover:bg-teal-600 text-sm text-white py-2 px-4 rounded-full ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => {
                       if (

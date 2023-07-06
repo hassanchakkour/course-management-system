@@ -4,6 +4,7 @@ import "./studentsScrollStyle.css";
 import axios from "axios";
 import { Progress } from "@material-tailwind/react";
 import BadgeModal from "./BadgeModal";
+import QuizComplPercModal from "./quizComplPercModal";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import { VscCircleFilled } from "react-icons/vsc";
 
@@ -21,6 +22,10 @@ const StudentsPage = () => {
   const [studentName, setStudentName] = useState("");
   const [student_Id, setStudent_Id] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [showQuizModal, setShowQuizModal] = useState(false);
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
+  const [showOnlineSessionModal, setShowOnlineSessionModal] = useState(false);
 
   const getAllStudents = async () => {
     let sendData = {
@@ -185,14 +190,25 @@ const StudentsPage = () => {
                   Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Quiz
+                  <button
+                    className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
+                    onClick={() => {
+                      // setShowQuizModal(true);
+                    }}
+                  >
+                    Quiz
+                  </button>
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Assignment
+                  <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
+                    Assignment
+                  </button>
                 </th>
 
                 <th scope="col" className="px-6 py-3">
-                  Online Session
+                  <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
+                    Online Session
+                  </button>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Badges
