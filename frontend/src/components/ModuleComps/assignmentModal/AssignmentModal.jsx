@@ -2,19 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiAlertTriangle } from "react-icons/fi";
 import axios from "axios";
+import {
+  Dropzone,
+  FileMosaic,
+  FullScreen,
+  ImagePreview,
+} from "@dropzone-ui/react";
+
 
 const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
   const [attachments,  setAttachments] = useState("");
+  const [instructions,setInstructions]=useState("");
   const [duedate, setDuedate] = useState("");
   const [penality,setPenality] = useState("");
- 
+  const [files, setFiles] = React.useState([]);
+  const [imageSrc, setImageSrc] = React.useState(undefined);
   const [error, setError] = useState(false);
  
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
+  };
+  const updateFiles = (incommingFiles) => {
+    setFiles(incommingFiles);
+    console.log(incommingFiles[0].name);
   };
   const getActivity = async () => {
     const res = await axios.get(
@@ -105,16 +118,51 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                   />
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Attachments
+                  Instructions
                 </label>
                 <div className="mb-3 pt-0">
                   <textarea
                     type="text"
-                    value={attachments}
+                    value={instructions}
                     placeholder="Add Instructions"
-                    onChange={(e) => setAttachments(e.target.value)}
+                    onChange={(e) => setInstructions(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
+                </div>
+                <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                  Attachments
+                </label>
+                <div className="mb-3 pt-0"style={{ width: '100%' }}>
+                  <Dropzone
+                    onChange={updateFiles}
+                    // header={false}
+                    footer={false}
+                    
+                    style={{
+                      backgroundColor: "transparent",
+                      width: "300px",
+                      color: "#718096",
+                      fontSize: "20px",
+                      border: "1px solid white",
+                    }}
+                    maxFiles={1}
+                    accept=".pdf,.image,.jpeg,.mp4,.png,.jpg/*"
+                    maxFileSize={2998000}
+                  
+                    value={files}
+                    label="Drag'n drop file here or click to browse"
+                  >
+                    {files.map((file) => (
+                      <FileMosaic {...file} preview info onSee={handleSee} hd />
+                    ))}
+                  </Dropzone>
+                  <FullScreen
+                    open={imageSrc !== undefined}
+                    onClose={() => setImageSrc(undefined)}
+                  >
+                    <ImagePreview src={imageSrc} />
+                  </FullScreen>
+                
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Rubric

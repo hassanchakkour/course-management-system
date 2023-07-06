@@ -41,7 +41,8 @@ const ButtonMove = ({
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Editing Module: {modulehead}
+                Editing Module: 
+                <span className="text-teal-500 text-l"> {modulehead}</span>
               </h3>
             </div>
             {/*body*/}
@@ -91,14 +92,15 @@ const ButtonMove = ({
                 {message}
               </span>
               <button
-                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+               className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
                 type="button"
                 onClick={() => setBtnEditOpen(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  className="bg-teal-500 text-sm text-white py-2 px-8 rounded-full hover:bg-teal-700 shadow" 
+
                 type="button"
                 onClick={() => {
                   if (modulehead != moduleTitle) {

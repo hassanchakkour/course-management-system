@@ -272,7 +272,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                                         <button
                                        className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
                                          >
-                                         Create new quiz
+                                         Edit quiz
                                         </button>
                                           </Link>
             
