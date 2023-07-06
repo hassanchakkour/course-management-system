@@ -284,10 +284,10 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     completion,
     overall,
   } = req.body;
-  const mediaUrl = req.file.mediaUrl;
+
   let activity = await Activity.findById(req.params.id);
   console.log(activity);
-  if (activity.type === "Quiz") {
+  if (activity) {
     activity.title = title || activity.title;
     activity.description = description || activity.description;
     activity.passingGrade = passingGrade || activity.passingGrade;
@@ -297,28 +297,29 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     activity.completion = completion || activity.completion;
     activity.endDate = endDate || activity.endDate;
     activity.overall = overall || activity.overall;
-    // activity.mediaUrl = mediaUrl || activity.mediaUrl;
-    await activity.save();
-    res.status(200).json({
-      message: "Activity Updated Successfully !!",
-    });
-  } else {
-    activity.title = title || activity.title;
-    activity.description = description || activity.description;
-    activity.passingGrade = passingGrade || activity.passingGrade;
-    activity.duration = duration || activity.duration;
-    activity.numberOfAttempts = numberOfAttempts || activity.numberOfAttempts;
-    activity.instructions = instructions || activity.instructions;
-    activity.completion = completion || activity.completion;
-    activity.endDate = endDate || activity.endDate;
-    activity.overall = overall || activity.overall;
-    activity.mediaUrl = mediaUrl || activity.mediaUrl;
-
     await activity.save();
     res.status(200).json({
       message: "Activity Updated Successfully !!",
     });
   }
+  // else {
+  //   // const mediaUrl = req.file.mediaUrl;
+  //   activity.title = title || activity.title;
+  //   activity.description = description || activity.description;
+  //   activity.passingGrade = passingGrade || activity.passingGrade;
+  //   activity.duration = duration || activity.duration;
+  //   activity.numberOfAttempts = numberOfAttempts || activity.numberOfAttempts;
+  //   activity.instructions = instructions || activity.instructions;
+  //   activity.completion = completion || activity.completion;
+  //   activity.endDate = endDate || activity.endDate;
+  //   activity.overall = overall || activity.overall;
+  //   activity.mediaUrl = mediaUrl || activity.mediaUrl;
+
+  //   await activity.save();
+  //   res.status(200).json({
+  //     message: "Activity Updated Successfully !!",
+  //   });
+  // }
 });
 
 export {
