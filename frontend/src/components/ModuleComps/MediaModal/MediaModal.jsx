@@ -137,7 +137,7 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                     }}
                     maxFiles={1}
                     accept=".pdf,.image,.jpeg,.mp4,.png,.jpg/*"
-                    maxFileSize={2998000}
+                    maxFileSize={3000000}
                     value={files}
                     label="Drag'n drop file here or click to browse"
                   >

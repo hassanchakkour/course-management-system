@@ -64,7 +64,7 @@ const activitySchema = Schema(
       default: "",
     },
     endDate: {
-      type: Date,
+      type: String,
       default: "",
     },
     duration: {

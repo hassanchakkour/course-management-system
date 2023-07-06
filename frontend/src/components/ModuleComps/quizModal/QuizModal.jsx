@@ -39,7 +39,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
     setNbrAttempts(res.data.numberOfAttempts);
     setPassingGrade(res.data.passingGrade);
     setNbrQuestion(res.data.questionId.length);
-    setCompletionPercentage(res.data.completion);
+    // setCompletionPercentage(res.data.completion);
     setOverAll(res.data.overall);
     // console.log("hello", res.data.overall);
   };
@@ -62,7 +62,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
         duration: duration,
         numberOfAttempts: nbrAttempts,
         instructions: instructions,
-        completion: completionPercentage,
+        // completion: completionPercentage,
         overall: overAll,
       };
       const res = await axios.put(
@@ -85,7 +85,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
       `http://localhost:5000/api/activities/${selectedQuiz}`
     );
 
-    console.log("asdqwe", response.data);
+    // console.log("asdqwe", response.data);
 
     setPassingGrade(response.data.passingGrade);
     setQuizTitle(response.data.title);
@@ -267,7 +267,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                   >
                     {quizzes &&
                       quizzes.map((quiz) => {
-                        console.log(quiz.type);
+                        // console.log(quiz.type);
                         return (
                           <>
                             {quiz.type === "Quiz" ? (
