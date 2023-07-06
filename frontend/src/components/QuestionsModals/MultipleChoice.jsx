@@ -280,7 +280,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                   className={`border-b border-solid border-slate-200  w-full`}
                 ></div>
               </div>
-              <div className="flex justify-end mb-3 mt-0 mx-auto w-11/12">
+              <div className="flex justify-center mb-3 mt-3 mx-auto w-11/12">
                 {errorMessage && (
                   <div className="flex align-middle">
                     <BiMessageError className="text-red-500 mt-5" />
@@ -299,7 +299,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                 )}
                 <div>
                   <button
-                    className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
+                     className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
                     onClick={() => {
                       setShowModal(false);
                       console.log(currentColor);
@@ -308,7 +308,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                     Cancel
                   </button>
                   <button
-                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold capitalize text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
+                     className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
                     type="button"
                     onClick={() => {
                       if (

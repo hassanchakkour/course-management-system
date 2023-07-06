@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiAlertTriangle } from "react-icons/fi";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import { Link } from 'react-router-dom';
 import axios from "axios";
+import { useSelector } from 'react-redux';
 
 const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
@@ -14,6 +17,11 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
   const [overAll, setOverAll] = useState(0);
   const [error, setError] = useState(false);
   const [nbrQuestion, setNbrQuestion] = useState();
+  const { currentColor } = useStateContext();
+  const [quizzes, setQuizzes] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState("");
+  const { userInfo } = useSelector((state) => state.auth)
+  
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
@@ -69,6 +77,45 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
     getActivity();
   }, []);
 
+  const loadedQuiz = async(load) => {
+    let id = {_id:load};
+      const response = await axios.post(`http://localhost:5000/api/activities/single`,id)
+      
+      console.log(response.data)
+  
+      setPassingGrade(response.data.passingGrade)
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      setDuration(response.data.duration)
+      setNote(response.data.note)
+  
+   
+  
+    }
+  
+    useEffect(() => {
+      // Fetch quizzes from the API
+      
+       axios.post("http://localhost:5000/api/activities/course")
+        .then(response => {
+          setQuizzes(response.data);
+          console.log(quizzes)
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }, []);
+   
+    const handleQuizChange = async(event) => {
+      console.log("walaa")
+      setSelectedQuiz(event.target.value);
+      console.log(setSelectedQuiz)
+      if (quizzes) {
+        await loadedQuiz(event.target.value);
+      }
+      console.log(typeof(event.target.value))
+     
+    };
   return (
     <div className="">
       <div className="justify-center    items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -78,7 +125,10 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Quiz: {quizTitle}
+                Quiz:
+                <span
+                  className="text-teal-500 text-m">
+                 {quizTitle}</span>
               </h3>
             </div>
             {/*body*/}
@@ -198,11 +248,39 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
-              </div>
-            </div>
+                <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                  Load a quiz
+                </label>
+                <div className="mb-3 pt-0">
+      
+                                 <select
+                      
+                          className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                           value={selectedQuiz}
+                           onChange={handleQuizChange}
+                         
+                                    
+                                >
+                                    {quizzes && quizzes.map(quiz => (
+                                   <MenuItem key={quiz._id} value={quiz._id}>
+                                     {quiz.title}
+                                     </MenuItem>
+                                       ))}
+                                       </select>
+                                       </div>
+                                       <Link to="/quizCreator">
+                                        <button
+                                       className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+                                         >
+                                         Create new quiz
+                                        </button>
+                                          </Link>
+            
+                                         </div>
+                                          </div>
 
             {/*footer*/}
-            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <div className="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
               {error && (
                 <p className="absolute left-16 text-red-500 mb-2 ">
                   <span className="flex">
@@ -213,15 +291,14 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                 </p>
               )}
               <button
-                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
                 type="button"
                 onClick={() => setQuizOpen(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
+              className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
                 onClick={() => {
                   quizCreator();
                   handleSubmit();

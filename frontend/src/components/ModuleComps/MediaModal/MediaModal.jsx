@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiAlertTriangle } from "react-icons/fi";
 import axios from "axios";
+
+import { useStateContext } from "../../../contexts/ContextProvider";
+
+
 import {
   Dropzone,
   FileMosaic,
   FullScreen,
   ImagePreview,
 } from "@dropzone-ui/react";
+
 const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
@@ -15,6 +20,11 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
   const [files, setFiles] = React.useState([]);
   const [imageSrc, setImageSrc] = React.useState(undefined);
   const [error, setError] = useState(false);
+
+
+  const { currentColor } = useStateContext();
+
+  
 
   const navigate = useNavigate();
   const quizCreator = async () => {
@@ -72,7 +82,13 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Media: {quizTitle}
+
+                  Media: 
+                  <span
+                 className="text-teal-500 text-m">
+                 {quizTitle}</span>
+                 
+
               </h3>
             </div>
             {/*body*/}
@@ -178,20 +194,22 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                 </p>
               )}
               <button
-                className="text-teal-500 border rounded-full mr-2  border-teal-500  font-semibold uppercase px-4 py-2 text-sm  "
+                className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
                 type="button"
                 onClick={() => setMediaModal(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full"
+
+             className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow" 
+
                 type="button"
                 onClick={() => {
                   setMediaModal(false);
                 }}
               >
-                Submit
+                Submit 
               </button>
             </div>
           </div>
