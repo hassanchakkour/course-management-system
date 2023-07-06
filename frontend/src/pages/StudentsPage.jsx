@@ -5,6 +5,7 @@ import axios from "axios";
 import { Progress } from "@material-tailwind/react";
 import BadgeModal from "./BadgeModal";
 import QuizComplPercModal from "./quizComplPercModal";
+import AssignmentComplPercModal from "./AssignmentComplPercModal";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import { VscCircleFilled } from "react-icons/vsc";
 import { Tooltip } from "@mui/material";
@@ -29,6 +30,7 @@ const StudentsPage = () => {
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [showAssignmentModal, setShowAssignmentModal] = useState(false);
   const [showOnlineSessionModal, setShowOnlineSessionModal] = useState(false);
+  const [assignment_Ids, setAssignment_Ids] = useState([]);
 
   const getAllStudents = async () => {
     let sendData = {
@@ -125,6 +127,21 @@ const StudentsPage = () => {
         }
       }
     }
+
+    let AssignmentIds = [];
+    let AssignemntCompletion = 0;
+    for (let i = 0; i < res.data.length; i++) {
+      for (let j = 0; j < res.data[i].submoduleId.length; j++) {
+        for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
+          if (res.data[i].submoduleId[j].activityId[k].type === "Assignment") {
+            console.log("Hello", res.data[i].submoduleId[j].activityId[k]._id);
+            AssignmentIds.push(res.data[i].submoduleId[j].activityId[k]._id);
+          }
+        }
+      }
+    }
+    setAssignment_Ids(AssignmentIds);
+
     console.log(nbr);
     setAssignmentPass(AssignemntPassingGrade);
     setNbrOnline(onlineTemp);
@@ -253,7 +270,10 @@ const StudentsPage = () => {
                   placement="top"
                 >
                   <th scope="col" className="px-6 py-3">
-                    <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
+                    <button
+                      className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
+                      onClick={() => setShowAssignmentModal(true)}
+                    >
                       Assignment
                     </button>
                   </th>
@@ -402,6 +422,15 @@ const StudentsPage = () => {
               studentName={studentName}
               student_Id={student_Id}
               handleBadge={handleBadge}
+            />
+          )}
+          {showAssignmentModal && (
+            <AssignmentComplPercModal
+              setShowAssignmentModal={setShowAssignmentModal}
+              studentName={studentName}
+              student_Id={student_Id}
+              handleBadge={handleBadge}
+              assignment_Ids={assignment_Ids}
             />
           )}
         </div>
