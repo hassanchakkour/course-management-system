@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@date-io/date-fns": "^2.16.0",
+    "@dropzone-ui/react": "^7.0.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@material-tailwind/react": "^2.0.4",

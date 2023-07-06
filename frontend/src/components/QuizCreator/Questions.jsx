@@ -861,7 +861,7 @@ const Questions = () => {
                   <div
                     key={question._id}
                     className={`bg-main-bg drop-shadow-lg mx-auto sm:mt-2 mt-3 border h-fit ${
-                      isActive ? "border-green-500" : ""
+                      isActive ? "border-teal-500" : ""
                     } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
                       !isActive
                         ? "dark:hover:border-gray-600 hover:border-gray-700"
