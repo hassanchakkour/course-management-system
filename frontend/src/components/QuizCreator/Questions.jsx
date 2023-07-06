@@ -223,7 +223,7 @@ const Questions = () => {
 
   useEffect(() => {
     getQuestionData();
-    updatePassingGradeInQuiz();
+    // updatePassingGradeInQuiz();
   }, [gradeNbr]);
 
   const iconQuestionStyle =

@@ -5,7 +5,6 @@ import axios from "axios";
 
 import { useStateContext } from "../../../contexts/ContextProvider";
 
-
 import {
   Dropzone,
   FileMosaic,
@@ -16,15 +15,12 @@ import {
 const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
-  // const [file, setFile] = useState("");
+  const [file, setFile] = useState("");
   const [files, setFiles] = React.useState([]);
   const [imageSrc, setImageSrc] = React.useState(undefined);
   const [error, setError] = useState(false);
 
-
   const { currentColor } = useStateContext();
-
-  
 
   const navigate = useNavigate();
   const quizCreator = async () => {
@@ -36,7 +32,8 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
   };
   const updateFiles = (incommingFiles) => {
     setFiles(incommingFiles);
-    console.log(incommingFiles[0].name);
+    setFile(incommingFiles[0].file);
+    console.log(incommingFiles[0].file);
   };
 
   // const handleFileChange = (e) => {
@@ -47,6 +44,7 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
       `http://localhost:5000/api/activities/${activeId}`
     );
 
+    console.log(res.data);
     setDescription(res.data.description);
 
     console.log(res.data);
@@ -58,15 +56,20 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
       let sendData = {
         title: quizTitle,
         description: description,
-        file: file,
+        mediaUrl: file,
       };
       const res = await axios.put(
         `http://localhost:5000/api/activities/updateSingleActivity/${activeId}`,
-        sendData
+        sendData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       console.log(res);
       setError(false);
-      navigate("/quizCreator");
+      // navigate("/quizCreator");
     }
   };
   useEffect(() => {
@@ -82,13 +85,8 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-
-                  Media: 
-                  <span
-                 className="text-teal-500 text-m">
-                 {quizTitle}</span>
-                 
-
+                Media:
+                <span className="text-teal-500 text-m">{quizTitle}</span>
               </h3>
             </div>
             {/*body*/}
@@ -201,15 +199,14 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                 Cancel
               </button>
               <button
-
-             className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow" 
-
+                className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
                 type="button"
                 onClick={() => {
                   setMediaModal(false);
+                  handleSubmit();
                 }}
               >
-                Submit 
+                Submit
               </button>
             </div>
           </div>
