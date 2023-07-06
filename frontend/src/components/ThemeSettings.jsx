@@ -10,21 +10,22 @@ const ThemeSettings = () => {
 
   const themeColors = [
     {
-      name: "blue-theme",
-      color: "#1A97F5",
-    },
-    {
-      name: "green-theme",
-      color: "#03C9D7",
-    },
-    {
       name: "purple-theme",
-      color: "#7352FF",
+      color: "#7c3aed",
     },
     {
       name: "red-theme",
       color: "#FF5C8E",
     },
+    {
+      name: "blue-theme",
+      color: "#06b6d4",
+    },
+    {
+      name: "green-theme",
+      color: "#03C9D7",
+    },
+
     {
       name: "TealSea-theme",
       color: "#14b8a6",
