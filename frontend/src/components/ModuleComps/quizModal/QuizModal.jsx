@@ -260,6 +260,34 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                   Load a quiz
                 </label>
                 <div className="mb-3 pt-0">
+// <<<<<<< walaa
+      
+//                                  <select
+                      
+//                           className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+//                            value={selectedQuiz}
+//                            onChange={handleQuizChange}
+                         
+                                    
+//                                 >
+//                                     {quizzes && quizzes.map(quiz => (
+//                                    <MenuItem key={quiz._id} value={quiz._id}>
+//                                      {quiz.title}
+//                                      </MenuItem>
+//                                        ))}
+//                                        </select>
+//                                        </div>
+//                                        <Link to="/quizCreator">
+//                                         <button
+//                                        className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+//                                          >
+//                                          Edit quiz
+//                                         </button>
+//                                           </Link>
+            
+//                                          </div>
+//                                           </div>
+// =======
                   <select
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white  relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                     value={selectedQuiz}
@@ -291,6 +319,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                 </Link>
               </div>
             </div>
+// >>>>>>> master
 
             {/*footer*/}
             <div className="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">

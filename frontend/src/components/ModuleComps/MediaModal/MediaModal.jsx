@@ -122,7 +122,7 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                   />
                 </div>
 
-                <div>
+                <div className="mb-3 pt-0">
                   <p>Upload a File</p>
                   <Dropzone
                     onChange={updateFiles}
