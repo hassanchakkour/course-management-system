@@ -224,33 +224,21 @@ const StudentsPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Name
                 </th>
-asda ali sdasd
-                <th scope="col" className="px-6 py-3">
-                  <button
-                    className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
-                    onClick={() => {
-                      // setShowQuizModal(true);
-                    }}
-                  >
-                    Quiz
-                  </button>
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
-                    Assignment
-                  </button>
-                </th>
 
-asda master sdasd
                 <Tooltip
                   arrow
                   title={`Passing Grade : ${passingGrades}`}
                   placement="top"
                 >
                   <th scope="col" className="px-6 py-3">
-                    <div>
-                      <div>Quiz</div>{" "}
-                    </div>
+                    <button
+                      className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
+                      onClick={() => {
+                        // setShowQuizModal(true);
+                      }}
+                    >
+                      Quiz
+                    </button>
                   </th>
                 </Tooltip>
                 <Tooltip
@@ -259,10 +247,11 @@ asda master sdasd
                   placement="top"
                 >
                   <th scope="col" className="px-6 py-3">
-                    Assignment
+                    <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
+                      Assignment
+                    </button>
                   </th>
                 </Tooltip>
-  asdasd
                 <th scope="col" className="px-6 py-3">
                   <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
                     Online Session
