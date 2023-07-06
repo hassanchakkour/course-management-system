@@ -14,13 +14,15 @@ const AssignmentComplPercModal = ({
   const setCompletionAss = async () => {
     for (let i = 0; i < assignment_Ids.length; i++) {
       let sendData = {
-        activityId: assignment_Ids[i],
         completion: "",
       };
-      console.log(sendData);
+      const res = await axios.put(
+        `http://localhost:5000/api/activities/updateSingleActivity/${assignment_Ids[i]}`,
+        sendData
+      );
     }
   };
-  setCompletionAss();
+  // setCompletionAss();
 
   return (
     <div>
