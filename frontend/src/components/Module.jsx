@@ -489,8 +489,8 @@ const Header = ({ course, onDataFromChild }) => {
                           onClick={() => {
                             setIsmoduleId(mods._id);
                           }}
-                          className={`ml-10 mb-5 bg-gradient-to-b from-[#242830] to-[#33373E]  p-5 rounded-3xl text-xl  w-[400px] 
-                        ${isActive ? "border-green-500 border" : ""}`}
+                          className={`ml-10 mb-5 bg-gradient-to-b from-[#242830] to-[#33373E]  p-5 rounded-2xl text-xl  w-[400px] 
+                        ${isActive ? "border-teal-500 border" : ""}`}
                         >
                           <div className=" mt-2 flex text-xl mb-2 justify-between">
                             <p> {mods.title}</p>
@@ -541,11 +541,11 @@ const Header = ({ course, onDataFromChild }) => {
                               <div
                                 key={submodule._id}
                                 onClick={() => setIsSubmoduleId(submodule._id)}
-                                className={`border mb-2 bg-[#33373E] border-gray-500 text-2xl ml-2 mr-2 text-center ${
-                                  isActive ? "border-green-500" : ""
+                                className={`border mb-2 bg-[#33373E] border-gray-500  rounded text-2xl ml-2 mr-2 text-center ${
+                                  isActive ? "border-teal-500" : ""
                                 }`}
                               >
-                                <p className="ml-2 font-bold text-xl flex justify-center">
+                                <p className="ml-2 font-bold py-1 rounded text-xl flex justify-center">
                                   <span className="text-center ">
                                     {submodule.title}
                                   </span>
@@ -622,16 +622,16 @@ const Header = ({ course, onDataFromChild }) => {
                                       }}
                                       className={
                                         activity.type === "Assignment"
-                                          ? "border  border-orange-500 mb-1 "
+                                          ? "border  border-orange-500 mb-1 py-1 opacity-90"
                                           : activity.type === "Quiz"
-                                          ? "border   border-purple-500 mb-1"
+                                          ? "border   border-purple-500 mb-1 py-1 opacity-90"
                                           : activity.type === "online session"
-                                          ? "border  border-blue-400 mb-1"
+                                          ? "border  border-blue-400 mb-1 py-1 opacity-90"
                                           : activity.type === "Recorded Session"
-                                          ? "border  border-blue-400 mb-1"
+                                          ? "border  border-blue-400 mb-1 py-1 opacity-90"
                                           : activity.type === "Media"
-                                          ? "border  border-pink-400 mb-1"
-                                          : "border  border-gray-400 "
+                                          ? "border  border-pink-400 mb-1 py-1 opacity-90"
+                                          : "border  border-gray-400 py-1 opacity-90 "
                                       }
                                     >
                                       <p
