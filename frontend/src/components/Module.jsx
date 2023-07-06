@@ -574,7 +574,7 @@ const Header = ({ course, onDataFromChild }) => {
                                         setBtnIsSubOpen(true);
                                         setSubTitle(submodule.title);
                                       }}
-                                      className="z-1 cursor-pointer max-[850px]:ml-[62%]  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
+                                      className="z-50 cursor-pointer max-[850px]:ml-[62%]  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
                                     >
                                       <MdMoveDown className="mt-0.5 mr-2" />{" "}
                                       <span> Move</span>
@@ -585,7 +585,7 @@ const Header = ({ course, onDataFromChild }) => {
                                         console.log(submodule.title);
                                         setSubTitle(submodule.title);
                                       }}
-                                      className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-yellow-500 p-2  text-sm"
+                                      className="z-50 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-yellow-500 p-2  text-sm"
                                     >
                                       <BiEdit className="mt-0.5 mr-2" />{" "}
                                       <span> Edit</span>
@@ -622,16 +622,16 @@ const Header = ({ course, onDataFromChild }) => {
                                       }}
                                       className={
                                         activity.type === "Assignment"
-                                          ? "border  border-orange-500 mb-1 py-1 opacity-90"
+                                          ? "border  border-orange-500 mb-1 py-1 "
                                           : activity.type === "Quiz"
-                                          ? "border   border-purple-500 mb-1 py-1 opacity-90"
+                                          ? "border   border-purple-500 mb-1 py-1 "
                                           : activity.type === "online session"
-                                          ? "border  border-blue-400 mb-1 py-1 opacity-90"
+                                          ? "border  border-blue-400 mb-1 py-1 "
                                           : activity.type === "Recorded Session"
-                                          ? "border  border-blue-400 mb-1 py-1 opacity-90"
+                                          ? "border  border-blue-400 mb-1 py-1 "
                                           : activity.type === "Media"
-                                          ? "border  border-pink-400 mb-1 py-1 opacity-90"
-                                          : "border  border-gray-400 py-1 opacity-90 "
+                                          ? "border  border-pink-400 mb-1 py-1 "
+                                          : "border  border-gray-400 py-1  "
                                       }
                                     >
                                       <p
@@ -685,21 +685,21 @@ const Header = ({ course, onDataFromChild }) => {
                                             onClick={() =>
                                               handleRemoveActivity(activity._id)
                                             }
-                                            className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-t-2xl  flex hover:opacity-80  bg-red-500 p-2  text-sm"
+                                            className="z-50 cursor-pointer max-[850px]:ml-[62%] rounded-t-2xl  flex hover:opacity-80  bg-red-500 p-2  text-sm"
                                           >
                                             <RiDeleteBin3Line className="mt-0.5 mr-2" />{" "}
                                             <span> Delete</span>
                                           </p>
-                                          <p
+                                          <span
                                             onClick={() => {
                                               setBtnIsOpen(true);
                                               setActivTitle(activity.title);
                                             }}
-                                            className="z-1 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-gray-500 p-2  text-sm"
+                                            className="z-50 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-80  bg-gray-500 p-2  text-sm"
                                           >
                                             <MdMoveDown className="mt-0.5 mr-2" />{" "}
                                             <span> Move</span>
-                                          </p>
+                                          </span>
                                           {btnIsOpen && (
                                             <ButtonMove
                                               setBtnIsOpen={setBtnIsOpen}
