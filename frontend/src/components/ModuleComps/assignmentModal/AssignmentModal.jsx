@@ -17,6 +17,8 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
   const [duedate, setDuedate] = useState("");
   const [penality, setPenality] = useState("");
   const [file, setFile] = useState("");
+  const [passingGrade, setPassingGrade] = useState(0);
+
   const [files, setFiles] = React.useState([]);
   const [imageSrc, setImageSrc] = React.useState(undefined);
   const [error, setError] = useState(false);
@@ -38,6 +40,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
     setAttachments(res.data.attachments);
     setDuedate(res.data.endDate);
     setInstructions(res.data.instructions);
+    setPassingGrade(res.data.passingGrade);
     setPenality(res.data.penality);
     console.log(res.data);
   };
@@ -46,7 +49,6 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(typeof duedate);
     if (description == "") {
       setError(true);
     } else {
@@ -56,6 +58,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
         description: description,
         endDate: duedate,
         instructions: instructions,
+        passingGrade: passingGrade,
         mediaUrl: file,
       };
       console.log("========qwe=========", sendData);
@@ -134,6 +137,18 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                     value={instructions}
                     placeholder="Add Instructions"
                     onChange={(e) => setInstructions(e.target.value)}
+                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                  />
+                </div>
+                <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                  Passing Grade
+                </label>
+                <div className="mb-3 pt-0">
+                  <input
+                    type="number"
+                    value={passingGrade}
+                    placeholder="Add Passing Grade"
+                    onChange={(e) => setPassingGrade(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>

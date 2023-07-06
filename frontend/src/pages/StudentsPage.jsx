@@ -104,7 +104,7 @@ const StudentsPage = () => {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
           if (res.data[i].submoduleId[j].activityId[k].type === "Quiz") {
-            passGrade = res.data[i].submoduleId[j].activityId[k].passingGrade;
+            passGrade += res.data[i].submoduleId[j].activityId[k].passingGrade;
             nbr += 1;
           }
         }
@@ -119,7 +119,7 @@ const StudentsPage = () => {
             res.data[i].submoduleId[j].activityId[k].type === "Assignment" &&
             res.data[i].submoduleId[j].activityId[k].passingGrade != 0
           ) {
-            AssignemntPassingGrade =
+            AssignemntPassingGrade +=
               res.data[i].submoduleId[j].activityId[k].passingGrade;
           }
         }
@@ -134,9 +134,9 @@ const StudentsPage = () => {
   const grades = (asd) => {
     let nbr = 0;
     for (let i = 0; i < asd.length; i++) {
-      if (asd[i].type === "Quiz") {
+      if (asd[i].type === "Quiz" && asd[i].activityId.courseId == courseId) {
         nbr += asd[i].grade;
-        console.log(asd[i].grade);
+        console.log("asdads", asd[i].activityId.courseId);
       }
     }
     return nbr;
@@ -144,7 +144,10 @@ const StudentsPage = () => {
   const gradeAssignment = (asd) => {
     let nbr = 0;
     for (let i = 0; i < asd.length; i++) {
-      if (asd[i].type === "Assignment") {
+      if (
+        asd[i].type === "Assignment" &&
+        asd[i].activityId.courseId == courseId
+      ) {
         nbr += asd[i].grade;
       }
     }
@@ -153,7 +156,10 @@ const StudentsPage = () => {
   const gradeOnline = (asd) => {
     let nbr = 0;
     for (let i = 0; i < asd.length; i++) {
-      if (asd[i].type === "online session") {
+      if (
+        asd[i].type === "online session" &&
+        asd[i].activityId.courseId == courseId
+      ) {
         nbr += 1;
       }
     }
@@ -317,7 +323,7 @@ const StudentsPage = () => {
                       ) : (
                         <td className="px-6 py-4">
                           <p className="text-red-500">
-                            {gradeAssignment(user.submitted)}
+                            {`${gradeAssignment(user.submitted)}`}
                           </p>
                         </td>
                       )}
