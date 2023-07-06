@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiAlertTriangle } from "react-icons/fi";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { select } from "@material-tailwind/react";
 
 const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
@@ -17,11 +18,12 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
   const [overAll, setOverAll] = useState(0);
   const [error, setError] = useState(false);
   const [nbrQuestion, setNbrQuestion] = useState();
-  const { currentColor } = useStateContext();
-  const [quizzes, setQuizzes] = useState([]);
+  const { currentColor, courseID } = useStateContext();
+  const [quizzes, setQuizzes] = useState();
   const [selectedQuiz, setSelectedQuiz] = useState("");
-  const { userInfo } = useSelector((state) => state.auth)
-  
+  const { userInfo } = useSelector((state) => state.auth);
+  const course = localStorage.getItem("course_id", courseID);
+
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
@@ -39,20 +41,20 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
     setNbrQuestion(res.data.questionId.length);
     setCompletionPercentage(res.data.completion);
     setOverAll(res.data.overall);
-    console.log("hello", res.data.overall);
+    // console.log("hello", res.data.overall);
   };
   const handleSubmit = async () => {
     if (
       description === "" ||
       instructions === "" ||
       nbrAttempts === 0 ||
-      completionPercentage === 0 ||
+      // completionPercentage === 0 ||
       overAll === 0 ||
       duration === 0
     ) {
       setError(true);
     } else {
-      console.log("overall", overAll);
+      // console.log("overall", overAll);
       let sendData = {
         title: quizTitle,
         description: description,
@@ -67,9 +69,10 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
         `http://localhost:5000/api/activities/updateSingleActivity/${activeId}`,
         sendData
       );
-      console.log(res);
+      // console.log(res);
       setError(false);
       navigate("/quizCreator");
+      setQuizOpen(false);
     }
   };
 
@@ -77,58 +80,64 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
     getActivity();
   }, []);
 
-  const loadedQuiz = async(load) => {
-    let id = {_id:load};
-      const response = await axios.post(`http://localhost:5000/api/activities/single`,id)
-      
-      console.log(response.data)
-  
-      setPassingGrade(response.data.passingGrade)
-      setTitle(response.data.title)
-      setDescription(response.data.description)
-      setDuration(response.data.duration)
-      setNote(response.data.note)
-  
-   
-  
-    }
-  
-    useEffect(() => {
-      // Fetch quizzes from the API
-      
-       axios.post("http://localhost:5000/api/activities/course")
-        .then(response => {
-          setQuizzes(response.data);
-          console.log(quizzes)
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }, []);
-   
-    const handleQuizChange = async(event) => {
-      console.log("walaa")
-      setSelectedQuiz(event.target.value);
-      console.log(setSelectedQuiz)
-      if (quizzes) {
-        await loadedQuiz(event.target.value);
-      }
-      console.log(typeof(event.target.value))
-     
+  const loadedQuiz = async () => {
+    const response = await axios.get(
+      `http://localhost:5000/api/activities/${selectedQuiz}`
+    );
+
+    console.log("asdqwe", response.data);
+
+    setPassingGrade(response.data.passingGrade);
+    setQuizTitle(response.data.title);
+    setDescription(response.data.description);
+    setDuration(response.data.duration);
+    setNote(response.data.note);
+  };
+
+  const asd = async () => {
+    let data = {
+      courseId: course,
     };
+    const res = await axios.post(
+      "http://localhost:5000/api/activities/course",
+      data
+    );
+
+    setQuizzes(res.data);
+  };
+
+  useEffect(() => {
+    // Fetch quizzes from the API
+    handleQuizChange();
+    asd();
+  }, [selectedQuiz]);
+
+  const handleQuizChange = async () => {
+    if (selectedQuiz != "") {
+      loadedQuiz();
+    }
+    // console.log(typeof event.target.value);
+  };
   return (
     <div>
-      <div className="justify-center    items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+      <div className="justify-center  mt-10  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-[750px] my-6 mx-auto max-w-3xl">
           {/*content*/}
           <div className="border-0  rounded-lg shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
             {/*header*/}
-            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+            <div className="flex items-start scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
                 Quiz:
-                <span
-                  className="text-teal-500 text-m">
-                 {quizTitle}</span>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                {/* <br />
+                <br /> */}
+                <br />
+                <span className="text-teal-500 text-m">{quizTitle}</span>
               </h3>
             </div>
             {/*body*/}
@@ -181,7 +190,6 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                 <div className="mb-3 pt-0">
                   <input
                     type="number"
-                    disabled={true}
                     value={passingGrade}
                     placeholder="Add a Passing Grade"
                     onChange={(e) => setPassingGrade(e.target.value)}
@@ -200,7 +208,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                {/* <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Completion %
                 </label>
                 <div className="mb-3 pt-0">
@@ -211,7 +219,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                     onChange={(e) => setCompletionPercentage(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
-                </div>
+                </div> */}
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Number Of Attempts
                 </label>
@@ -252,32 +260,66 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                   Load a quiz
                 </label>
                 <div className="mb-3 pt-0">
+// <<<<<<< walaa
       
-                                 <select
+//                                  <select
                       
-                          className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                           value={selectedQuiz}
-                           onChange={handleQuizChange}
+//                           className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+//                            value={selectedQuiz}
+//                            onChange={handleQuizChange}
                          
                                     
-                                >
-                                    {quizzes && quizzes.map(quiz => (
-                                   <MenuItem key={quiz._id} value={quiz._id}>
-                                     {quiz.title}
-                                     </MenuItem>
-                                       ))}
-                                       </select>
-                                       </div>
-                                       <Link to="/quizCreator">
-                                        <button
-                                       className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
-                                         >
-                                         Edit quiz
-                                        </button>
-                                          </Link>
+//                                 >
+//                                     {quizzes && quizzes.map(quiz => (
+//                                    <MenuItem key={quiz._id} value={quiz._id}>
+//                                      {quiz.title}
+//                                      </MenuItem>
+//                                        ))}
+//                                        </select>
+//                                        </div>
+//                                        <Link to="/quizCreator">
+//                                         <button
+//                                        className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+//                                          >
+//                                          Edit quiz
+//                                         </button>
+//                                           </Link>
             
-                                         </div>
-                                          </div>
+//                                          </div>
+//                                           </div>
+// =======
+                  <select
+                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white  relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
+                    value={selectedQuiz}
+                    onChange={(e) => setSelectedQuiz(e.target.value)}
+                  >
+                    {quizzes &&
+                      quizzes.map((quiz) => {
+                        console.log(quiz.type);
+                        return (
+                          <>
+                            {quiz.type === "Quiz" ? (
+                              <option
+                                className="text-black"
+                                key={quiz._id}
+                                value={quiz._id}
+                              >
+                                {quiz.title}
+                              </option>
+                            ) : null}
+                          </>
+                        );
+                      })}
+                  </select>
+                </div>
+                <Link to="/quizCreator">
+                  <button className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow">
+                    Create new quiz
+                  </button>
+                </Link>
+              </div>
+            </div>
+// >>>>>>> master
 
             {/*footer*/}
             <div className="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
@@ -298,7 +340,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                 Cancel
               </button>
               <button
-              className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+                className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
                 onClick={() => {
                   quizCreator();
                   handleSubmit();
