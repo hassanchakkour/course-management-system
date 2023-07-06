@@ -283,7 +283,7 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     completion,
     overall,
   } = req.body;
-
+  const mediaUrl = req.file.mediaUrl;
   let activity = await Activity.findById(req.params.id);
   console.log(activity);
   if (activity) {
@@ -295,6 +295,7 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     activity.instructions = instructions || activity.instructions;
     activity.completion = completion || activity.completion;
     activity.overall = overall || activity.overall;
+    activity.mediaUrl = mediaUrl || activity.mediaUrl;
     await activity.save();
     res.status(200).json({
       message: "Activity Updated Successfully !!",

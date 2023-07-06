@@ -62,7 +62,11 @@ router.post("/", upload.single("mediaUrl"), postActivity, (req, res) => {
 router.get("/:id", getActivity);
 
 router.put("/:id", putActivity);
-router.put("/updateSingleActivity/:id", updateSingleActivity);
+router.put(
+  "/updateSingleActivity/:id",
+  upload.single("mediaUrl"),
+  updateSingleActivity
+);
 
 // router.post("/teacher", getActivitiesTeacherId);
 // GET /api/activities/student/:studentId

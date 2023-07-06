@@ -7,6 +7,7 @@ import BadgeModal from "./BadgeModal";
 import QuizComplPercModal from "./quizComplPercModal";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import { VscCircleFilled } from "react-icons/vsc";
+import { Tooltip } from "@mui/material";
 
 const StudentsPage = () => {
   const { currentColor, courseID } = useStateContext();
@@ -17,6 +18,8 @@ const StudentsPage = () => {
   const [users, setUsers] = useState();
   const [badge, setBadge] = useState();
   const [nbrOnline, setNbrOnline] = useState(0);
+  const [passingGrades, setPassingGrades] = useState(0);
+  const [assignmentPass, setAssignmentPass] = useState(0);
 
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [studentName, setStudentName] = useState("");
@@ -35,7 +38,7 @@ const StudentsPage = () => {
       "http://localhost:5000/api/users/getAll",
       sendData
     );
-    // console.log("this", res.data);
+    console.log("this", res.data);
     setUsers(res.data);
   };
 
@@ -83,6 +86,7 @@ const StudentsPage = () => {
     );
     // console.log(res.data[0].submoduleId);
     let onlineTemp = 0;
+
     for (let i = 0; i < res.data.length; i++) {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
@@ -94,7 +98,37 @@ const StudentsPage = () => {
         }
       }
     }
+    let passGrade = 0;
+    let nbr = 0;
+    for (let i = 0; i < res.data.length; i++) {
+      for (let j = 0; j < res.data[i].submoduleId.length; j++) {
+        for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
+          if (res.data[i].submoduleId[j].activityId[k].type === "Quiz") {
+            passGrade = res.data[i].submoduleId[j].activityId[k].passingGrade;
+            nbr += 1;
+          }
+        }
+      }
+    }
+
+    let AssignemntPassingGrade = 0;
+    for (let i = 0; i < res.data.length; i++) {
+      for (let j = 0; j < res.data[i].submoduleId.length; j++) {
+        for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
+          if (
+            res.data[i].submoduleId[j].activityId[k].type === "Assignment" &&
+            res.data[i].submoduleId[j].activityId[k].passingGrade != 0
+          ) {
+            AssignemntPassingGrade =
+              res.data[i].submoduleId[j].activityId[k].passingGrade;
+          }
+        }
+      }
+    }
+    console.log(nbr);
+    setAssignmentPass(AssignemntPassingGrade);
     setNbrOnline(onlineTemp);
+    setPassingGrades(passGrade);
   };
 
   const grades = (asd) => {
@@ -102,6 +136,7 @@ const StudentsPage = () => {
     for (let i = 0; i < asd.length; i++) {
       if (asd[i].type === "Quiz") {
         nbr += asd[i].grade;
+        console.log(asd[i].grade);
       }
     }
     return nbr;
@@ -189,6 +224,7 @@ const StudentsPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Name
                 </th>
+asda ali sdasd
                 <th scope="col" className="px-6 py-3">
                   <button
                     className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
@@ -205,6 +241,28 @@ const StudentsPage = () => {
                   </button>
                 </th>
 
+asda master sdasd
+                <Tooltip
+                  arrow
+                  title={`Passing Grade : ${passingGrades}`}
+                  placement="top"
+                >
+                  <th scope="col" className="px-6 py-3">
+                    <div>
+                      <div>Quiz</div>{" "}
+                    </div>
+                  </th>
+                </Tooltip>
+                <Tooltip
+                  arrow
+                  title={`Passing Grade:  ${assignmentPass}`}
+                  placement="top"
+                >
+                  <th scope="col" className="px-6 py-3">
+                    Assignment
+                  </th>
+                </Tooltip>
+  asdasd
                 <th scope="col" className="px-6 py-3">
                   <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
                     Online Session
@@ -248,7 +306,7 @@ const StudentsPage = () => {
                         </div>
                       </th>
 
-                      {grades(user.submitted) >= 50 ? (
+                      {grades(user.submitted) >= passingGrades ? (
                         <td className="px-6 py-4">
                           <p className="text-green-500 ">
                             {grades(user.submitted)}
@@ -261,7 +319,7 @@ const StudentsPage = () => {
                           </p>
                         </td>
                       )}
-                      {gradeAssignment(user.submitted) >= 50 ? (
+                      {gradeAssignment(user.submitted) >= assignmentPass ? (
                         <td className="px-6 py-4">
                           <p className="text-green-500">
                             {gradeAssignment(user.submitted)}
@@ -290,7 +348,7 @@ const StudentsPage = () => {
 
                       <td className="px-6 py-4">
                         {badge ? (
-                          <div className="bg-amber-300 rounded-full py-0.5 text-amber-950 font-semibold">
+                          <div className="bg-amber-300 rounded-full py-0.5 px-4 text-amber-950 font-semibold">
                             {" "}
                             <span>{badge.title}</span>{" "}
                           </div>
