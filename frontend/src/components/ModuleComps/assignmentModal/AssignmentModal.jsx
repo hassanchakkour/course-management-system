@@ -9,25 +9,25 @@ import {
   ImagePreview,
 } from "@dropzone-ui/react";
 
-
 const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
-  const [attachments,  setAttachments] = useState("");
-  const [instructions,setInstructions]=useState("");
+  const [attachments, setAttachments] = useState("");
+  const [instructions, setInstructions] = useState("");
   const [duedate, setDuedate] = useState("");
-  const [penality,setPenality] = useState("");
+  const [penality, setPenality] = useState("");
+  const [file, setFile] = useState("");
   const [files, setFiles] = React.useState([]);
   const [imageSrc, setImageSrc] = React.useState(undefined);
   const [error, setError] = useState(false);
- 
+
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
   };
   const updateFiles = (incommingFiles) => {
     setFiles(incommingFiles);
-    console.log(incommingFiles[0].name);
+    setFile(incommingFiles[0].file);
   };
   const getActivity = async () => {
     const res = await axios.get(
@@ -36,36 +36,46 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
 
     setDescription(res.data.description);
     setAttachments(res.data.attachments);
-    setDuedate(res.data.duedate);
+    setDuedate(res.data.endDate);
+    setInstructions(res.data.instructions);
     setPenality(res.data.penality);
     console.log(res.data);
   };
+  const handleSee = (imageSource) => {
+    setImageSrc(imageSource);
+  };
+
   const handleSubmit = async () => {
-    if (
-      description === "" ||
-      attachments === "" ||
-      duedate === "" ||
-      penality === ""
-    ) {
+    console.log(typeof duedate);
+    if (description == "") {
       setError(true);
     } else {
+      console.log("======asd===========");
       let sendData = {
         title: quizTitle,
         description: description,
-        attachments: attachments,
-        duedate: duedate,
-        penality: penality,
-        
+        endDate: duedate,
+        instructions: instructions,
+        mediaUrl: file,
       };
+      console.log("========qwe=========", sendData);
       const res = await axios.put(
         `http://localhost:5000/api/activities/updateSingleActivity/${activeId}`,
-        sendData
+        sendData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
+      console.log("==========fff=======");
       console.log(res);
       setError(false);
-      navigate("/quizCreator");
+      setAssignemntModal(false);
+      // navigate("/quizCreator");
     }
   };
+
   useEffect(() => {
     getActivity();
   }, []);
@@ -79,10 +89,8 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Assignment: 
-                <span  className="text-teal-500 text-m">
-                {quizTitle}
-                </span>
+                Assignment:
+                <span className="text-teal-500 text-m">{quizTitle}</span>
               </h3>
             </div>
             {/*body*/}
@@ -132,23 +140,22 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Attachments
                 </label>
-                <div className="mb-3 pt-0"style={{ width: '100%' }}>
+                <div className="mb-3 pt-0">
                   <Dropzone
                     onChange={updateFiles}
                     // header={false}
                     footer={false}
-                    
                     style={{
                       backgroundColor: "transparent",
-                      width: "300px",
+                      width: "400px",
                       color: "#718096",
                       fontSize: "20px",
-                      border: "1px solid white",
+                      border: "2px dashed gray",
+                      borderRadius: "10px",
                     }}
                     maxFiles={1}
                     accept=".pdf,.image,.jpeg,.mp4,.png,.jpg/*"
                     maxFileSize={2998000}
-                  
                     value={files}
                     label="Drag'n drop file here or click to browse"
                   >
@@ -162,45 +169,43 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                   >
                     <ImagePreview src={imageSrc} />
                   </FullScreen>
-                
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Rubric
                 </label>
                 <div className="mb-3 pt-0">
-                <button type="submit"  
-                 variant="contained" 
-                 className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full">
-                  
-              Insert Rubric
-                 </button>
+                  <button
+                    type="submit"
+                    variant="contained"
+                    className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full"
+                  >
+                    Insert Rubric
+                  </button>
                 </div>
                 <label className="my-4 text-slate-400 text-lg leading-relaxed">
                   Due Date
                 </label>
                 <div className="mb-3 pt-0">
                   <input
-                    type="number"
+                    type="date"
                     value={duedate}
                     placeholder="Add a Number Of Attempts"
                     onChange={(e) => setDuedate(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
-                <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Penality Percentage
+                {/* <label className="my-4 text-slate-400 text-lg leading-relaxed">
+                  Penalty Percentage
                 </label>
                 <div className="mb-3 pt-0">
                   <input
                     type="number"
                     value={penality}
-                    placeholder="Add Duration in min"
+                    placeholder="Add Penalty Percentage"
                     onChange={(e) => setPenality(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
-                </div>
-               
-      
+                </div> */}
               </div>
             </div>
 
@@ -216,17 +221,17 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 </p>
               )}
               <button
-              className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
+                className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
                 type="button"
                 onClick={() => setAssignemntModal(false)}
               >
                 Cancel
               </button>
               <button
-               className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow" 
+                className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
                 type="button"
                 onClick={() => {
-                  setAssignemntModal(false);
+                  handleSubmit();
                 }}
               >
                 Submit

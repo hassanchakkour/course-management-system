@@ -278,6 +278,7 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     id,
     passingGrade,
     duration,
+    endDate,
     numberOfAttempts,
     instructions,
     completion,
@@ -286,7 +287,7 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
   const mediaUrl = req.file.mediaUrl;
   let activity = await Activity.findById(req.params.id);
   console.log(activity);
-  if (activity) {
+  if (activity.type === "Quiz") {
     activity.title = title || activity.title;
     activity.description = description || activity.description;
     activity.passingGrade = passingGrade || activity.passingGrade;
@@ -294,15 +295,28 @@ const updateSingleActivity = asyncHandler(async (req, res) => {
     activity.numberOfAttempts = numberOfAttempts || activity.numberOfAttempts;
     activity.instructions = instructions || activity.instructions;
     activity.completion = completion || activity.completion;
+    activity.endDate = endDate || activity.endDate;
     activity.overall = overall || activity.overall;
-    activity.mediaUrl = mediaUrl || activity.mediaUrl;
+    // activity.mediaUrl = mediaUrl || activity.mediaUrl;
     await activity.save();
     res.status(200).json({
       message: "Activity Updated Successfully !!",
     });
   } else {
-    res.status(501).json({
-      message: "Something Went Wrong !!",
+    activity.title = title || activity.title;
+    activity.description = description || activity.description;
+    activity.passingGrade = passingGrade || activity.passingGrade;
+    activity.duration = duration || activity.duration;
+    activity.numberOfAttempts = numberOfAttempts || activity.numberOfAttempts;
+    activity.instructions = instructions || activity.instructions;
+    activity.completion = completion || activity.completion;
+    activity.endDate = endDate || activity.endDate;
+    activity.overall = overall || activity.overall;
+    activity.mediaUrl = mediaUrl || activity.mediaUrl;
+
+    await activity.save();
+    res.status(200).json({
+      message: "Activity Updated Successfully !!",
     });
   }
 });
