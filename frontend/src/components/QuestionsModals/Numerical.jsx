@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { MdLibraryAdd } from "react-icons/md";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { BiMessageError } from "react-icons/bi";
 import { TbSquareRoundedMinus } from "react-icons/tb";
 import { MdCancel } from "react-icons/md";
 import { Tooltip } from "@mui/material";
@@ -228,10 +229,19 @@ const Numerical = ({ setShownumerical, onSubmit , iconType}) => {
                   className={`border-b border-solid border-slate-200  w-full`}
                 ></div>
               </div>
-              <div className="flex justify-between mb-3 mt-0 mx-auto w-11/12">
+              <div className="flex justify-center mb-3 mt-3 mx-auto w-11/12">
+              {errorMessage && (
+                  <div className="flex align-middle">
+                    <BiMessageError className="text-red-500 mt-5" />
+                    <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 md:mr-14 mr-2 ml-2">
+                      Please fill all the fields
+                    </p>
+                  </div>
+                )}
                 <div>
                   <button
-                    className="bg-transparent text-red-500 active:bg-gray-600 font-bold  text-xl p-3 rounded shadow hover:shadow-lg outline-none focus:outline-none  mr-3 ease-linear transition-all duration-150 "
+                   className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
+
                     onClick={() => {
                       setShownumerical(false);
                       console.log(currentColor);
@@ -240,7 +250,8 @@ const Numerical = ({ setShownumerical, onSubmit , iconType}) => {
                     Cancel
                   </button>
                   <button
-                    className="bg-emerald-500 mt-3 items-end text-white active:bg-emerald-600 font-bold capitalize text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 hover:text-gray-800  ease-linear transition-all duration-200"
+                   className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow"
+
                     type="button"
                     onClick={() => {
                       if (
@@ -263,11 +274,11 @@ const Numerical = ({ setShownumerical, onSubmit , iconType}) => {
                     Submit
                   </button>
                 </div>
-                {errorMessage && (
+                {/* {errorMessage && (
                   <p className="text-red-500 font-semibold capitalize md:text-lg text-base  mt-5 mr-2">
                     Please fill all the fields
                   </p>
-                )}
+                )} */}
               </div>
     
 

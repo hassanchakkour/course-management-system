@@ -6,12 +6,12 @@ import axios from "axios";
 const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
-  const [instructions, setInstructions] = useState("");
-  const [passingGrade, setPassingGrade] = useState(0);
-  const [nbrAttempts, setNbrAttempts] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [attachments,  setAttachments] = useState("");
+  const [duedate, setDuedate] = useState("");
+  const [penality,setPenality] = useState("");
+ 
   const [error, setError] = useState(false);
-  const [nbrQuestion, setNbrQuestion] = useState();
+ 
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
@@ -22,29 +22,27 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
     );
 
     setDescription(res.data.description);
-    setInstructions(res.data.instructions);
-    setDuration(res.data.duration);
-    setNbrAttempts(res.data.numberOfAttempts);
-    setPassingGrade(res.data.passingGrade);
-    setNbrQuestion(res.data.questionId.length);
+    setAttachments(res.data.attachments);
+    setDuedate(res.data.duedate);
+    setPenality(res.data.penality);
     console.log(res.data);
   };
   const handleSubmit = async () => {
     if (
       description === "" ||
-      instructions === "" ||
-      nbrAttempts === 0 ||
-      duration === 0
+      attachments === "" ||
+      duedate === "" ||
+      penality === ""
     ) {
       setError(true);
     } else {
       let sendData = {
         title: quizTitle,
         description: description,
-        passingGrade: passingGrade,
-        duration: duration,
-        numberOfAttempts: nbrAttempts,
-        instructions: instructions,
+        attachments: attachments,
+        duedate: duedate,
+        penality: penality,
+        
       };
       const res = await axios.put(
         `http://localhost:5000/api/activities/updateSingleActivity/${activeId}`,
@@ -68,7 +66,10 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
-                Assignment: {quizTitle}
+                Assignment: 
+                <span  className="text-teal-500 text-m">
+                {quizTitle}
+                </span>
               </h3>
             </div>
             {/*body*/}
@@ -109,9 +110,9 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 <div className="mb-3 pt-0">
                   <textarea
                     type="text"
-                    value={instructions}
+                    value={attachments}
                     placeholder="Add Instructions"
-                    onChange={(e) => setInstructions(e.target.value)}
+                    onChange={(e) => setAttachments(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
@@ -132,9 +133,9 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 <div className="mb-3 pt-0">
                   <input
                     type="number"
-                    value={nbrAttempts}
+                    value={duedate}
                     placeholder="Add a Number Of Attempts"
-                    onChange={(e) => setNbrAttempts(e.target.value)}
+                    onChange={(e) => setDuedate(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
@@ -144,21 +145,14 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 <div className="mb-3 pt-0">
                   <input
                     type="number"
-                    value={duration}
+                    value={penality}
                     placeholder="Add Duration in min"
-                    onChange={(e) => setDuration(e.target.value)}
+                    onChange={(e) => setPenality(e.target.value)}
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
                
-                {/* <div className="">
-                    <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                      Load Quiz
-                    </label>
-                    <select className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent">
-                      <option>asd</option>
-                    </select>
-                  </div> */}
+      
               </div>
             </div>
 
@@ -174,14 +168,14 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 </p>
               )}
               <button
-              className="text-teal-500 border-teal-300 rounded-full font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              className="text-teal-500 border rounded-full mr-2 border-teal-500 font-semibold uppercase px-4 py-2 text-sm hover:bg-teal-500 hover:text-white shadow"
                 type="button"
                 onClick={() => setAssignemntModal(false)}
               >
                 Cancel
               </button>
               <button
-              className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full"
+               className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow" 
                 type="button"
                 onClick={() => {
                   setAssignemntModal(false);
