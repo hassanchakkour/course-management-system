@@ -3,6 +3,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 import "./studentsScrollStyle.css";
 import axios from "axios";
 import { Progress } from "@material-tailwind/react";
+import BadgeModal from "./BadgeModal";
+import { HiOutlineBadgeCheck } from "react-icons/hi";
+import { VscCircleFilled } from "react-icons/vsc";
+
 const StudentsPage = () => {
   const { currentColor, courseID } = useStateContext();
 
@@ -12,6 +16,12 @@ const StudentsPage = () => {
   const [users, setUsers] = useState();
   const [badge, setBadge] = useState();
   const [nbrOnline, setNbrOnline] = useState(0);
+
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [studentName, setStudentName] = useState("");
+  const [student_Id, setStudent_Id] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const getAllStudents = async () => {
     let sendData = {
       courseId: courseId,
@@ -47,6 +57,8 @@ const StudentsPage = () => {
         "http://localhost:5000/api/badges/updateBadge",
         sendData
       );
+      setSuccessMessage("Badge successfully issued!");
+      setTimeout(() => setSuccessMessage(""), 2500);
     } catch (error) {
       console.log(error);
     } finally {
@@ -122,9 +134,20 @@ const StudentsPage = () => {
   }, []);
   return (
     <>
-      <div className="relative  lg:ml-14 md:ml-8 md:mt-12 ml-6 mt-28 w-11/12 overflow-x-auto custom-scrollbar drop-shadow-md dark:drop-shadow-xl bg-main-bg dark:bg-main-dark-bg sm:rounded-lg p-10">
+      <div
+        style={{ filter: `drop-shadow(0px 0px 3px ${currentColor})` }}
+        className="relative  lg:ml-14  md:mt-2 ml-6  mt-20 w-11/12 overflow-x-auto custom-scrollbar drop-shadow-md dark:drop-shadow-xl bg-main-bg dark:bg-main-dark-bg sm:rounded-lg p-6"
+      >
         <div className="flex items-center justify-between pb-4 bg-main-bg dark:bg-main-dark-bg">
           <p className="text-xl font-semibold dark:text-gray-300">Students</p>
+          {successMessage && (
+            <div className="mx-3 flex items-center min-w-fit">
+              <HiOutlineBadgeCheck className="text-green-500 md:text-2xl text-xl " />
+              <p className="text-green-500 ml-2 md:text-lg text-base  ">
+                {successMessage}
+              </p>
+            </div>
+          )}
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
@@ -243,14 +266,19 @@ const StudentsPage = () => {
                         </td>
                       ) : (
                         <td className="px-6 py-4">
-                          <p className="text-green-500">
+                          <p className="text-green-500  text-">
                             {gradeOnline(user.submitted)} / {nbrOnline}
                           </p>
                         </td>
                       )}
 
                       <td className="px-6 py-4">
-                        {badge ? badge.title : null}
+                        {badge ? (
+                          <div className="bg-amber-300 rounded-full py-0.5 text-amber-950 font-semibold">
+                            {" "}
+                            <span>{badge.title}</span>{" "}
+                          </div>
+                        ) : null}
                       </td>
                       <td className="px-6 py-4">Full Stack</td>
                       <td className="px-2 py-4">
@@ -265,21 +293,30 @@ const StudentsPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 ">
-                        <p className="text-green-500 font-bold">Passed</p>
+                        <div className="flex align-middle justify-between">
+                          <VscCircleFilled className="text-green-500 mt-1" />
+                          <p className=" font-bold">Passed</p>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         {badge && user.badges.includes(badge._id) ? (
-                          <p className="text-green-500 font-bold">Issued</p>
+                          <p className="text-amber-300 font-bold">Issued</p>
                         ) : (
                           <button
                             style={{
-                              backgroundColor: badge ? currentColor : "gray",
+                              backgroundColor: badge ? "" : "gray",
                             }}
-                            className={`px-4 py-2 rounded-md text-white ${
-                              badge ? "" : "bg-gray-300"
-                            }`}
+                            className={`px-4 py-2 rounded-md text-teal-500  hover:bg-teal-500 border  mr-2  border-teal-500  font-semibold capitalize  text-sm ease-linear transition-all duration-150
+                             ${badge ? "hover:text-white" : "bg-gray-300"}`}
                             disabled={badge ? false : true}
-                            onClick={() => handleBadge(user._id)}
+                            onClick={() => {
+                              setShowBadgeModal(true);
+                              setStudentName(
+                                `${user.firstName} ${user.lastName}`
+                              );
+                              setStudent_Id(`${user._id}`);
+                              console.log(studentName);
+                            }}
                           >
                             Issue Badge
                           </button>
@@ -290,6 +327,14 @@ const StudentsPage = () => {
                 );
               })}
           </table>
+          {showBadgeModal && (
+            <BadgeModal
+              setShowBadgeModal={setShowBadgeModal}
+              studentName={studentName}
+              student_Id={student_Id}
+              handleBadge={handleBadge}
+            />
+          )}
         </div>
       </div>
     </>
