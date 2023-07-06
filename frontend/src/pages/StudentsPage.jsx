@@ -4,6 +4,7 @@ import "./studentsScrollStyle.css";
 import axios from "axios";
 import { Progress } from "@material-tailwind/react";
 import BadgeModal from "./BadgeModal";
+import QuizComplPercModal from "./quizComplPercModal";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import { VscCircleFilled } from "react-icons/vsc";
 import { Tooltip } from "@mui/material";
@@ -24,6 +25,10 @@ const StudentsPage = () => {
   const [studentName, setStudentName] = useState("");
   const [student_Id, setStudent_Id] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [showQuizModal, setShowQuizModal] = useState(false);
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
+  const [showOnlineSessionModal, setShowOnlineSessionModal] = useState(false);
 
   const getAllStudents = async () => {
     let sendData = {
@@ -219,6 +224,24 @@ const StudentsPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Name
                 </th>
+asda ali sdasd
+                <th scope="col" className="px-6 py-3">
+                  <button
+                    className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
+                    onClick={() => {
+                      // setShowQuizModal(true);
+                    }}
+                  >
+                    Quiz
+                  </button>
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
+                    Assignment
+                  </button>
+                </th>
+
+asda master sdasd
                 <Tooltip
                   arrow
                   title={`Passing Grade : ${passingGrades}`}
@@ -239,8 +262,11 @@ const StudentsPage = () => {
                     Assignment
                   </th>
                 </Tooltip>
+  asdasd
                 <th scope="col" className="px-6 py-3">
-                  Online Session
+                  <button className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150">
+                    Online Session
+                  </button>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Badges

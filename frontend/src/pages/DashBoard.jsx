@@ -180,7 +180,6 @@ const DashBoard = () => {
             style={{
               scrollBehavior: "smooth",
               WebkitOverflowScrolling: "touch",
-              scrollBehavior: "smooth",
             }}
           >
             {courses.map((course) => (
