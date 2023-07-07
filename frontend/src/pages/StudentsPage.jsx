@@ -40,8 +40,21 @@ const StudentsPage = () => {
       "http://localhost:5000/api/users/getAll",
       sendData
     );
-    console.log("this", res.data);
+    // console.log("this", res.data);
     setUsers(res.data);
+
+    // console.log("asdqwesasd", courseBadge.data.requiredBadges);
+    // let allBadge = [];
+    // for (let i = 0; i < res.data.length; i++) {
+    //   // console.log("3333", res.data[i].badges);
+    //   for (let j = 0; j < res.data[i].badges.length; j++) {
+    //     // console.log(res.data[i].badges[j]);
+    //     if (courseBadge.data.requiredBadges.includes(res.data[i].badges[j])) {
+    //       allBadge.push(res.data[i].badges[j]);
+    //     }
+    //   }
+    // }
+    // console.log("all", allBadge);
   };
 
   const getBadge = async () => {
@@ -63,12 +76,42 @@ const StudentsPage = () => {
         badgeId: badge._id,
         studentId: id,
       };
+      console.log("studentId", id);
       const res = await axios.post(
         "http://localhost:5000/api/badges/updateBadge",
         sendData
       );
       setSuccessMessage("Badge successfully issued!");
       setTimeout(() => setSuccessMessage(""), 2500);
+
+      const singleUser = await axios.get(
+        `http://localhost:5000/api/users/${id}`
+      );
+      console.log("asd", singleUser.data.badges);
+      const courseBadge = await axios.get(
+        `http://localhost:5000/api/courses/${courseId}`
+      );
+      let allBadge = [];
+      for (let i = 0; i < singleUser.data.badges.length; i++) {
+        console.log(singleUser.data.badges[i]);
+        if (
+          courseBadge.data.requiredBadges.includes(singleUser.data.badges[i])
+        ) {
+          allBadge.push(singleUser.data.badges[i]);
+        }
+      }
+      if (allBadge.length == courseBadge.data.requiredBadges.length) {
+        let data = {
+          certificateId: "648327e0f3663655135ef459",
+        };
+        const addCertificate = await axios.post(
+          `http://localhost:5000/api/users/addCertificate/${id}`,
+          data
+        );
+        console.log(addCertificate);
+      } else {
+        console.log("false");
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -153,7 +196,7 @@ const StudentsPage = () => {
     for (let i = 0; i < asd.length; i++) {
       if (asd[i].type === "Quiz" && asd[i].activityId.courseId == courseId) {
         nbr += asd[i].grade;
-        console.log("asdads", asd[i].activityId.courseId);
+        // console.log("asdads", asd[i].activityId.courseId);
       }
     }
     return nbr;
@@ -369,7 +412,7 @@ const StudentsPage = () => {
                           </div>
                         ) : null}
                       </td>
-                      <td className="px-6 py-4">Full Stack</td>
+                      <td className="px-6 py-4">Full Stack Developper</td>
                       <td className="px-2 py-4">
                         <div className="flex justify-center items-center">
                           <span>45%</span>
@@ -404,7 +447,7 @@ const StudentsPage = () => {
                                 `${user.firstName} ${user.lastName}`
                               );
                               setStudent_Id(`${user._id}`);
-                              console.log(studentName);
+                              // console.log(studentName);
                             }}
                           >
                             Issue Badge

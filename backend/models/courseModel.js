@@ -12,6 +12,12 @@ const courseSchema = new Schema(
       type: String,
       required: [true, "Please provide the title of the course."],
     },
+    requiredBadges: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Badge",
+      },
+    ],
     description: {
       type: String,
       required: [true, "Please provide a description for the course."],

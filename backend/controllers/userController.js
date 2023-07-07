@@ -4,7 +4,24 @@ import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import { validateRegister } from "../middleware/validatorMiddleware.js";
 import nodemailer from "nodemailer";
-import Submission from "../models/submissionModel.js";
+import Certificate from "../models/certificateModel.js";
+
+const addCertificateToStudent = asyncHandler(async (req, res) => {
+  const { certificateId } = req.body;
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.certificates.push(certificateId);
+
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "User Certificates Updated Successfully !!" });
+  } else {
+    res.status(404).json({ message: "User Not Found" });
+  }
+});
 
 // @desc    Authenticate user/set token
 // @route   POST/api/users/login
@@ -41,7 +58,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET/api/users/
 // @access  Private
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).populate("certificates", "title");
+  const users = await User.find({}).populate("certificates", "badges");
 
   if (users) {
     res.status(200).json(users);
@@ -325,4 +342,5 @@ export {
   getResetPassword,
   resetPassword,
   getAllUserbyCourseId,
+  addCertificateToStudent,
 };
