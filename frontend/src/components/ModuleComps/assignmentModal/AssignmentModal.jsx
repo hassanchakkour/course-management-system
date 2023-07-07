@@ -7,9 +7,15 @@ import {
   FileMosaic,
   FullScreen,
   ImagePreview,
+  //
 } from "@dropzone-ui/react";
 
-const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
+const AssignmentModal = ({
+  setAssignemntModal,
+  activityTitle,
+  activeId,
+  onUpdateAssignment,
+}) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
   const [attachments, setAttachments] = useState("");
@@ -22,11 +28,13 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
   const [files, setFiles] = React.useState([]);
   const [imageSrc, setImageSrc] = React.useState(undefined);
   const [error, setError] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
 
   const navigate = useNavigate();
   const quizCreator = async () => {
     // onMoveButtonClick(data);
   };
+
   const updateFiles = (incommingFiles) => {
     setFiles(incommingFiles);
     setFile(incommingFiles[0].file);
@@ -48,6 +56,10 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
     setImageSrc(imageSource);
   };
 
+  const HandleData = () => {
+    const data = { isChanged };
+    onUpdateAssignment(data);
+  };
   const handleSubmit = async () => {
     if (description == "") {
       setError(true);
@@ -71,11 +83,14 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
           },
         }
       );
+      setIsChanged(true);
       console.log("==========fff=======");
       console.log(res);
       setError(false);
       setAssignemntModal(false);
+
       // navigate("/quizCreator");
+      onUpdateAssignment(true);
     }
   };
 
@@ -237,6 +252,7 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                 type="button"
                 onClick={() => {
                   handleSubmit();
+                  // HandleData();
                 }}
               >
                 Submit
