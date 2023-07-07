@@ -18,7 +18,11 @@ const StudentsPage = () => {
 
   const [users, setUsers] = useState();
   const [badge, setBadge] = useState();
+
   const [nbrOnline, setNbrOnline] = useState(0);
+  const [nbrAssignment, setNbrAssignment] = useState(0);
+  const [nbrQuiz, setNbrQuiz] = useState(0);
+
   const [passingGrades, setPassingGrades] = useState(0);
   const [assignmentPass, setAssignmentPass] = useState(0);
 
@@ -26,11 +30,44 @@ const StudentsPage = () => {
   const [studentName, setStudentName] = useState("");
   const [student_Id, setStudent_Id] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [successAssignMessage, setSuccessAssignMessage] = useState("");
+  const [successQuizMessage, setSuccessQuizMessage] = useState("");
 
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [showAssignmentModal, setShowAssignmentModal] = useState(false);
   const [showOnlineSessionModal, setShowOnlineSessionModal] = useState(false);
+
   const [assignment_Ids, setAssignment_Ids] = useState([]);
+  const [quiz_Ids, setQuiz_Ids] = useState([]);
+
+  const [prevComplAss, setPrevComplAss] = useState(0);
+  const [prevComplQuiz, setPrevComplQuiz] = useState(0);
+
+  const handleSuccessAssignMessage = (success) => {
+    try {
+      if (success === true) {
+        setSuccessAssignMessage(
+          "Successfully created completion assignment percentage!"
+        );
+
+        setTimeout(() => setSuccessAssignMessage(""), 2500);
+        console.log("Success Assign Message from Child:", success);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getModuleData();
+    }
+  };
+
+  const handleSuccessQuizMessage = (success) => {
+    if (success === true) {
+      setSuccessQuizMessage("Successfully created completion quiz percentage!");
+      setTimeout(() => setSuccessQuizMessage(""), 2500);
+      console.log("Success Assign Message from Child:", success);
+      getAllStudents();
+    }
+  };
 
   const getAllStudents = async () => {
     let sendData = {
@@ -101,19 +138,20 @@ const StudentsPage = () => {
       }
     }
     let passGrade = 0;
-    let nbr = 0;
+    let quizNbr = 0;
     for (let i = 0; i < res.data.length; i++) {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
           if (res.data[i].submoduleId[j].activityId[k].type === "Quiz") {
             passGrade += res.data[i].submoduleId[j].activityId[k].passingGrade;
-            nbr += 1;
+            quizNbr += 1;
           }
         }
       }
     }
 
     let AssignemntPassingGrade = 0;
+    let assigNbr = 0;
     for (let i = 0; i < res.data.length; i++) {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
@@ -123,18 +161,32 @@ const StudentsPage = () => {
           ) {
             AssignemntPassingGrade +=
               res.data[i].submoduleId[j].activityId[k].passingGrade;
+            assigNbr += 1;
           }
         }
       }
     }
-
+    // *************** Assignment Completion ******************
     let AssignmentIds = [];
+    let temp = [];
     let AssignemntCompletion = 0;
     for (let i = 0; i < res.data.length; i++) {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
           if (res.data[i].submoduleId[j].activityId[k].type === "Assignment") {
-            console.log("Hello", res.data[i].submoduleId[j].activityId[k]._id);
+            // setPrevComplAss(res.data[i].submoduleId[j].activityId[0])
+            // temp.push(res.data[i].submoduleId[j].activityId[k].completion);
+            console.log(
+              "asddddd======",
+              res.data[i].submoduleId[j].activityId[k].completion
+            );
+            setPrevComplAss(
+              res.data[i].submoduleId[j].activityId[k].completion
+            );
+            console.log(
+              "Hello Assignments",
+              res.data[i].submoduleId[j].activityId[k]._id
+            );
             AssignmentIds.push(res.data[i].submoduleId[j].activityId[k]._id);
           }
         }
@@ -142,9 +194,29 @@ const StudentsPage = () => {
     }
     setAssignment_Ids(AssignmentIds);
 
-    console.log(nbr);
+    // *************** Quiz Completion ******************
+    let QuizIds = [];
+    let QuizCompletion = 0;
+    for (let i = 0; i < res.data.length; i++) {
+      for (let j = 0; j < res.data[i].submoduleId.length; j++) {
+        for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
+          if (res.data[i].submoduleId[j].activityId[k].type === "Quiz") {
+            console.log(
+              "Hello Quizzes",
+              res.data[i].submoduleId[j].activityId[k]._id
+            );
+            QuizIds.push(res.data[i].submoduleId[j].activityId[k]._id);
+          }
+        }
+      }
+    }
+    setQuiz_Ids(QuizIds);
+
+    console.log(quizNbr);
     setAssignmentPass(AssignemntPassingGrade);
     setNbrOnline(onlineTemp);
+    setNbrAssignment(assigNbr);
+    setNbrQuiz(quizNbr);
     setPassingGrades(passGrade);
   };
 
@@ -211,6 +283,22 @@ const StudentsPage = () => {
               </p>
             </div>
           )}
+          {successAssignMessage && (
+            <div className="mx-3 flex items-center min-w-fit">
+              <HiOutlineBadgeCheck className="text-green-500 md:text-2xl text-xl " />
+              <p className="text-green-500 ml-2 md:text-lg text-base  ">
+                {successAssignMessage}
+              </p>
+            </div>
+          )}
+          {successQuizMessage && (
+            <div className="mx-3 flex items-center min-w-fit">
+              <HiOutlineBadgeCheck className="text-green-500 md:text-2xl text-xl " />
+              <p className="text-green-500 ml-2 md:text-lg text-base  ">
+                {successQuizMessage}
+              </p>
+            </div>
+          )}
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
@@ -242,7 +330,7 @@ const StudentsPage = () => {
         </div>
         <div>
           <table className="w-full text-base text-center text-gray-500 dark:text-gray-400 ">
-            <thead className="text-base text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 ">
+            <thead className="text-base  text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 ">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Name
@@ -255,12 +343,15 @@ const StudentsPage = () => {
                 >
                   <th scope="col" className="px-6 py-3">
                     <button
-                      className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
+                      className="uppercase relative px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
                       onClick={() => {
-                        // setShowQuizModal(true);
+                        setShowQuizModal(true);
                       }}
                     >
                       Quiz
+                      <div className="absolute text-gray-700 inline-flex items-center justify-center w-5 h-5 text-xs font-bold  bg-teal-400 border-1 border-gray-200 rounded-full -top-2.5 -right-2.5 ">
+                        {nbrQuiz}
+                      </div>
                     </button>
                   </th>
                 </Tooltip>
@@ -271,10 +362,13 @@ const StudentsPage = () => {
                 >
                   <th scope="col" className="px-6 py-3">
                     <button
-                      className="uppercase px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
+                      className="uppercase relative px-2 py-1 font-bold rounded-lg text-teal-500 hover:text-gray-500 dark:hover:text-teal-300   mr-2     text-sm ease-linear transition-all duration-150"
                       onClick={() => setShowAssignmentModal(true)}
                     >
                       Assignment
+                      <div className="absolute text-gray-700 inline-flex items-center justify-center w-5 h-5 text-xs font-bold  bg-teal-400 border-1 border-gray-200 rounded-full -top-2.5 -right-2.5 ">
+                        {nbrAssignment}
+                      </div>
                     </button>
                   </th>
                 </Tooltip>
@@ -427,10 +521,18 @@ const StudentsPage = () => {
           {showAssignmentModal && (
             <AssignmentComplPercModal
               setShowAssignmentModal={setShowAssignmentModal}
-              studentName={studentName}
-              student_Id={student_Id}
-              handleBadge={handleBadge}
+              nbrAssignment={nbrAssignment}
               assignment_Ids={assignment_Ids}
+              handleSuccessAssignMessage={handleSuccessAssignMessage}
+              prevComplAss={prevComplAss}
+            />
+          )}
+          {showQuizModal && (
+            <QuizComplPercModal
+              setShowQuizModal={setShowQuizModal}
+              nbrQuiz={nbrQuiz}
+              quiz_Ids={quiz_Ids}
+              handleSuccessQuizMessage={handleSuccessQuizMessage}
             />
           )}
         </div>
