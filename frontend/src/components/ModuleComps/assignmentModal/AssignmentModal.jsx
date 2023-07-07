@@ -85,14 +85,17 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
 
   return (
     <div>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+      <div className="justify-center mt-10  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-[750px] my-6 mx-auto max-w-3xl">
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
             {/*header*/}
-            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+            <div className="flex items-start  justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl text-white font-semibold">
                 Assignment:
+                <br />
+                <br />
+                <br />
                 <span className="text-teal-500 text-m">{quizTitle}</span>
               </h3>
             </div>
@@ -162,14 +165,13 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                     footer={false}
                     style={{
                       backgroundColor: "transparent",
-                      width: "400px",
+                      width: "620px",
                       color: "#718096",
                       fontSize: "20px",
                       border: "2px dashed gray",
-                      borderRadius: "10px",
                     }}
                     maxFiles={1}
-                    accept=".pdf,.image,.jpeg,.mp4,.png,.jpg/*"
+                    accept=".pdf,.image,.jpeg,.mp4,.png,.jpg,.docx/*"
                     maxFileSize={2998000}
                     value={files}
                     label="Drag'n drop file here or click to browse"
@@ -209,18 +211,6 @@ const AssignmentModal = ({ setAssignemntModal, activityTitle, activeId }) => {
                     className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
                   />
                 </div>
-                {/* <label className="my-4 text-slate-400 text-lg leading-relaxed">
-                  Penalty Percentage
-                </label>
-                <div className="mb-3 pt-0">
-                  <input
-                    type="number"
-                    value={penality}
-                    placeholder="Add Penalty Percentage"
-                    onChange={(e) => setPenality(e.target.value)}
-                    className="px-3 mt-1 py-3 placeholder-slate-400 text-white relative  rounded-md text-sm border-1 shadow outline-none border-white focus:outline-none w-full bg-transparent"
-                  />
-                </div> */}
               </div>
             </div>
 

@@ -130,10 +130,10 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
                     footer={false}
                     style={{
                       backgroundColor: "transparent",
-                      width: "300px",
+                      width: "620px",
                       color: "#718096",
                       fontSize: "20px",
-                      border: "1px solid white",
+                      border: "2px dashed gray",
                     }}
                     maxFiles={1}
                     accept=".pdf,.image,.jpeg,.mp4,.png,.jpg/*"
