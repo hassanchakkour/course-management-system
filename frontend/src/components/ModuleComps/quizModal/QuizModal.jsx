@@ -265,6 +265,9 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                     value={selectedQuiz}
                     onChange={(e) => setSelectedQuiz(e.target.value)}
                   >
+                    <option className="text-black" value="">
+                      Choose Option
+                    </option>
                     {quizzes &&
                       quizzes.map((quiz) => {
                         // console.log(quiz.type);
@@ -286,7 +289,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                 </div>
                 <Link to="/quizCreator">
                   <button className="bg-teal-500 text-sm text-white py-2 px-4 rounded-full hover:bg-teal-700 shadow">
-                   Edit quiz
+                    Edit quiz
                   </button>
                 </Link>
               </div>

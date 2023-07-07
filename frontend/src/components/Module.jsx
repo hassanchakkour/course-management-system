@@ -56,6 +56,7 @@ const Header = ({ course, onDataFromChild }) => {
   const [mediaModal, setMediaModal] = useState(false);
   const [modsTitle, setModsTitle] = useState("");
   const [btnEditSubOpen, setBtnEditSubOpen] = useState(false);
+  const [iconType, setIconType] = useState();
   const handleMoveButtonClick = (data) => {
     const moveActivity = async () => {
       if (isActivityId != "" && isSubmoduleId != "" && data.subId != "") {
@@ -666,7 +667,28 @@ const Header = ({ course, onDataFromChild }) => {
                                           }
                                         }}
                                       >
-                                        {activity.title}
+                                        {activity.type === "Quiz" ? (
+                                          <p className="flex">
+                                            <MdQuiz className="mt-1 mr-2" />
+                                            {activity.title}
+                                          </p>
+                                        ) : activity.type === "Assignment" ? (
+                                          <p className="flex">
+                                            <LuPcCase className="mt-1 mr-2" />
+                                            {activity.title}
+                                          </p>
+                                        ) : activity.type === "Media" ? (
+                                          <p className="flex">
+                                            <BsFolderPlus className="mt-1 mr-2" />
+                                            {activity.title}
+                                          </p>
+                                        ) : activity.type ===
+                                          "online session" ? (
+                                          <p className="flex">
+                                            <SlMicrophone className="mt-1 mr-2" />
+                                            {activity.title}
+                                          </p>
+                                        ) : null}
                                         <BsThreeDotsVertical
                                           onClick={(event) => {
                                             event.stopPropagation();
