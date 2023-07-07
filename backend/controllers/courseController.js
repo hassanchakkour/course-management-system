@@ -20,8 +20,7 @@ const getCourses = asyncHandler(async (req, res) => {
 // @route   GET /api/courses/:id
 // @access  Private (Teacher)
 const getCourseById = asyncHandler(async (req, res) => {
-  const teacherId = req.user._id;
-  const course = await Course.findOne({ _id: req.params.id, teacherId });
+  const course = await Course.findOne({ _id: req.params.id });
 
   if (course) {
     res.status(200).json(course);

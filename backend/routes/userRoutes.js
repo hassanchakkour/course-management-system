@@ -12,12 +12,14 @@ import {
   getResetPassword,
   resetPassword,
   getAllUserbyCourseId,
+  addCertificateToStudent,
 } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 router.post("/", registerUser);
 router.post("/login", loginUser);
 router.post("/getAll", getAllUserbyCourseId);
+router.post("/addCertificate/:id", addCertificateToStudent);
 router
   .route("/profile")
   .get(protect, getUserProfile)
