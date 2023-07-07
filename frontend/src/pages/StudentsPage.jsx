@@ -79,19 +79,6 @@ const StudentsPage = () => {
     );
     // console.log("this", res.data);
     setUsers(res.data);
-
-    // console.log("asdqwesasd", courseBadge.data.requiredBadges);
-    // let allBadge = [];
-    // for (let i = 0; i < res.data.length; i++) {
-    //   // console.log("3333", res.data[i].badges);
-    //   for (let j = 0; j < res.data[i].badges.length; j++) {
-    //     // console.log(res.data[i].badges[j]);
-    //     if (courseBadge.data.requiredBadges.includes(res.data[i].badges[j])) {
-    //       allBadge.push(res.data[i].badges[j]);
-    //     }
-    //   }
-    // }
-    // console.log("all", allBadge);
   };
 
   const getBadge = async () => {
@@ -553,33 +540,33 @@ const StudentsPage = () => {
                 );
               })}
           </table>
-          {showBadgeModal && (
-            <BadgeModal
-              setShowBadgeModal={setShowBadgeModal}
-              studentName={studentName}
-              student_Id={student_Id}
-              handleBadge={handleBadge}
-            />
-          )}
-          {showAssignmentModal && (
-            <AssignmentComplPercModal
-              setShowAssignmentModal={setShowAssignmentModal}
-              nbrAssignment={nbrAssignment}
-              assignment_Ids={assignment_Ids}
-              handleSuccessAssignMessage={handleSuccessAssignMessage}
-              prevComplAss={prevComplAss}
-            />
-          )}
-          {showQuizModal && (
-            <QuizComplPercModal
-              setShowQuizModal={setShowQuizModal}
-              nbrQuiz={nbrQuiz}
-              quiz_Ids={quiz_Ids}
-              handleSuccessQuizMessage={handleSuccessQuizMessage}
-            />
-          )}
         </div>
       </div>
+      {showBadgeModal && (
+        <BadgeModal
+          setShowBadgeModal={setShowBadgeModal}
+          studentName={studentName}
+          student_Id={student_Id}
+          handleBadge={handleBadge}
+        />
+      )}
+      {showAssignmentModal && (
+        <AssignmentComplPercModal
+          setShowAssignmentModal={setShowAssignmentModal}
+          nbrAssignment={nbrAssignment}
+          assignment_Ids={assignment_Ids}
+          handleSuccessAssignMessage={handleSuccessAssignMessage}
+          prevComplAss={prevComplAss}
+        />
+      )}
+      {showQuizModal && (
+        <QuizComplPercModal
+          setShowQuizModal={setShowQuizModal}
+          nbrQuiz={nbrQuiz}
+          quiz_Ids={quiz_Ids}
+          handleSuccessQuizMessage={handleSuccessQuizMessage}
+        />
+      )}
     </>
   );
 };
