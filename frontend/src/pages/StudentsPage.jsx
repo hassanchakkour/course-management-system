@@ -412,7 +412,7 @@ const StudentsPage = () => {
                           </div>
                         ) : null}
                       </td>
-                      <td className="px-6 py-4">Full Stack</td>
+                      <td className="px-6 py-4">Full Stack Developper</td>
                       <td className="px-2 py-4">
                         <div className="flex justify-center items-center">
                           <span>45%</span>
