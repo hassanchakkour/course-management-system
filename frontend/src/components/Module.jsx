@@ -56,7 +56,6 @@ const Header = ({ course, onDataFromChild }) => {
   const [mediaModal, setMediaModal] = useState(false);
   const [modsTitle, setModsTitle] = useState("");
   const [btnEditSubOpen, setBtnEditSubOpen] = useState(false);
-  const [iconType, setIconType] = useState();
   const handleMoveButtonClick = (data) => {
     const moveActivity = async () => {
       if (isActivityId != "" && isSubmoduleId != "" && data.subId != "") {
@@ -135,9 +134,31 @@ const Header = ({ course, onDataFromChild }) => {
 
     moveSubmodules();
   };
+  const handleUpdateAssignment = async (data) => {
+    console.log("this data from assignment", data);
+    try {
+      if (data == true) {
+        await getModuleData();
+        setMessageClass("absolute top-5 ml-[45%] text-green-500");
+        setMessage("Assignment Updated Successfully !!");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      } else {
+        setMessageClass("absolute top-5 ml-[45%] text-red-500");
+        setMessage("Something went wrong Please Try Again!");
+
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleEditSubs = async (data) => {
     if (data.subModId != "" && data.submoduleTitle != "") {
-      console.log(data);
+      // console.log(data);
       try {
         let sendData = {
           id: data.subModId,
@@ -147,7 +168,7 @@ const Header = ({ course, onDataFromChild }) => {
           `http://localhost:5000/api/submodules/update`,
           sendData
         );
-        console.log(res);
+        // console.log(res);
         setMessageClass("absolute top-5 ml-[45%] text-green-500");
         setMessage(res.data.message);
         setOpenItemsubId("");
@@ -168,7 +189,7 @@ const Header = ({ course, onDataFromChild }) => {
     }
   };
   const handleEditModule = async (data) => {
-    console.log("this from edit", data);
+    // console.log("this from edit", data);
     if (data.moduleTitle != "") {
       try {
         let sendData = {
@@ -178,7 +199,7 @@ const Header = ({ course, onDataFromChild }) => {
           `http://localhost:5000/api/modules/${data.modsId}`,
           sendData
         );
-        console.log(res);
+        // console.log(res);
         setMessageClass("absolute top-5 ml-[45%] text-green-500");
         setMessage(res.data.message);
         setOpenItemId("");
@@ -220,7 +241,7 @@ const Header = ({ course, onDataFromChild }) => {
         setMessage("");
       }, 2000);
 
-      console.log(res.data);
+      // console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -243,7 +264,7 @@ const Header = ({ course, onDataFromChild }) => {
         setMessage("");
       }, 2000);
 
-      console.log(res.data);
+      // console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -267,7 +288,7 @@ const Header = ({ course, onDataFromChild }) => {
         setMessage("");
       }, 2000);
 
-      console.log(res.data);
+      // console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -291,7 +312,7 @@ const Header = ({ course, onDataFromChild }) => {
         setMessage("");
       }, 2000);
 
-      console.log(res.data);
+      // console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -316,7 +337,7 @@ const Header = ({ course, onDataFromChild }) => {
           setMessage("");
         }, 2000);
 
-        console.log(res.data);
+        // console.log(res.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -334,7 +355,7 @@ const Header = ({ course, onDataFromChild }) => {
   };
   const CreateNewActivity = async (type) => {
     if (isSubmoduleId) {
-      console.log("inside", userInfo._id);
+      // console.log("inside", userInfo._id);
       try {
         let sendData = {
           title: type,
@@ -354,7 +375,7 @@ const Header = ({ course, onDataFromChild }) => {
           setMessage("");
         }, 2000);
 
-        console.log(res.data);
+        // console.log(res.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -583,7 +604,7 @@ const Header = ({ course, onDataFromChild }) => {
                                     <p
                                       onClick={() => {
                                         setBtnEditSubOpen(true);
-                                        console.log(submodule.title);
+                                        // console.log(submodule.title);
                                         setSubTitle(submodule.title);
                                       }}
                                       className="z-50 cursor-pointer max-[850px]:ml-[62%] rounded-b-2xl  flex  hover:opacity-75  bg-yellow-500 p-2  text-sm"
@@ -668,26 +689,26 @@ const Header = ({ course, onDataFromChild }) => {
                                         }}
                                       >
                                         {activity.type === "Quiz" ? (
-                                          <p className="flex">
+                                          <span className="flex">
                                             <MdQuiz className="mt-1 mr-2" />
                                             {activity.title}
-                                          </p>
+                                          </span>
                                         ) : activity.type === "Assignment" ? (
-                                          <p className="flex">
+                                          <span className="flex">
                                             <LuPcCase className="mt-1 mr-2" />
                                             {activity.title}
-                                          </p>
+                                          </span>
                                         ) : activity.type === "Media" ? (
-                                          <p className="flex">
+                                          <span className="flex">
                                             <BsFolderPlus className="mt-1 mr-2" />
                                             {activity.title}
-                                          </p>
+                                          </span>
                                         ) : activity.type ===
                                           "online session" ? (
-                                          <p className="flex">
+                                          <span className="flex">
                                             <SlMicrophone className="mt-1 mr-2" />
                                             {activity.title}
-                                          </p>
+                                          </span>
                                         ) : null}
                                         <BsThreeDotsVertical
                                           onClick={(event) => {
@@ -760,6 +781,7 @@ const Header = ({ course, onDataFromChild }) => {
                 setAssignemntModal={setAssignemntModal}
                 activityTitle={activTitle}
                 activeId={isActivityId}
+                onUpdateAssignment={handleUpdateAssignment}
               />
             )}
             {mediaModal && (
