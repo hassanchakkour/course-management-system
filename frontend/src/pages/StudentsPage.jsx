@@ -35,7 +35,6 @@ const StudentsPage = () => {
 
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [showAssignmentModal, setShowAssignmentModal] = useState(false);
-  const [showOnlineSessionModal, setShowOnlineSessionModal] = useState(false);
 
   const [assignment_Ids, setAssignment_Ids] = useState([]);
   const [quiz_Ids, setQuiz_Ids] = useState([]);
@@ -61,11 +60,19 @@ const StudentsPage = () => {
   };
 
   const handleSuccessQuizMessage = (success) => {
-    if (success === true) {
-      setSuccessQuizMessage("Successfully created completion quiz percentage!");
-      setTimeout(() => setSuccessQuizMessage(""), 2500);
-      console.log("Success Assign Message from Child:", success);
-      getAllStudents();
+    try {
+      if (success === true) {
+        setSuccessQuizMessage(
+          "Successfully created completion quiz percentage!"
+        );
+
+        setTimeout(() => setSuccessQuizMessage(""), 2500);
+        console.log("Success Quiz Message from Child:", success);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getModuleData();
     }
   };
 
@@ -198,14 +205,11 @@ const StudentsPage = () => {
     }
     // *************** Assignment Completion ******************
     let AssignmentIds = [];
-    let temp = [];
     let AssignemntCompletion = 0;
     for (let i = 0; i < res.data.length; i++) {
       for (let j = 0; j < res.data[i].submoduleId.length; j++) {
         for (let k = 0; k < res.data[i].submoduleId[j].activityId.length; k++) {
           if (res.data[i].submoduleId[j].activityId[k].type === "Assignment") {
-            // setPrevComplAss(res.data[i].submoduleId[j].activityId[0])
-            // temp.push(res.data[i].submoduleId[j].activityId[k].completion);
             console.log(
               "asddddd======",
               res.data[i].submoduleId[j].activityId[k].completion
@@ -235,12 +239,16 @@ const StudentsPage = () => {
               "Hello Quizzes",
               res.data[i].submoduleId[j].activityId[k]._id
             );
+            setPrevComplQuiz(
+              res.data[i].submoduleId[j].activityId[k].completion
+            );
             QuizIds.push(res.data[i].submoduleId[j].activityId[k]._id);
           }
         }
       }
     }
     setQuiz_Ids(QuizIds);
+    // console.log("ASDDDDD======", prevComplQuiz);
 
     console.log(quizNbr);
     setAssignmentPass(AssignemntPassingGrade);
@@ -565,6 +573,7 @@ const StudentsPage = () => {
           nbrQuiz={nbrQuiz}
           quiz_Ids={quiz_Ids}
           handleSuccessQuizMessage={handleSuccessQuizMessage}
+          prevComplQuiz={prevComplQuiz}
         />
       )}
     </>

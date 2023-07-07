@@ -8,11 +8,13 @@ const QuizComplPercModal = ({
   nbrQuiz,
   quiz_Ids,
   handleSuccessQuizMessage,
+  prevComplQuiz,
 }) => {
   const { currentColor } = useStateContext();
-  // console.log(quiz_Ids);
-  const [quizComplPer, setQuizComplPer] = useState(0);
+  const [quizComplPer, setQuizComplPer] = useState(prevComplQuiz);
   const [errorMessage, setErrorMessage] = useState(false);
+
+  console.log("ASDDDDD====== from child", prevComplQuiz);
 
   const setCompletionQuiz = async () => {
     try {
@@ -60,6 +62,7 @@ const QuizComplPercModal = ({
                   required
                   onChange={(e) => setQuizComplPer(e.target.value)}
                   min="0"
+                  value={quizComplPer}
                   placeholder="Add Total %"
                   className="px-3 mb-1 py-3 placeholder-slate-400 text-white relative bg-transparent rounded text-sm border-1 shadow outline-none focus:outline-none  w-full"
                 />

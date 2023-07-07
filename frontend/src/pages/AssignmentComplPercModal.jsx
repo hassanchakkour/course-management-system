@@ -28,7 +28,7 @@ const AssignmentComplPercModal = ({
           sendData
         );
       }
-      console.log("Hi Try");
+      // console.log("Hi Try");
       handleSuccessAssignMessage(true);
     } catch (error) {
       console.log(error);
