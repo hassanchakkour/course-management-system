@@ -825,6 +825,21 @@ const Questions = () => {
                             })}
                         </div>
                       )}
+                      {iconType == "Numerical" && (
+                        <div className="flex">
+                          <p className="md-text-lg text-base">Options: </p>
+                          {questionOptions &&
+                            questionOptions.map((option, index) => {
+                              return (
+                                <div key={index}>
+                                  <li className="list-outside mx-2 mt-0.5 md-text-base text-sm">
+                                    {option}
+                                  </li>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      )}
 
                       <div className="flex mt-2 ">
                         <p className=" md-text-lg text-base">Answer: </p>
