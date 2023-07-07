@@ -12,7 +12,12 @@ import {
   ImagePreview,
 } from "@dropzone-ui/react";
 
-const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
+const MediaModal = ({
+  setMediaModal,
+  activityTitle,
+  activeId,
+  onUpdateMedia,
+}) => {
   const [quizTitle, setQuizTitle] = useState(activityTitle);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState("");
@@ -69,6 +74,7 @@ const MediaModal = ({ setMediaModal, activityTitle, activeId }) => {
       );
       console.log(res);
       setError(false);
+      onUpdateMedia(true);
       // navigate("/quizCreator");
     }
   };
