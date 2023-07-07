@@ -156,6 +156,28 @@ const Header = ({ course, onDataFromChild }) => {
       console.log(error);
     }
   };
+  const handleUpdateMedia = async (data) => {
+    console.log("this data from Media", data);
+    try {
+      if (data == true) {
+        await getModuleData();
+        setMessageClass("absolute top-5 ml-[45%] text-green-500");
+        setMessage("File Uploaded Successfully !!");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      } else {
+        setMessageClass("absolute top-5 ml-[45%] text-red-500");
+        setMessage("Something went wrong Please Try Again!");
+
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleEditSubs = async (data) => {
     if (data.subModId != "" && data.submoduleTitle != "") {
       // console.log(data);
@@ -789,6 +811,7 @@ const Header = ({ course, onDataFromChild }) => {
                 setMediaModal={setMediaModal}
                 activityTitle={activTitle}
                 activeId={isActivityId}
+                onUpdateMedia={handleUpdateMedia}
               />
             )}
           </div>

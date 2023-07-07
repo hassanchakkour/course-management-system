@@ -299,6 +299,32 @@ const StudentsPage = () => {
       return true;
     }
   };
+  const AssignmentCompletionFormula = (asd) => {
+    let nbr = 0;
+    if (gradeAssignment(asd) >= assignmentPass) {
+      nbr = prevComplAss;
+    }
+    return nbr;
+  };
+  const QuizCompletionFormula = (asd) => {
+    let nbr = 0;
+    if (grades(asd) >= passingGrades) {
+      nbr = prevComplQuiz;
+    }
+    if (onlineSessionFormula(asd) == false) {
+      nbr += 10;
+    }
+    return nbr;
+  };
+
+  const overAllCompletion = (asd) => {
+    console.log("quiz", QuizCompletionFormula(asd));
+    console.log("assignment", AssignmentCompletionFormula(asd));
+    let total = 0;
+    total = QuizCompletionFormula(asd) + AssignmentCompletionFormula(asd);
+
+    return total;
+  };
 
   useEffect(() => {
     getAllStudents();
@@ -435,6 +461,7 @@ const StudentsPage = () => {
             {users &&
               users.map((user, index) => {
                 // console.log(user.submitted);
+
                 return (
                   <tbody key={user._id}>
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -504,19 +531,45 @@ const StudentsPage = () => {
                       <td className="px-6 py-4">Full Stack Developper</td>
                       <td className="px-2 py-4">
                         <div className="flex justify-center items-center">
-                          <span>45%</span>
+                          <span>
+                            {" "}
+                            {`${overAllCompletion(user.submitted)}%`}
+                          </span>
                           <div className="w-full ml-2 bg-gray-200 rounded-full h-2.5  dark:bg-gray-700">
                             <div
-                              className="bg-green-600 h-2.5 rounded-full dark:bg-green-500"
-                              style={{ width: "45%" }}
+                              className={`h-2.5 rounded-full 
+                               ${
+                                 overAllCompletion(user.submitted) < 50
+                                   ? "bg-red-500"
+                                   : overAllCompletion(user.submitted) >= 50 &&
+                                     overAllCompletion(user.submitted) < 100
+                                   ? "bg-yellow-500"
+                                   : overAllCompletion(user.submitted) == 100
+                                   ? "bg-green-500"
+                                   : null
+                               }`}
+                              style={{
+                                width: `${overAllCompletion(user.submitted)}%`,
+                              }}
                             ></div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 ">
                         <div className="flex align-middle justify-between">
-                          <VscCircleFilled className="text-green-500 mt-1" />
-                          <p className=" font-bold">Passed</p>
+                          {overAllCompletion(user.submitted) != 100 ? (
+                            <VscCircleFilled className="text-red-500 mt-1" />
+                          ) : (
+                            <VscCircleFilled className="text-green-500 mt-1" />
+                          )}
+
+                          <p className=" font-bold">
+                            {overAllCompletion(user.submitted) != 100 ? (
+                              <span className="">Failed</span>
+                            ) : (
+                              <span className="">Passed</span>
+                            )}
+                          </p>
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -525,11 +578,22 @@ const StudentsPage = () => {
                         ) : (
                           <button
                             style={{
-                              backgroundColor: badge ? "" : "gray",
+                              backgroundColor:
+                                overAllCompletion(user.submitted) != 100
+                                  ? "gray"
+                                  : "",
                             }}
-                            className={`px-4 py-2 rounded-md text-teal-500  hover:bg-teal-500 border  mr-2  border-teal-500  font-semibold capitalize  text-sm ease-linear transition-all duration-150
-                             ${badge ? "hover:text-white" : "bg-gray-300"}`}
-                            disabled={badge ? false : true}
+                            className={`px-4 py-2 rounded-md text-teal-500  hover:bg-teal-500 border hover:text-white  mr-2  border-teal-500  font-semibold capitalize  text-sm ease-linear transition-all duration-150
+                             ${
+                               overAllCompletion(user.submitted) != 100
+                                 ? " text-white"
+                                 : "bg-transparent"
+                             }`}
+                            disabled={
+                              overAllCompletion(user.submitted) != 100
+                                ? true
+                                : false
+                            }
                             onClick={() => {
                               setShowBadgeModal(true);
                               setStudentName(
