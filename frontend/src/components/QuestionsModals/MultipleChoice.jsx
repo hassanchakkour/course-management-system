@@ -302,7 +302,7 @@ const MultipleChoice = ({ setShowModal, onSubmit, iconType }) => {
                     className="px-4 py-2 text-teal-500 hover:text-white hover:bg-teal-500 border rounded-full mr-2  border-teal-500  font-semibold capitalize  text-sm ease-linear transition-all duration-150 "
                     onClick={() => {
                       setShowModal(false);
-                      console.log(currentColor);
+                      // console.log(currentColor);
                     }}
                   >
                     Cancel

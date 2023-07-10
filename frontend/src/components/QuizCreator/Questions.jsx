@@ -79,7 +79,7 @@ const Questions = () => {
   ];
 
   const activityId = localStorage.getItem("activity_id", activityID);
-  console.log("activityId: ", activityId);
+  // console.log("activityId: ", activityId);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -118,55 +118,62 @@ const Questions = () => {
 
   let sendData = { activityId: activityId };
 
+  // *************** Get All Questions ***************
   const getQuestionData = async () => {
-    const res = await axios.post(
-      "http://localhost:5000/api/questions/activity",
-      sendData
-    );
-    setQuestionsNbr(res.data.length);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/questions/activity",
+        sendData
+      );
+      // alert(res.data.length);
+      setQuestionsNbr(res.data.length);
 
-    let multipleChoiceTemp = 0;
-    let multipleResponceTemp = 0;
-    let trueFalseTemp = 0;
-    let shortAnswersTemp = 0;
-    let numericalTemp = 0;
-    let essayTemp = 0;
+      let multipleChoiceTemp = 0;
+      let multipleResponceTemp = 0;
+      let trueFalseTemp = 0;
+      let shortAnswersTemp = 0;
+      let numericalTemp = 0;
+      let essayTemp = 0;
 
-    for (let i = 0; i < res.data.length; i++) {
-      if (res.data[i].type === "Multiple Choice") {
-        multipleChoiceTemp += 1;
+      for (let i = 0; i < res.data.length; i++) {
+        if (res.data[i].type === "Multiple Choice") {
+          multipleChoiceTemp += 1;
+        }
+        if (res.data[i].type === "Multiple Response") {
+          multipleResponceTemp += 1;
+        }
+        if (res.data[i].type === "True or False") {
+          trueFalseTemp += 1;
+        }
+        if (res.data[i].type === "Short Answers") {
+          shortAnswersTemp += 1;
+        }
+        if (res.data[i].type === "Numerical") {
+          numericalTemp += 1;
+        }
+        if (res.data[i].type === "Essay") {
+          essayTemp += 1;
+        }
       }
-      if (res.data[i].type === "Multiple Response") {
-        multipleResponceTemp += 1;
+      setMultipleChoiceNbr(multipleChoiceTemp);
+      setMultipleResponceNbr(multipleResponceTemp);
+      setTrueFalseNbr(trueFalseTemp);
+      setShortAnswersNbr(shortAnswersTemp);
+      setNumericalNbr(numericalTemp);
+      setEssayNbr(essayTemp);
+
+      let gradeSum = 0;
+      for (let i = 0; i < res.data.length; i++) {
+        gradeSum += res.data[i].point;
       }
-      if (res.data[i].type === "True or False") {
-        trueFalseTemp += 1;
-      }
-      if (res.data[i].type === "Short Answers") {
-        shortAnswersTemp += 1;
-      }
-      if (res.data[i].type === "Numerical") {
-        numericalTemp += 1;
-      }
-      if (res.data[i].type === "Essay") {
-        essayTemp += 1;
-      }
+      setGradeNbr(gradeSum);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
     }
-    setMultipleChoiceNbr(multipleChoiceTemp);
-    setMultipleResponceNbr(multipleResponceTemp);
-    setTrueFalseNbr(trueFalseTemp);
-    setShortAnswersNbr(shortAnswersTemp);
-    setNumericalNbr(numericalTemp);
-    setEssayNbr(essayTemp);
-
-    let gradeSum = 0;
-    for (let i = 0; i < res.data.length; i++) {
-      gradeSum += res.data[i].point;
-    }
-    setGradeNbr(gradeSum);
-    setData(res.data);
   };
 
+  // *************** Get Specific Question ***************
   const getSpecificQuestion = async (id) => {
     try {
       const res = await axios.get(`http://localhost:5000/api/questions/${id}`);
@@ -175,6 +182,8 @@ const Questions = () => {
       console.log(error);
     }
   };
+
+  // *************** Update Specific Question ***************
   const updateSpecificQuestion = async (id) => {
     try {
       const res = await axios.put(`http://localhost:5000/api/questions/${id}`, {
@@ -190,6 +199,7 @@ const Questions = () => {
     }
   };
 
+  // *************** Remove Specific Question ***************
   const handleRemoveQuestion = async (id) => {
     try {
       let sendData = {
@@ -199,14 +209,20 @@ const Questions = () => {
         `http://localhost:5000/api/questions/delete/${id}`,
         sendData
       );
-      setSingleData([]);
+      {
+        questionId == id && setSingleData([]);
+      }
+
       setDeleteMessage("Question Deleted");
       setTimeout(() => setDeleteMessage(""), 2500);
     } catch (error) {
       console.log(error);
     } finally {
-      await getQuestionData();
-      setShowQuestion(false);
+      getQuestionData();
+      // console.log("Number of remaining questions is:", data.length);
+      {
+        questionId == id && setShowQuestion(false);
+      }
     }
   };
 
@@ -223,8 +239,7 @@ const Questions = () => {
 
   useEffect(() => {
     getQuestionData();
-    // updatePassingGradeInQuiz();
-  }, [gradeNbr]);
+  }, [gradeNbr, data]);
 
   const iconQuestionStyle =
     "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
@@ -235,7 +250,7 @@ const Questions = () => {
     console.log("This is from child", data);
     let questionOption = [];
 
-    for (let i = 0; i < data.options.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       questionOption.push(data.options[i].content);
     }
 
@@ -494,21 +509,32 @@ const Questions = () => {
               </div>
               <div className="flex flex-col">
                 <span
-                  style={{ color: `${multipleChoiceNbr > 0 && currentColor}` }}
+                  style={{
+                    color: `${
+                      multipleChoiceNbr > 0 ? currentColor : "#9ca3af"
+                    }`,
+                    fontWeight: `${multipleChoiceNbr > 0 && "600"}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {multipleChoiceNbr}
                 </span>
                 <span
                   style={{
-                    color: `${multipleResponceNbr > 0 && currentColor}`,
+                    color: `${
+                      multipleResponceNbr > 0 ? currentColor : "#9ca3af"
+                    }`,
+                    fontWeight: `${multipleChoiceNbr > 0 && "600"}`,
                   }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {multipleResponceNbr}
                 </span>
                 <span
-                  style={{ color: `${trueFalseNbr > 0 && currentColor}` }}
+                  style={{
+                    color: `${trueFalseNbr > 0 ? currentColor : "#9ca3af"}`,
+                    fontWeight: `${multipleChoiceNbr > 0 && "600"}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {trueFalseNbr}
@@ -528,19 +554,28 @@ const Questions = () => {
               </div>
               <div className="flex flex-col">
                 <span
-                  style={{ color: `${shortAnswersNbr > 0 && currentColor}` }}
+                  style={{
+                    color: `${shortAnswersNbr > 0 ? currentColor : "#9ca3af"}`,
+                    fontWeight: `${multipleChoiceNbr > 0 && "600"}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {shortAnswersNbr}
                 </span>
                 <span
-                  style={{ color: `${numericalNbr > 0 && currentColor}` }}
+                  style={{
+                    color: `${numericalNbr > 0 ? currentColor : "#9ca3af"}`,
+                    fontWeight: `${multipleChoiceNbr > 0 && "600"}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {numericalNbr}
                 </span>
                 <span
-                  style={{ color: `${essayNbr > 0 && currentColor}` }}
+                  style={{
+                    color: `${essayNbr > 0 ? currentColor : "#9ca3af"}`,
+                    fontWeight: `${multipleChoiceNbr > 0 && "600"}`,
+                  }}
                   className="dark:text-gray-400 text-gray-500 text-sm md:text-base ml-4"
                 >
                   {essayNbr}
@@ -586,12 +621,16 @@ const Questions = () => {
                 <div>
                   <MdOutlineModeEdit
                     onClick={() => {
-                      inputPoints.current.focus();
+                      {
+                        showQuestion && inputPoints.current.focus();
+                      }
                       setDisabledInputNum(false);
                       setQuestionPoints(singleData.point);
                     }}
                     onMouseEnter={() => {}}
-                    className="m-4 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl "
+                    className={`m-4 md:text-xl cursor-pointer  ${
+                      showQuestion && "dark:hover:text-teal-300 text-white"
+                    } text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl `}
                   />
                 </div>
               </Tooltip>
@@ -601,10 +640,11 @@ const Questions = () => {
                     onClick={() => {
                       // setDisabledInputNum(true);
                       // setDisabledInputText(true);
-
-                      updateSpecificQuestion(questionId);
+                      showQuestion && updateSpecificQuestion(questionId);
                     }}
-                    className="m-4 mr-10 md:mr-16 md:text-xl cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                    className={`m-4 mr-10 md:mr-16 md:text-xl cursor-pointer ${
+                      showQuestion && "dark:hover:text-teal-300 text-white"
+                    } text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl`}
                   />
                 </div>
               </Tooltip>
@@ -739,7 +779,9 @@ const Questions = () => {
                             setQuestionTitle(singleData.title);
                           }
                         }}
-                        className="md:text-xl mt-2 cursor-pointer dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl"
+                        className={`md:text-xl mt-2 cursor-pointer ${
+                          showQuestion && "dark:hover:text-teal-300 text-white"
+                        } text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl`}
                       />
                     </div>
                   </Tooltip>
@@ -913,10 +955,10 @@ const Questions = () => {
                           setQuestionOptions(question.options);
                           setDisabledInputNum(true);
                           setDisabledInputText(true);
-                          console.log(questionOptions);
+                          // console.log(questionOptions);
                           console.log(iconType);
                         }}
-                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-green-400  dark:hover:drop-shadow-lg hover:text-gray-400 lg:text-lg text-xs ease-linear transition-all duration-150`}
+                        className={`lg:-mt-1 capitalize text-center cursor-pointer dark:text-white text-gray-800 dark:hover:text-teal-400  dark:hover:drop-shadow-lg hover:text-gray-400 lg:text-lg text-xs ease-linear transition-all duration-150`}
                       >
                         {question.title}
                       </p>
@@ -925,6 +967,8 @@ const Questions = () => {
                         onClick={() => {
                           handleRemoveQuestion(question._id);
                           setQuestionTitle("Question");
+                          getQuestionData();
+                          // console.log("Hi Ali Mansour:", data.length);
                           // setDisabledInputText(false);
                           // console.log(question._id);
                         }}

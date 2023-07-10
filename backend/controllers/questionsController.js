@@ -55,9 +55,11 @@ const getQuestionsByactivityId = asyncHandler(async (req, res) => {
   const { activityId } = req.body;
 
   const questions = await Question.find({ activityId });
-  console.log(questions.length);
+  // console.log(questions.length);
 
-  if (questions.length > 0) {
+  if (questions.length === 0) {
+    res.status(204).json({ Message: "No questions" });
+  } else if (questions.length > 0) {
     res.status(200).json(questions);
   } else {
     res.status(404);
