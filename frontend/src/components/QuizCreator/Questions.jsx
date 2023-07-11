@@ -10,8 +10,11 @@ import MultipleResponse from "../QuestionsModals/MultipleResponse";
 import ShortAnswers from "../QuestionsModals/ShortAnswers";
 import QuestionEssay from "../QuestionsModals/QuestionEssay";
 import Numerical from "../QuestionsModals/Numerical";
+
+import MultipleQuestionModal from "../MultipleQuestionModal";
 import { MdAddCircle } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
+import { MdAddToQueue } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 
 import "./scrollStyle.css";
@@ -44,6 +47,9 @@ const Questions = () => {
 
   const [questionId, setQuestionId] = useState("");
   const [questionOptions, setQuestionOptions] = useState("");
+
+  const [showMutipleQuestionModal, setShowMutipleQuestionModal] =
+    useState(false);
 
   const links = [
     {
@@ -617,7 +623,20 @@ const Questions = () => {
                 </div>
               )}
 
-              <Tooltip title={"Edit Points"} placement="left">
+              <Tooltip title={"Add Multiple Questions"} placement="left">
+                <div>
+                  <MdAddToQueue
+                    onClick={() => {
+                      setShowMutipleQuestionModal(true);
+                    }}
+                    className={`m-4 md:text-xl cursor-pointer  
+                      dark:hover:text-teal-300 dark:text-white text-gray-800 hover:text-teal-600
+                      dark:hover:drop-shadow-xl hover:drop-shadow-xl `}
+                  />
+                </div>
+              </Tooltip>
+
+              <Tooltip title={"Edit Points"} placement="top">
                 <div>
                   <MdOutlineModeEdit
                     onClick={() => {
@@ -629,7 +648,8 @@ const Questions = () => {
                     }}
                     onMouseEnter={() => {}}
                     className={`m-4 md:text-xl cursor-pointer  ${
-                      showQuestion && "dark:hover:text-teal-300 text-white"
+                      showQuestion &&
+                      "dark:hover:text-teal-300 dark:text-white text-gray-800 hover:text-teal-600"
                     } text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl `}
                   />
                 </div>
@@ -643,7 +663,8 @@ const Questions = () => {
                       showQuestion && updateSpecificQuestion(questionId);
                     }}
                     className={`m-4 mr-10 md:mr-16 md:text-xl cursor-pointer ${
-                      showQuestion && "dark:hover:text-teal-300 text-white"
+                      showQuestion &&
+                      "dark:hover:text-teal-300 dark:text-white text-gray-800 hover:text-teal-600"
                     } text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl`}
                   />
                 </div>
@@ -745,6 +766,11 @@ const Questions = () => {
                     onSubmit={addQuestionEssay}
                   />
                 )}
+                {showMutipleQuestionModal && (
+                  <MultipleQuestionModal
+                    setShowMutipleQuestionModal={setShowMutipleQuestionModal}
+                  />
+                )}
               </div>
               {/* Sub Container 1 */}
               <div className="bg-main-bg drop-shadow-lg absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
@@ -769,6 +795,7 @@ const Questions = () => {
                   <div className="flex md:-ml-6 -ml-10 items-center flex-grow mx-2">
                     <div className="border-b border-gray-500 w-full"></div>
                   </div>
+
                   <Tooltip title={"Edit Title"} placement="right">
                     <div>
                       <BsThreeDots
@@ -780,7 +807,8 @@ const Questions = () => {
                           }
                         }}
                         className={`md:text-xl mt-2 cursor-pointer ${
-                          showQuestion && "dark:hover:text-teal-300 text-white"
+                          showQuestion &&
+                          "dark:hover:text-teal-300 dark:text-white text-gray-800 hover:text-teal-600"
                         } text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl`}
                       />
                     </div>
