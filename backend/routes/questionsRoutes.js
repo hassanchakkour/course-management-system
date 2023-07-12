@@ -3,6 +3,7 @@ const router = express.Router();
 
 import {
   postQuestion,
+  createQuestions,
   getQuestionsByactivityId,
   getQuestion,
   deleteQuestion,
@@ -11,6 +12,7 @@ import {
 import { protect, isTeacher } from "../middleware/authMiddleware.js";
 
 router.post("/", postQuestion);
+router.post("/multiple", createQuestions);
 router.post(
   "/activity",
 

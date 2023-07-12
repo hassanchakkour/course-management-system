@@ -22,7 +22,7 @@ const questionSchema = new Schema(
     },
     questionContent: {
       type: String,
-      required: [true, "Please provide the content of the question."],
+      // required: [true, "Please provide the content of the question."],
     },
     teacherId: {
       type: SchemaTypes.ObjectId,
@@ -34,7 +34,7 @@ const questionSchema = new Schema(
     },
     options: [String],
     correctOption: String,
-    correctResponse:[String],
+    correctResponse: [String],
   },
 
   {

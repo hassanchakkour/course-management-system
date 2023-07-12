@@ -48,6 +48,37 @@ const postQuestion = asyncHandler(async (req, res) => {
   res.status(201).json(question);
 });
 
+// @desc    Create Multiple Questions
+// @route   POST /api/questions
+// @access  Private (Teacher only)
+const createQuestions = asyncHandler(async (req, res) => {
+  const { activityId, title, type, teacherId, point } = req.body;
+
+  if (!activityId) {
+    res.status(400);
+    throw new Error("activityId is required");
+  }
+
+  const question = await Question.create({
+    activityId,
+    title,
+    type,
+    point,
+    teacherId,
+  });
+
+  if (question) {
+    const addToActivity = await Activity.findById(activityId);
+    console.log(addToActivity);
+    addToActivity.questionId.push(question._id);
+    console.log(addToActivity._id);
+
+    await addToActivity.save();
+  }
+
+  res.status(201).json(question);
+});
+
 // @desc    Get all questions by activity ID
 // @route   GET /api/questions/activity/:activityId
 // @access  Private (Teacher only)
@@ -122,6 +153,7 @@ const deleteQuestion = asyncHandler(async (req, res) => {
 
 export {
   postQuestion,
+  createQuestions,
   getQuestionsByactivityId,
   getQuestion,
   deleteQuestion,

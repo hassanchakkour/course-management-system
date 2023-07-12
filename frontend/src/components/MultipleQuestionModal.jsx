@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Tooltip } from "@mui/material";
 import axios from "axios";
 import "./multipleQuestionModal.css";
+import { BiMessageError } from "react-icons/bi";
 
 import { TfiList } from "react-icons/tfi";
 import { RiCheckboxMultipleFill } from "react-icons/ri";
@@ -14,49 +15,91 @@ import { LuFileText } from "react-icons/lu";
 
 import { SiHelpscout } from "react-icons/si";
 
-const links = [
-  {
-    title: "Multiple Choice",
-    icon: <TfiList />,
-    color: "#8e5dfd",
-  },
-  {
-    title: "Multiple Response",
-    icon: <RiCheckboxMultipleFill />,
-    color: "#5d69fd",
-  },
-  {
-    title: "True or False",
-    icon: <RiCheckDoubleFill />,
-    color: "#3da4fc",
-  },
-  {
-    title: "Short Answers",
-    icon: <BiCommentMinus />,
-    color: "#2c8063",
-  },
-  {
-    title: "Numerical",
-    icon: <BsCalculator />,
-    color: "#d07e4b",
-  },
-  {
-    title: "Essay",
-    icon: <LuFileText />,
-    color: "#d04b4b",
-  },
-];
-
 const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
-  const { currentColor } = useStateContext();
+  const { activityID } = useStateContext();
   const [showWelcome, setShowWelcome] = useState(false);
   const [showText, setShowText] = useState(false);
   const [iconType, setIconType] = useState("");
-  //   const [isActive, setIsActive] = useState(false);
   const [questionNum, setQuestionNum] = useState(0);
 
+  const [multipleChoice_Nbr, setMultipleChoiceNbr] = useState(0);
+  const [multipleResponce_Nbr, setMultipleResponceNbr] = useState(0);
+  const [trueFalse_Nbr, setTrueFalseNbr] = useState(0);
+  const [shortAnswers_Nbr, setShortAnswersNbr] = useState(0);
+  const [numerical_Nbr, setNumericalNbr] = useState(0);
+  const [essay_Nbr, setEssayNbr] = useState(0);
+
+  const [isMultipleChoiceSelected, setIsMultipleChoiceSelected] =
+    useState(false);
+  const [isMultipleResponceSelected, setIsMultipleResponceSelected] =
+    useState(false);
+  const [isTrueFalseSelected, setIsTrueFalseSelected] = useState(false);
+  const [isShortAnswersSelected, setIsShortAnswersSelected] = useState(false);
+  const [isNumericalSelected, setIsNumericalSelected] = useState(false);
+  const [isEssaySelected, setIsEssaySelected] = useState(false);
+
+  const [isIconActive, setIsIconActive] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [questionsArray, setQuestionsArray] = useState([]);
+
+  const activityId = localStorage.getItem("activity_id", activityID);
+  const overAll = localStorage.getItem("overAllPoints");
+
+  const links = [
+    {
+      title: "Multiple Choice",
+      icon: <TfiList />,
+      color: "#8e5dfd",
+      state: isMultipleChoiceSelected,
+      stateNbr: multipleChoice_Nbr,
+    },
+    {
+      title: "Multiple Response",
+      icon: <RiCheckboxMultipleFill />,
+      color: "#5d69fd",
+      state: isMultipleResponceSelected,
+      stateNbr: multipleResponce_Nbr,
+    },
+    {
+      title: "True or False",
+      icon: <RiCheckDoubleFill />,
+      color: "#3da4fc",
+      state: isTrueFalseSelected,
+      stateNbr: trueFalse_Nbr,
+    },
+    {
+      title: "Short Answers",
+      icon: <BiCommentMinus />,
+      color: "#2c8063",
+      state: isShortAnswersSelected,
+      stateNbr: shortAnswers_Nbr,
+    },
+    {
+      title: "Numerical",
+      icon: <BsCalculator />,
+      color: "#d07e4b",
+      state: isNumericalSelected,
+      stateNbr: numerical_Nbr,
+    },
+    {
+      title: "Essay",
+      icon: <LuFileText />,
+      color: "#d04b4b",
+      state: isEssaySelected,
+      stateNbr: essay_Nbr,
+    },
+  ];
+
+  let totalQuestion_Nbr = 0;
+  for (let i = 0; i < links.length; i++) {
+    totalQuestion_Nbr += parseInt(links[i].stateNbr);
+  }
+
+  const singleQuestionPoint = Math.floor(overAll / totalQuestion_Nbr);
+
   useEffect(() => {
-    const typingDelay = 100; // Delay between each character typing
+    const typingDelay = 50; // Delay between each character typing
     const welcomeMessage =
       "Welcome to our professionally curated quiz questions!";
     let currentIndex = 0;
@@ -71,14 +114,42 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
         clearInterval(typingInterval);
       }
     }, typingDelay);
-
     return () => {
       clearInterval(typingInterval);
     };
   }, []);
 
+  // // *********** Add Multiple Questions ************
+  // const addMultipleQuestions = () => {
+  //   const submit = async () => {
+  //     for (let i = 0; i < totalQuestion_Nbr.length; i++) {
+  //       let sendData = {
+  //         activityId: activityId,
+  //         type: iconType,
+  //         title: `Question ${i + 1}`,
+  //         point: singleQuestionPoint,
+  //       };
+  //       try {
+  //         const res = await axios.post(
+  //           "http://localhost:5000/api/questions/multiple",
+  //           sendData
+  //         );
+  //         console.log(res.data);
+  //         // setSuccessMessage("Question Created Successfully");
+  //         // setTimeout(() => setSuccessMessage(""), 2500);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //       // finally {
+  //       //   await getQuestionData();
+  //       // }
+  //     }
+  //   };
+  //   submit();
+  // };
+
   useEffect(() => {
-    setTimeout(() => setShowText(true), 6500);
+    setTimeout(() => setShowText(true), 3500);
   }, []);
 
   return (
@@ -86,10 +157,7 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative  -mt-12  my-6 mx-auto w-5/6 max-w-2xl ">
           {/*content*/}
-          <div
-            // style={{ filter: `drop-shadow(0px 0px 3px #6ee7b7)` }}
-            className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none"
-          >
+          <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
             {/*header*/}
             <div className=" w-full p-5  border-slate-200 rounded-t">
               <div>
@@ -100,10 +168,7 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
                 )}
               </div>
 
-              <div
-                // style={{ filter: `drop-shadow(0px 0px 3px ${currentColor})` }}
-                className="relative  bg-transparent text-white  text-2xl flex  justify-between align-middle border-solid rounded-3xl border-t-2 border-gray-600 filter drop-shadow-md  h-1/5 w-full py-2 "
-              >
+              <div className="relative bg-gradient-to-r from-gray-700 to-transparent  text-white  text-2xl flex  justify-between align-middle border-solid rounded-lg border-t-2  border-gray-600 filter drop-shadow-md  h-1/5 w-full py-2 ">
                 {links.map((item) => {
                   const isActive = item.title == iconType;
                   return (
@@ -113,9 +178,9 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
                       placement="top"
                     >
                       <div
-                        className={` mx-auto my-auto p-3 ${
-                          isActive
-                            ? "border border-b-0 text-3xl bg-gray-700 rounded-tl-md  rounded-tr-md border-gray-500  ease-in-out transition-all duration-100"
+                        className={` mx-auto my-auto p-2.5 ${
+                          isActive && isIconActive
+                            ? "border  text-3xl fadeIn bg-slate-700 rounded-md   border-gray-500  ease-in-out transition-all duration-100"
                             : ""
                         }`}
                       >
@@ -126,14 +191,37 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
                           }}
                           onClick={() => {
                             setIconType(item.title);
-                            //   setIconType(item.title);
-                            //   console.log(iconType);
+                            setIsIconActive(true);
+
+                            {
+                              iconType === "Multiple Choice"
+                                ? setIsMultipleChoiceSelected(true)
+                                : iconType === "True or False"
+                                ? setIsTrueFalseSelected(true)
+                                : iconType === "Multiple Response"
+                                ? setIsMultipleResponceSelected(true)
+                                : iconType === "Short Answers"
+                                ? setIsShortAnswersSelected(true)
+                                : iconType === "Numerical"
+                                ? setIsNumericalSelected(true)
+                                : iconType === "Essay"
+                                ? setIsEssaySelected(true)
+                                : 0;
+                            }
                           }}
                         >
                           {item.icon}
-                          <div className="absolute text-gray-700 inline-flex items-center justify-center w-5 h-5 text-xs font-bold  bg-teal-400 border-1 border-gray-200 rounded-full -top-5 -right-5 ">
-                            8
-                          </div>
+
+                          {item.stateNbr != 0 && (
+                            <div
+                              className={`absolute p-2.5 text-gray-700 inline-flex items-center justify-center w-5 h-5 text-xs font-bold  bg-teal-400 border-1 border-gray-200 rounded-full -top-5 -right-5 `}
+                            >
+                              {item.stateNbr != 0 && item.stateNbr}
+                            </div>
+                          )}
+                          <span className=" whitespace-nowrap tracking-wider fadeIn absolute font-mono text-white inline-flex items-center justify-center w-[120%] h-10 text-xs  top-11 -right-1  ">
+                            {isActive & isIconActive ? item.title : ""}
+                          </span>
                         </NavLink>
                       </div>
                     </Tooltip>
@@ -173,12 +261,77 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
                 )}
                 <button
                   style={{ filter: `drop-shadow(0px 0px 3px #6ee7b7)` }}
-                  className="bg-teal-500 mt-1 mb-2 ml-5 hover:bg-teal-600 text-sm text-white py-2 px-4 rounded-full ease-linear transition-all duration-150"
+                  className="bg-gradient-to-r from-teal-700 to-teal-500 mt-1 mb-2 ml-5 hover:bg-gradient-to-b text-sm text-white py-2 px-4 rounded-full ease-linear hover:transition-all duration-200"
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => {
+                    if (isIconActive) {
+                      iconType === "Multiple Choice"
+                        ? setMultipleChoiceNbr(questionNum)
+                        : iconType === "True or False"
+                        ? setTrueFalseNbr(questionNum)
+                        : iconType === "Multiple Response"
+                        ? setMultipleResponceNbr(questionNum)
+                        : iconType === "Short Answers"
+                        ? setShortAnswersNbr(questionNum)
+                        : iconType === "Numerical"
+                        ? setNumericalNbr(questionNum)
+                        : iconType === "Essay"
+                        ? setEssayNbr(questionNum)
+                        : 0;
+                    } else if (!isIconActive) {
+                      setErrorMessage(true);
+                      setTimeout(() => {
+                        setErrorMessage(false);
+                      }, 2500);
+                    }
+                    {
+                      const updatedQuestionsArray = [...questionsArray]; // Create a copy of the original questionsArray
+                      const existingCount = updatedQuestionsArray.filter(
+                        (element) => element === iconType
+                      ).length;
+
+                      if (!updatedQuestionsArray.includes(iconType)) {
+                        // If the iconType doesn't exist, add it with the specified number of occurrences
+                        for (let j = 0; j < questionNum; j++) {
+                          updatedQuestionsArray.push(iconType);
+                        }
+                      } else {
+                        // If the iconType already exists, update the number of occurrences
+                        const diff = questionNum - existingCount;
+
+                        if (diff > 0) {
+                          // Add additional occurrences
+                          for (let j = 0; j < diff; j++) {
+                            updatedQuestionsArray.push(iconType);
+                          }
+                        } else if (diff < 0) {
+                          // Remove excess occurrences
+                          for (let j = 0; j < Math.abs(diff); j++) {
+                            const index =
+                              updatedQuestionsArray.lastIndexOf(iconType);
+                            updatedQuestionsArray.splice(index, 1);
+                          }
+                        }
+                      }
+
+                      // Update the questionsArray state with the updatedQuestionsArray
+                      setQuestionsArray(updatedQuestionsArray);
+                    }
+                    console.log(questionsArray);
+                    setIsIconActive(false);
+                    setQuestionNum(0);
+                  }}
                 >
                   Add Question
                 </button>
+                {errorMessage && (
+                  <div className="flex text-red-500">
+                    <BiMessageError className="text-2xl mt-0.5" />
+                    <p className="capitalize text-red-500 text-lg ml-2">
+                      Please select your question type before add
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center flex-grow -mt-5 ">
@@ -201,6 +354,7 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
                 type="button"
                 onClick={() => {
                   setShowMutipleQuestionModal(false);
+                  console.log(questionsArray);
                 }}
               >
                 Confirm

@@ -319,6 +319,7 @@ const ButtonMove = ({ setQuizOpen, activityTitle, activeId }) => {
                 onClick={() => {
                   quizCreator();
                   handleSubmit();
+                  localStorage.setItem("overAllPoints", overAll);
                 }}
               >
                 Submit
