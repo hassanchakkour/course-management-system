@@ -44,6 +44,7 @@ const MultipleQuestionModal = ({
   const [isIconActive, setIsIconActive] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState(false);
+  const [errorConfirmMessage, setErrorConfirmMessage] = useState(false);
   const [questionsArray, setQuestionsArray] = useState([]);
 
   const activityId = localStorage.getItem("activity_id", activityID);
@@ -336,6 +337,14 @@ const MultipleQuestionModal = ({
                     </p>
                   </div>
                 )}
+                {errorConfirmMessage && (
+                  <div className="flex fadeIn text-red-500">
+                    <BiMessageError className="text-2xl mt-0.5" />
+                    <p className="capitalize font-semibold text-lg ml-2">
+                      Please add your question type before confirm
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center flex-grow -mt-5 ">
@@ -357,9 +366,14 @@ const MultipleQuestionModal = ({
                 className="bg-teal-500  hover:bg-teal-600 text-sm text-white py-2 px-4 rounded-full ease-linear transition-all duration-150"
                 type="button"
                 onClick={() => {
-                  setShowMutipleQuestionModal(false);
-                  {
-                    questionsArray.length != 0 && addMultipleQuestions();
+                  if (questionsArray.length == 0) {
+                    setErrorConfirmMessage(true);
+                    setTimeout(() => {
+                      setErrorConfirmMessage(false);
+                    }, 2500);
+                  } else {
+                    addMultipleQuestions();
+                    setShowMutipleQuestionModal(false);
                   }
                   // console.log(questionsArray);
                   // console.log(singleQuestionPoint);
