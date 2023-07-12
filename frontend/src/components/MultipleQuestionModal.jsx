@@ -15,7 +15,10 @@ import { LuFileText } from "react-icons/lu";
 
 import { SiHelpscout } from "react-icons/si";
 
-const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
+const MultipleQuestionModal = ({
+  setShowMutipleQuestionModal,
+  handleSuccessMultipleQuestionMessage,
+}) => {
   const { activityID } = useStateContext();
   const [showWelcome, setShowWelcome] = useState(false);
   const [showText, setShowText] = useState(false);
@@ -119,34 +122,35 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
     };
   }, []);
 
-  // // *********** Add Multiple Questions ************
-  // const addMultipleQuestions = () => {
-  //   const submit = async () => {
-  //     for (let i = 0; i < totalQuestion_Nbr.length; i++) {
-  //       let sendData = {
-  //         activityId: activityId,
-  //         type: iconType,
-  //         title: `Question ${i + 1}`,
-  //         point: singleQuestionPoint,
-  //       };
-  //       try {
-  //         const res = await axios.post(
-  //           "http://localhost:5000/api/questions/multiple",
-  //           sendData
-  //         );
-  //         console.log(res.data);
-  //         // setSuccessMessage("Question Created Successfully");
-  //         // setTimeout(() => setSuccessMessage(""), 2500);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //       // finally {
-  //       //   await getQuestionData();
-  //       // }
-  //     }
-  //   };
-  //   submit();
-  // };
+  // *********** Add Multiple Questions ************
+  const addMultipleQuestions = () => {
+    const submit = async () => {
+      for (let i = 0; i < questionsArray.length; i++) {
+        let sendData = {
+          activityId: activityId,
+          type: questionsArray[i],
+          title: `Question ${i + 1}`,
+          point: singleQuestionPoint,
+        };
+        try {
+          const res = await axios.post(
+            "http://localhost:5000/api/questions/multiple",
+            sendData
+          );
+          console.log(res.data);
+          handleSuccessMultipleQuestionMessage(true);
+          // setSuccessMessage("Question Created Successfully");
+          // setTimeout(() => setSuccessMessage(""), 2500);
+        } catch (error) {
+          console.log(error);
+        }
+        // finally {
+        //   await getQuestionData();
+        // }
+      }
+    };
+    submit();
+  };
 
   useEffect(() => {
     setTimeout(() => setShowText(true), 3500);
@@ -354,7 +358,11 @@ const MultipleQuestionModal = ({ setShowMutipleQuestionModal }) => {
                 type="button"
                 onClick={() => {
                   setShowMutipleQuestionModal(false);
-                  console.log(questionsArray);
+                  {
+                    questionsArray.length != 0 && addMultipleQuestions();
+                  }
+                  // console.log(questionsArray);
+                  // console.log(singleQuestionPoint);
                 }}
               >
                 Confirm

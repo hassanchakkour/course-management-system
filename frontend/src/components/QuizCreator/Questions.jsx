@@ -51,6 +51,9 @@ const Questions = () => {
   const [showMutipleQuestionModal, setShowMutipleQuestionModal] =
     useState(false);
 
+  const [successMultipleQuestionMessage, setSuccessMultipleQuestionMessage] =
+    useState("");
+
   const links = [
     {
       title: "Multiple Choice",
@@ -246,6 +249,25 @@ const Questions = () => {
   useEffect(() => {
     getQuestionData();
   }, [gradeNbr, data]);
+
+  // *************** Handle Success Multiple Question Message ***************
+  const handleSuccessMultipleQuestionMessage = (success) => {
+    try {
+      if (success === true) {
+        setSuccessMultipleQuestionMessage(
+          "Successfully created multiple questions!"
+        );
+
+        setTimeout(() => setSuccessMultipleQuestionMessage(""), 2500);
+        // console.log("Success Assign Message from Child:", success);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // finally {
+    //   getModuleData();
+    // }
+  };
 
   const iconQuestionStyle =
     "md:text-xl dark:hover:text-gray-300 hover:text-gray-500 dark:hover:drop-shadow-xl hover:drop-shadow-xl";
@@ -616,7 +638,11 @@ const Questions = () => {
                   {successMessage}
                 </div>
               )}
-
+              {successMultipleQuestionMessage && (
+                <div className="text-green-500 md:text-lg text-base mt-3  md:mr-6 lg:mr-48">
+                  {successMultipleQuestionMessage}
+                </div>
+              )}
               {deleteMessage && (
                 <div className="text-red-400 md:text-lg text-base mt-3  md:mr-6 lg:mr-48">
                   {deleteMessage}
@@ -769,6 +795,9 @@ const Questions = () => {
                 {showMutipleQuestionModal && (
                   <MultipleQuestionModal
                     setShowMutipleQuestionModal={setShowMutipleQuestionModal}
+                    handleSuccessMultipleQuestionMessage={
+                      handleSuccessMultipleQuestionMessage
+                    }
                   />
                 )}
               </div>
