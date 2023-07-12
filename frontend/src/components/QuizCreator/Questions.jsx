@@ -278,7 +278,7 @@ const Questions = () => {
     console.log("This is from child", data);
     let questionOption = [];
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.options.length; i++) {
       questionOption.push(data.options[i].content);
     }
 
@@ -698,7 +698,7 @@ const Questions = () => {
             </div>
             <div className="flex w-full">
               {/* Icons Side Bar Drag N Drop */}
-              <div className="absolute min-w-max bg-gray-100 dark:bg-secondary-dark-bg dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
+              <div className="absolute min-w-max bg-gray-100 dark:bg-gradient-to-b from-[#33373E] to-[#242830]  dark:text-white text-gray-800 text-2xl flex flex-col justify-center align-middle border-solid border-2 border-gray-400 rounded-2xl rounded-tl-none rounded-bl-none h-4/5 w-1/12 p-3 ">
                 {links.map((item) => (
                   <Tooltip
                     key={item.title}
@@ -802,7 +802,7 @@ const Questions = () => {
                 )}
               </div>
               {/* Sub Container 1 */}
-              <div className="bg-main-bg drop-shadow-lg absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-secondary-dark-bg rounded-lg h-4/5 w-5/6 p-2 pb-0">
+              <div className="bg-main-bg drop-shadow-lg absolute ml-14 sm:ml-16 lg:ml-24 xl:ml-28 dark:text-gray-200 dark:bg-gradient-to-b from-[#33373E] to-[#242830] rounded-lg h-4/5 w-5/6 p-2 pb-0">
                 <div className="flex mr-5">
                   <p className="text-lg">
                     {
@@ -976,7 +976,7 @@ const Questions = () => {
                     key={question._id}
                     className={`bg-main-bg drop-shadow-lg mx-auto sm:mt-2 mt-3 border h-fit ${
                       isActive ? "border-teal-500" : ""
-                    } dark:text-gray-200 dark:bg-secondary-dark-bg filter ${
+                    } dark:text-gray-200 dark:bg-gradient-to-b from-[#33373E] to-[#242830] filter ${
                       !isActive
                         ? "dark:hover:border-gray-600 hover:border-gray-700"
                         : ""

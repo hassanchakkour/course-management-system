@@ -161,7 +161,7 @@ const MultipleQuestionModal = ({
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative  -mt-12  my-6 mx-auto w-5/6 max-w-2xl ">
           {/*content*/}
-          <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#242830] to-[#33373E] outline-none focus:outline-none">
+          <div className="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-gradient-to-b from-[#33373E] to-[#242830] outline-none focus:outline-none">
             {/*header*/}
             <div className=" w-full p-5  border-slate-200 rounded-t">
               <div>
@@ -184,14 +184,14 @@ const MultipleQuestionModal = ({
                       <div
                         className={` mx-auto my-auto p-2.5 ${
                           isActive && isIconActive
-                            ? "border  text-3xl fadeIn bg-slate-700 rounded-md   border-gray-500  ease-in-out transition-all duration-100"
-                            : ""
+                            ? "border  text-3xl fadeIn bg-gradient-to-b from-slate-700 to-slate-800 rounded-md   border-gray-500  ease-in-out transition-all duration-100"
+                            : "hover:bg-gradient-to-r from-teal-700 to-teal-500 rounded  ease-linear transition-all duration-200"
                         }`}
                       >
                         <NavLink
                           className={"relative"}
                           style={{
-                            color: isActive ? item.color : "gray",
+                            color: isActive ? item.color : "#d1d5db",
                           }}
                           onClick={() => {
                             setIconType(item.title);
@@ -265,7 +265,7 @@ const MultipleQuestionModal = ({
                 )}
                 <button
                   style={{ filter: `drop-shadow(0px 0px 3px #6ee7b7)` }}
-                  className="bg-gradient-to-r from-teal-700 to-teal-500 mt-1 mb-2 ml-5 hover:bg-gradient-to-b text-sm text-white py-2 px-4 rounded-full ease-linear hover:transition-all duration-200"
+                  className="bg-gradient-to-r from-teal-700 to-teal-500 mt-1 mb-2 ml-5 hover:bg-gradient-to-b text-sm text-white py-2 px-4 rounded-full ease-linear hover:transition-colors duration-300"
                   type="button"
                   onClick={() => {
                     if (isIconActive) {
@@ -329,9 +329,9 @@ const MultipleQuestionModal = ({
                   Add Question
                 </button>
                 {errorMessage && (
-                  <div className="flex text-red-500">
+                  <div className="flex fadeIn text-red-500">
                     <BiMessageError className="text-2xl mt-0.5" />
-                    <p className="capitalize text-red-500 text-lg ml-2">
+                    <p className="capitalize font-semibold text-lg ml-2">
                       Please select your question type before add
                     </p>
                   </div>
